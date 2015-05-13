@@ -15,8 +15,8 @@ The gulpfile is 80% from the [gulp-webapp](https://github.com/yeoman/generator-g
 
 There are two commands, both run via npm.
 
-`npm run build` - build everything and put it into dist folder
-`npm run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+- `npm run` - clean & build everything and put it into dist folder
+- `npm run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
 ## Travis for testing and deployment
 
