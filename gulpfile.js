@@ -13,6 +13,8 @@ var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var exit = require('gulp-exit');
+var rev = require("gulp-rev");
+var revReplace = require('gulp-rev-replace');
 
 // Setup for watchify
 var customOpts = {
@@ -64,8 +66,10 @@ gulp.task('html', ['styles'], function () {
     .pipe(assets)
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
+    .pipe(rev())
     .pipe(assets.restore())
     .pipe($.useref())
+    .pipe(revReplace())
     .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
