@@ -17,7 +17,9 @@
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
     "serve": "gulp serve",
-    "build": "gulp"
+    "build": "gulp",
+    "lint": "semistandard app/scripts/**/*.js",
+    "test": "echo no other tests yet!"
   },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
@@ -45,6 +47,7 @@
     "jshint-stylish": "^1.0.0",
     "lodash.assign": "^3.1.0",
     "opn": "^1.0.0",
+    "semistandard": "^4.1.4",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"

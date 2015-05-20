@@ -14,9 +14,14 @@ cache:
 
 before_install:
 - chmod +x ./.build_scripts/deploy.sh
+- chmod +x ./.build_scripts/lint.sh
+
+before_script:
+- ./.build_scripts/lint.sh || true
+- npm test
 
 script:
 - npm run build
 
 after_success:
-- "./.build_scripts/deploy.sh"
+- ./.build_scripts/deploy.sh
