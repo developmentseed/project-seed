@@ -1,4 +1,3 @@
-/*global -$ */
 'use strict';
 
 var gulp = require('gulp');
@@ -13,7 +12,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var exit = require('gulp-exit');
-var rev = require("gulp-rev");
+var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 
 // Setup for watchify
@@ -43,7 +42,7 @@ gulp.task('styles', function () {
     .pipe(reload({stream: true}));
 });
 
-function bundle() {
+function bundle () {
   return b.bundle()
     // log errors if they happen
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
@@ -132,7 +131,7 @@ gulp.task('build', ['javascript'], function () {
     return gulp.src('dist/**/*')
       .pipe($.size({title: 'build', gzip: true}))
       .pipe(exit());
-    });
+  });
 });
 
 gulp.task('default', ['clean'], function () {
