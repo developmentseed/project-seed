@@ -106,6 +106,7 @@ gulp.task('serve', ['javascript', 'styles', 'fonts'], function () {
     server: {
       baseDir: ['.tmp', 'app'],
       routes: {
+        '/node_modules': './node_modules'
       }
     }
   });
