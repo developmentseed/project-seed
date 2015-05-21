@@ -1,6 +1,6 @@
-/*global -$ */
 'use strict';
 
+var fs = require('fs');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var browserSync = require('browser-sync');
@@ -13,7 +13,7 @@ var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
 var assign = require('lodash.assign');
 var exit = require('gulp-exit');
-var rev = require("gulp-rev");
+var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 
 // Setup for watchify
@@ -25,6 +25,16 @@ var opts = assign({}, watchify.args, customOpts);
 var b = watchify(browserify(opts));
 b.on('update', bundle);
 b.on('log', gutil.log); // output build logs to terminal
+
+var pkg;
+// update pkg:
+function readPackage () {
+  pkg = JSON.parse(fs.readFileSync('package.json'));
+  if (pkg.dependencies) {
+    b.external(Object.keys(pkg.dependencies));
+  }
+}
+readPackage();
 
 gulp.task('styles', function () {
   return gulp.src('app/styles/main.scss')
@@ -43,7 +53,24 @@ gulp.task('styles', function () {
     .pipe(reload({stream: true}));
 });
 
-function bundle() {
+function vendorBundle () {
+  readPackage();
+  var vb = browserify({
+    debug: true,
+    require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
+  });
+  vb.bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('vendor.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('.tmp/scripts/'))
+    .pipe(reload({stream: true}));
+}
+gulp.task('vendorScripts', vendorBundle);
+
+function bundle () {
   return b.bundle()
     // log errors if they happen
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
@@ -103,7 +130,7 @@ gulp.task('extras', function () {
 
 gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', ['javascript', 'styles', 'fonts'], function () {
+gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
   browserSync({
     notify: false,
     port: 9000,
@@ -125,6 +152,7 @@ gulp.task('serve', ['javascript', 'styles', 'fonts'], function () {
   gulp.watch('app/styles/**/*.scss', ['styles']);
   // gulp.watch('app/scripts/**/*.js', ['javascript']);
   gulp.watch('app/fonts/**/*', ['fonts']);
+  gulp.watch('package.json', ['vendorScripts']);
 });
 
 gulp.task('build', ['javascript'], function () {
@@ -132,7 +160,7 @@ gulp.task('build', ['javascript'], function () {
     return gulp.src('dist/**/*')
       .pipe($.size({title: 'build', gzip: true}))
       .pipe(exit());
-    });
+  });
 });
 
 gulp.task('default', ['clean'], function () {
