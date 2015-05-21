@@ -9,16 +9,35 @@ The front end for the India Lights project.
   styles, fonts, images, scripts and HTML.  Run this and then open up
   [http://localhost:9000](http://localhost:9000) in your browser.
 
+## Important Libraries
+
+ - [React][1] for view rendering
+ - [React Router][2] for routing
+ - [Reflux][3] for event and state management
+ - [Mapbox GL JS][4] for map rendering
+ - [d3][5] for data processing and chart building
+
+[1]: https://facebook.github.io/react/
+[2]: https://github.com/rackt/react-router
+[3]: https://github.com/spoike/refluxjs
+[4]: https://github.com/mapbox/mapbox-gl-js
+[5]: http://d3js.org/
+
+
 ## File Structure
 
 ```
 app/scripts/
 |
 +- main.js: entry point -- boot up the app.
++- actions.js: the user actions available to the app's components
 |
 +- component/: individual view (React) components.
-|
 +- lib/: generic app helpers
 ```
 
+## Naming Things Is Hard
+
+We use `region` as a generic term to refer to the nation, states, districts, and
+even villages.
 
