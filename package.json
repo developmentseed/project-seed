@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
+    "babelify": "^6.1.1",
     "browser-sync": "^1.8.2",
     "browserify": "^10.1.2",
     "del": "^1.1.1",
@@ -51,5 +52,16 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {}
+      ]
+    ]
+  },
+  "dependencies": {
+    "react": "^0.13.3"
   }
 }
