@@ -1,7 +1,8 @@
 var Reflux = require('reflux');
 
 module.exports = function Actions () {
-  return Reflux.createActions({
+  let actions = Reflux.createActions({
     'chooseRegion': {}
   });
+  return actions;
 };

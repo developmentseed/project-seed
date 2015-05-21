@@ -1,18 +1,31 @@
 var React = require('react');
 
-class Data extends React.Component {
-  render () {
-    return (
-      <div>
-        <h2>The Data View</h2>
-      </div>
-    );
-  }
-};
+module.exports = function (actions, store) {
+  class Data extends React.Component {
+    componentDidMount () {
+      console.log('mount');
+      this.unsubscribe = store.listen(this.setState.bind(this));
+    }
 
-Data.displayName = 'Data';
-Data.propTypes = {
-  params: React.PropTypes.object
-};
+    componentWillUnmount () {
+      this.unsubscribe();
+    }
 
-module.exports = Data;
+    render () {
+      console.log('rendering view', this.state);
+      return (
+        <div>
+          <h2>The Data View</h2>
+          {JSON.stringify(this.state)}
+        </div>
+      );
+    }
+  };
+
+  Data.displayName = 'Data';
+  Data.propTypes = {
+    params: React.PropTypes.object
+  };
+
+  return Data;
+};

@@ -5,15 +5,35 @@ var Router = require('react-router');
 var RouteHandler = Router.RouteHandler;
 var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
+var Link = Router.Link;
 
 var config = require('./config');
-var Data = require('./component/data');
+var actions = require('./actions')();
+var datastore = require('./store')(config, actions);
+
+var Data = require('./component/data')(actions, datastore);
 
 class App extends React.Component {
   render () {
     return (
       <div>
         <h1>India Lights</h1>
+        <Link to='nation' params={{
+          interval: '2010.01-2011.01'
+        }}>National</Link><br/>
+
+        <Link to='state'
+          params={{
+          interval: '2010.01-2011.01',
+          state: 'uttar-pradesh'
+        }}>State</Link><br/>
+
+        <Link to='district' params={{
+          interval: '2010.01-2011.01',
+          state: 'uttar-pradesh',
+          district: 'blahblah'
+        }}>District</Link><br/>
+
         <RouteHandler />
       </div>
     );
@@ -24,18 +44,19 @@ App.displayName = 'App';
 
 var routes = (
   <Route name='app' path='/' handler={App}>
-    <Route name='nation' path='nation' handler={Data}/>
-    <Route name='state' path='state/:state' handler={Data}/>
-    <Route name='district' path='state/:state/district/:district' handler={Data}/>
+    <Route name='nation' path='months/:interval' handler={Data}/>
+    <Route name='state' path='months/:interval/state/:state' handler={Data}/>
+    <Route name='district'
+      path='months/:interval/state/:state/district/:district' handler={Data}/>
 
-    // TODO: possibly replace this with a landing page
+    // TODO: replace this with a landing page
     <DefaultRoute handler={Data}/>
   </Route>
 );
 
 Router.run(routes, Router.HashLocation, (Root, state) => {
-  console.log(state);
-  console.log(config.apiUrl);
-
+  console.log('route', state);
   React.render(<Root/>, document.body);
+  // TODO: only do this for the relevant routes!
+  datastore.onChooseRegion(state.params);
 });
