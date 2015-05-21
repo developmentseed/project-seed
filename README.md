@@ -18,6 +18,18 @@ There are two commands, both run via npm.
 - `npm run build` - clean & build everything and put it into dist folder
 - `npm run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
+### How scripts are built
+
+The script build, which uses `browserify`, outputs two js files: `bundle.js` and
+`vendor.js`:
+ - `bundle.js`, created by the `javascript` task in deployment and by
+   `watchify` during development, contains all the app-specific code:
+   `app/scripts/main.js` and all the scripts it `require`s that are local to
+   this app.
+ - `vendor.js`, created by the `vendorBundle` task, contains all the external
+   dependencies of the app: namely, all the packages you install using `npm
+   install --save ...`.
+
 ## Travis for testing and deployment
 The .travis.yml file enables the usage of [Travis](http://travis.org) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
 
