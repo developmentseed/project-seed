@@ -27,6 +27,7 @@
     "browser-sync": "^1.8.2",
     "browserify": "^10.1.2",
     "del": "^1.1.1",
+    "envify": "^3.4.0",
     "gulp": "^3.6.0",
     "gulp-cache": "^0.2.2",
     "gulp-csso": "^0.2.6",
@@ -58,7 +59,8 @@
       [
         "babelify",
         {}
-      ]
+      ],
+      "envify"
     ]
   },
   "dependencies": {

@@ -8,6 +8,9 @@ The front end for the India Lights project.
 - `npm run serve` - serve the pages and utilize live reload on changes to
   styles, fonts, images, scripts and HTML.  Run this and then open up
   [http://localhost:9000](http://localhost:9000) in your browser.
+- `API_URL='http://whatever.blah:1337' npm run serve` - same as above, but
+  point the site at the specified API url. By default, this will be the
+  heroku app at http://india-lights.herokuapp.com.
 
 ## Important Libraries
 

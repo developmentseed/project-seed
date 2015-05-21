@@ -6,11 +6,11 @@ var RouteHandler = Router.RouteHandler;
 var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
 
+var config = require('./config');
 var Data = require('./component/data');
 
 class App extends React.Component {
   render () {
-    console.log('App render');
     return (
       <div>
         <h1>India Lights</h1>
@@ -33,6 +33,9 @@ var routes = (
   </Route>
 );
 
-Router.run(routes, Router.HashLocation, (Root) => {
+Router.run(routes, Router.HashLocation, (Root, state) => {
+  console.log(state);
+  console.log(config.apiUrl);
+
   React.render(<Root/>, document.body);
 });
