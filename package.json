@@ -64,6 +64,8 @@
     ]
   },
   "dependencies": {
+    "classnames": "^2.1.1",
+    "d3": "^3.5.5",
     "nets": "^3.1.0",
     "react": "^0.13.3",
     "react-router": "^0.13.3",
