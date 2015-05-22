@@ -9,6 +9,7 @@ var Link = Router.Link;
 
 var TimeSeries = require('./store/time-series');
 var Data = require('./component/data');
+console.log(Data);
 
 class App extends React.Component {
   render () {

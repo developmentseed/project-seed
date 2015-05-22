@@ -12,3 +12,17 @@ $icon-font-path: '../fonts/';
   font-style: italic;
   font-size: 22px;
 }
+
+
+/* the light curve plots */
+.light-curves {
+  svg {
+    height: 500px;
+    width: 100%;
+  }
+  .line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1px;
+  }
+}

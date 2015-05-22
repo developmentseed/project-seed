@@ -18,7 +18,6 @@ module.exports = Reflux.createStore({
     nets({
       url: url.resolve(apiUrl, path.join('/'))
     }, function (err, resp, body) {
-      console.log('api response', err, resp, body.toString('utf8'));
       if (err) {
         return self.trigger({error: err, statusCode: null, results: []});
       }

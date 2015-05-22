@@ -1,10 +1,16 @@
 var React = require('react');
-var TimeSeries = require('../store/time-series');
+var TimeSeriesStore = require('../store/time-series');
+var LineChart = require('./line-chart');
 
 class Data extends React.Component {
+  constructor () {
+    super();
+    this.state = { results: [] };
+  }
+
   componentDidMount () {
     console.log('mount');
-    this.unsubscribe = TimeSeries.listen(this.setState.bind(this));
+    this.unsubscribe = TimeSeriesStore.listen(this.setState.bind(this));
   }
 
   componentWillUnmount () {
@@ -12,14 +18,28 @@ class Data extends React.Component {
   }
 
   render () {
+    function x (datum) {
+      return datum.year + (datum.month - 1) / 12;
+    }
+
+    function y (datum) {
+      return +datum.vis_median;
+    }
+
+    function group (datum) {
+      return datum.key;
+    }
+
     return (
       <div>
-      <h2>The Data View</h2>
-      {JSON.stringify(this.state)}
+        <h2>The Data View</h2>
+        <div className='light-curves'>
+          <LineChart data={this.state.results} x={x} y={y} group={group} />
+        </div>
       </div>
     );
   }
-};
+}
 
 Data.displayName = 'Data';
 Data.propTypes = {
