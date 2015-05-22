@@ -1,11 +1,26 @@
-var Reflux = require('reflux');
-var url = require('url');
-var nets = require('nets');
-var apiUrl = require('../config').apiUrl;
+let Reflux = require('reflux');
+let url = require('url');
+let ajax = require('../lib/ajax');
+let Actions = require('../actions');
+let apiUrl = require('../config').apiUrl;
 
 module.exports = Reflux.createStore({
+  init () {
+    this.listenTo(Actions.emphasize, this.onEmphasize.bind(this));
+    this.listenTo(Actions.deemphasize, this.onDeemphasize.bind(this));
+  },
+
+  onEmphasize (key) {
+    this.trigger({ emphasis: { [key]: true } });
+  },
+
+  onDeemphasize (key) {
+    this.trigger({ emphasis: { [key]: false } });
+  },
+
   onChooseRegion ({interval, state, district}) {
-    var path = ['months', interval];
+    // setup the appropriate endpoint url
+    let path = ['months', interval];
     if (state && district) {
       path.push('districts', state + '-' + district, 'villages');
     } else if (state) {
@@ -13,30 +28,20 @@ module.exports = Reflux.createStore({
     } else {
       path.push('states');
     }
+    let api = url.resolve(apiUrl, path.join('/'));
 
-    var self = this;
-    nets({
-      url: url.resolve(apiUrl, path.join('/'))
-    }, function (err, resp, body) {
+    // make the ajax call, emitting the result with this.trigger
+    let self = this;
+    ajax({ url: api }, function (err, result) {
       if (err) {
-        return self.trigger({error: err, statusCode: null, results: []});
+        return self.trigger(err);
       }
 
-      try {
-        body = JSON.parse(body);
-        if (body.error) {
-          body.results = [];
-        } else {
-          body = { results: body };
-        }
-        self.trigger(body);
-      } catch (e) {
-        self.trigger({
-          error: 'Error parsing API response',
-          results: [],
-          rawResponse: body.toString('utf8')
-        });
-      }
+      self.trigger({
+        error: null,
+        results: result,
+        emphasis: {}
+      });
     });
   }
 });

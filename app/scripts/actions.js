@@ -1,5 +1,8 @@
 var Reflux = require('reflux');
 
 module.exports = Reflux.createActions({
-  'chooseRegion': {}
+  'chooseRegion': {},
+  'emphasize': {},
+  'deemphasize': {},
+  'select': {}
 });

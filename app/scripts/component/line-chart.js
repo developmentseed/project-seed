@@ -6,7 +6,7 @@ let Line = require('./line');
 
 class LineChart extends React.Component {
   render () {
-    let {data, x, y, group} = this.props;
+    let {data, x, y, group, Actions, emphasis} = this.props;
 
     // make string accessors into functions
     [x, y, group] = [x, y, group].map((accessor) =>
@@ -25,15 +25,19 @@ class LineChart extends React.Component {
       .domain(d3.extent(data, y))
       .range([100, 0]);
 
-    console.log(d3.extent(data, x), d3.extent(data, y));
+    console.log(emphasis);
     return (
       <svg viewBox='0 0 2400 100' preserveAspectRatio='none'>
         {series.map((entry) =>
           <Line
+            Actions={Actions}
             key={entry.key}
+            seriesKey={entry.key}
             data={entry.values}
             x={compose(scaleX)(x)}
-            y={compose(scaleY)(y)} />
+            y={compose(scaleY)(y)}
+            emphasis={emphasis[entry.key]}
+            />
         )}
       </svg>
     );
@@ -43,10 +47,13 @@ class LineChart extends React.Component {
 LineChart.displayName = 'LineChart';
 
 LineChart.propTypes = {
+  Actions: React.PropTypes.object,
   data: React.PropTypes.array.isRequired,
   x: AccessorType.isRequired,
   y: AccessorType.isRequired,
-  group: AccessorType.isRequired
+  group: AccessorType.isRequired,
+  selection: React.PropTypes.object,
+  emphasis: React.PropTypes.object
 };
 
 module.exports = LineChart;

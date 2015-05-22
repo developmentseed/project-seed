@@ -1,4 +1,5 @@
 var React = require('react');
+var Actions = require('../actions');
 var TimeSeriesStore = require('../store/time-series');
 var LineChart = require('./line-chart');
 
@@ -9,7 +10,6 @@ class Data extends React.Component {
   }
 
   componentDidMount () {
-    console.log('mount');
     this.unsubscribe = TimeSeriesStore.listen(this.setState.bind(this));
   }
 
@@ -34,7 +34,15 @@ class Data extends React.Component {
       <div>
         <h2>The Data View</h2>
         <div className='light-curves'>
-          <LineChart data={this.state.results} x={x} y={y} group={group} />
+          <LineChart
+            Actions={Actions}
+            data={this.state.results}
+            x={x}
+            y={y}
+            group={group}
+            selection={this.state.selection}
+            emphasis={this.state.emphasis}
+            />
         </div>
       </div>
     );

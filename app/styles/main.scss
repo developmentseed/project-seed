@@ -24,5 +24,9 @@ $icon-font-path: '../fonts/';
     fill: none;
     stroke: black;
     stroke-width: 1px;
+    &.active {
+      stroke: blue;
+      cursor: pointer;
+    }
   }
 }
