@@ -1,49 +1,43 @@
-# india-lights
+# project-seed
 
-The front end for the India Lights project.
+A basic starting point for web projects
 
-## Build
+## Overview
+
+## Gulp for building
+The gulpfile is 80% from the [gulp-webapp](https://github.com/yeoman/generator-gulp-webapp) yeoman generator. The build system currently supports:
+
+- Image optimization
+- Sass compilation
+- Watchify for JS bundling
+- Minification/uglification where appropriate
+- Serving and live reloading of pages
+
+There are two commands, both run via npm.
 
 - `npm run build` - clean & build everything and put it into dist folder
-- `npm run serve` - serve the pages and utilize live reload on changes to
-  styles, fonts, images, scripts and HTML.  Run this and then open up
-  [http://localhost:9000](http://localhost:9000) in your browser.
-- `API_URL='http://whatever.blah:1337' npm run serve` - same as above, but
-  point the site at the specified API url. By default, this will be the
-  heroku app at http://india-lights.herokuapp.com.
+- `npm run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
-## Important Libraries
+### How scripts are built
 
- - [React][1] for view rendering
- - [React Router][2] for routing
- - [Reflux][3] for event and state management
- - [Mapbox GL JS][4] for map rendering
- - [d3][5] for data processing and chart building
+The script build, which uses `browserify`, outputs two js files: `bundle.js` and
+`vendor.js`:
+ - `bundle.js`, created by the `javascript` task in deployment and by
+   `watchify` during development, contains all the app-specific code:
+   `app/scripts/main.js` and all the scripts it `require`s that are local to
+   this app.
+ - `vendor.js`, created by the `vendorBundle` task, contains all the external
+   dependencies of the app: namely, all the packages you install using `npm
+   install --save ...`.
 
-[1]: https://facebook.github.io/react/
-[2]: https://github.com/rackt/react-router
-[3]: https://github.com/spoike/refluxjs
-[4]: https://github.com/mapbox/mapbox-gl-js
-[5]: http://d3js.org/
+## Travis for testing and deployment
+The .travis.yml file enables the usage of [Travis](http://travis.org) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
 
+## semistandard for linting
+We're using [semistandard](https://github.com/Flet/semistandard) for linting. 
 
-## File Structure
+- `npm run lint` - will run linter and warn of any errors.
 
-```
-app/scripts/
-|
-+- main.js: entry point -- boot up the app.
-+- actions.js: the user actions available to the app's components
-+- config.js: app configuration object
-|
-+- store/: the data stores, responsible for hitting the api and providing
-|    the results to the rest of the application
-+- component/: individual view (React) components.
-+- lib/: generic app helpers
-```
+Travis will run the linter but will not fail a build if errros exist, it will just be present in the logs (we all look at Travis logs, right?).
 
-## Naming Things Is Hard
-
-We use `region` as a generic term to refer to the nation, states, districts, and
-even villages.
-
+There are linting plugins for popular editors listed in the semistandard repo.

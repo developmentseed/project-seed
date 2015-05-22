@@ -23,11 +23,9 @@
   },
   "devDependencies": {
     "autoprefixer-core": "^4.0.2",
-    "babelify": "^6.1.1",
     "browser-sync": "^1.8.2",
     "browserify": "^10.1.2",
     "del": "^1.1.1",
-    "envify": "^3.4.0",
     "gulp": "^3.6.0",
     "gulp-cache": "^0.2.2",
     "gulp-csso": "^0.2.6",
@@ -53,22 +51,5 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.1"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {}
-      ],
-      "envify"
-    ]
-  },
-  "dependencies": {
-    "classnames": "^2.1.1",
-    "d3": "^3.5.5",
-    "nets": "^3.1.0",
-    "react": "^0.13.3",
-    "react-router": "^0.13.3",
-    "reflux": "^0.2.7"
   }
 }
