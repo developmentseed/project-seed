@@ -7,6 +7,7 @@ var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
 var Link = Router.Link;
 
+var Actions = require('./actions');
 var TimeSeries = require('./store/time-series');
 var Data = require('./component/data');
 console.log(Data);
@@ -52,9 +53,22 @@ var routes = (
   </Route>
 );
 
-Router.run(routes, Router.HashLocation, (Root, state) => {
+var router = Router.create({
+  routes,
+  location: Router.HashLocation
+});
+
+router.run((Root, state) => {
   console.log('route', state);
   React.render(<Root/>, document.body);
   // TODO: only do this for the relevant routes!
   TimeSeries.onChooseRegion(state.params);
+});
+
+// When the user selects a region, go to the appropriate route.
+Actions.select.listen(function (key) {
+  router.transitionTo('state', {
+    interval: router.getCurrentParams().interval,
+    state: key
+  });
 });
