@@ -1,31 +1,29 @@
 var React = require('react');
+var TimeSeries = require('../store/time-series');
 
-module.exports = function (actions, store) {
-  class Data extends React.Component {
-    componentDidMount () {
-      console.log('mount');
-      this.unsubscribe = store.listen(this.setState.bind(this));
-    }
+class Data extends React.Component {
+  componentDidMount () {
+    console.log('mount');
+    this.unsubscribe = TimeSeries.listen(this.setState.bind(this));
+  }
 
-    componentWillUnmount () {
-      this.unsubscribe();
-    }
+  componentWillUnmount () {
+    this.unsubscribe();
+  }
 
-    render () {
-      console.log('rendering view', this.state);
-      return (
-        <div>
-          <h2>The Data View</h2>
-          {JSON.stringify(this.state)}
-        </div>
-      );
-    }
-  };
-
-  Data.displayName = 'Data';
-  Data.propTypes = {
-    params: React.PropTypes.object
-  };
-
-  return Data;
+  render () {
+    return (
+      <div>
+      <h2>The Data View</h2>
+      {JSON.stringify(this.state)}
+      </div>
+    );
+  }
 };
+
+Data.displayName = 'Data';
+Data.propTypes = {
+  params: React.PropTypes.object
+};
+
+module.exports = Data;

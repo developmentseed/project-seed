@@ -7,11 +7,8 @@ var DefaultRoute = Router.DefaultRoute;
 var Route = Router.Route;
 var Link = Router.Link;
 
-var config = require('./config');
-var actions = require('./actions')();
-var datastore = require('./store')(config, actions);
-
-var Data = require('./component/data')(actions, datastore);
+var TimeSeries = require('./store/time-series');
+var Data = require('./component/data');
 
 class App extends React.Component {
   render () {
@@ -58,5 +55,5 @@ Router.run(routes, Router.HashLocation, (Root, state) => {
   console.log('route', state);
   React.render(<Root/>, document.body);
   // TODO: only do this for the relevant routes!
-  datastore.onChooseRegion(state.params);
+  TimeSeries.onChooseRegion(state.params);
 });

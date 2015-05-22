@@ -34,10 +34,10 @@ app/scripts/
 |
 +- main.js: entry point -- boot up the app.
 +- actions.js: the user actions available to the app's components
-+- store.js: the data store, responsible for hitting the api and providing
-|    the result to the rest of the application
 +- config.js: app configuration object
 |
++- store/: the data stores, responsible for hitting the api and providing
+|    the results to the rest of the application
 +- component/: individual view (React) components.
 +- lib/: generic app helpers
 ```
