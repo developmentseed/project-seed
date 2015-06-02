@@ -11,7 +11,6 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
-var assign = require('lodash.assign');
 var exit = require('gulp-exit');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
