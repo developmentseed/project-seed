@@ -5,7 +5,7 @@ A basic starting point for web projects
 ## Overview
 
 ## Gulp for building
-The gulpfile is 80% from the [gulp-webapp](https://github.com/yeoman/generator-gulp-webapp) yeoman generator. The build system currently supports:
+The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-gulp-webapp) yeoman generator. The build system currently supports:
 
 - Image optimization
 - Sass compilation
@@ -15,8 +15,28 @@ The gulpfile is 80% from the [gulp-webapp](https://github.com/yeoman/generator-g
 
 There are two commands, both run via npm.
 
-- `npm run build` - clean & build everything and put it into dist folder
-- `npm run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+- `npm run build` or `gulp build` or `gulp` - clean & build everything and put it into dist folder
+- `npm run serve` or `gulp serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+
+
+## Assets Structure
+
+```
+app/assets/
+|
++- scripts/: The user scripts
+|
++- styles/: The sass styles
+|
++- vendor/: Any third-party script that can't be required() 
+|
++- graphics/: Images for the site divided in:
+|  |
+|  +- layout/: Images for layout elements (Ex: background images)
+|  +- meta/: Images for the meta tags (Mostly icons and facebook images)
+|  +- content/: Content image
+|
+```
 
 ### How scripts are built
 
