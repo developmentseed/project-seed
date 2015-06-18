@@ -89,11 +89,10 @@ gulp.task('javascript', function() {
     cache: {}, packageCache: {}, fullPaths: true
   }));
 
-  if (pkg.dependencies) {
-    watcher.external(Object.keys(pkg.dependencies));
-  }
-
   function bundler() {
+    if (pkg.dependencies) {
+      watcher.external(Object.keys(pkg.dependencies));
+    }
     return watcher.bundle()
       .on('error', function (e) {
         notifier.notify({
