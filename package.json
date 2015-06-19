@@ -19,7 +19,7 @@
     "serve": "gulp serve",
     "build": "gulp",
     "lint": "semistandard app/assets/scripts/**/*.js",
-    "test": "npm run lint"
+    "test": "echo NO TESTS YET"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.0",
