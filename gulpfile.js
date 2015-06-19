@@ -11,49 +11,118 @@ var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
 var gutil = require('gulp-util');
-var assign = require('lodash.assign');
 var exit = require('gulp-exit');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
+var notifier = require('node-notifier');
 
-// Setup for watchify
-var customOpts = {
-  entries: 'app/scripts/main.js',
-  debug: true
-};
-var opts = assign({}, watchify.args, customOpts);
-var b = watchify(browserify(opts));
-b.on('update', bundle);
-b.on('log', gutil.log); // output build logs to terminal
+////////////////////////////////////////////////////////////////////////////////
+//--------------------------- Variables --------------------------------------//
+//----------------------------------------------------------------------------//
 
+// The package.json
 var pkg;
-// update pkg:
+
+////////////////////////////////////////////////////////////////////////////////
+//------------------------- Helper functions ---------------------------------//
+//----------------------------------------------------------------------------//
+
 function readPackage () {
   pkg = JSON.parse(fs.readFileSync('package.json'));
-  if (pkg.dependencies) {
-    b.external(Object.keys(pkg.dependencies));
-  }
 }
 readPackage();
 
-gulp.task('styles', function () {
-  return gulp.src('app/styles/main.scss')
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
-      outputStyle: 'nested', // libsass doesn't support expanded yet
-      precision: 10,
-      includePaths: ['.'],
-      onError: console.error.bind(console, 'Sass error:')
-    }))
-    .pipe($.postcss([
-      require('autoprefixer-core')({browsers: ['last 1 version']})
-    ]))
-    .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('.tmp/styles'))
-    .pipe(reload({stream: true}));
+////////////////////////////////////////////////////////////////////////////////
+//------------------------- Callable tasks -----------------------------------//
+//----------------------------------------------------------------------------//
+
+gulp.task('default', ['clean'], function () {
+  gulp.start('build');
 });
 
-function vendorBundle () {
+gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
+  browserSync({
+    port: 3000,
+    server: {
+      baseDir: ['.tmp', 'app'],
+      routes: {
+        '/node_modules': './node_modules'
+      }
+    }
+  });
+
+  // watch for changes
+  gulp.watch([
+    'app/*.html',
+    'app/assets/graphics/**/*',
+    '.tmp/assets/fonts/**/*'
+  ]).on('change', reload);
+
+  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
+  // gulp.watch('app/scripts/**/*.js', ['javascript']);
+  gulp.watch('app/assets/fonts/**/*', ['fonts']);
+  gulp.watch('package.json', ['vendorScripts']);
+});
+
+gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
+
+gulp.task('build', ['javascript'], function () {
+  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
+    return gulp.src('dist/**/*')
+      .pipe($.size({title: 'build', gzip: true}))
+      .pipe(exit());
+  });
+});
+
+////////////////////////////////////////////////////////////////////////////////
+//------------------------- Browserify tasks ---------------------------------//
+//------------------- (Not to be called directly) ----------------------------//
+//----------------------------------------------------------------------------//
+
+// Compiles the user's script files to bundle.js.
+// When including the file in the index.html we need to refer to bundle.js not
+// main.js
+gulp.task('javascript', function() {
+  var watcher  = watchify(browserify({
+    entries: ['./app/assets/scripts/main.js'],
+    debug: true,
+    cache: {}, packageCache: {}, fullPaths: true
+  }));
+
+  function bundler() {
+    if (pkg.dependencies) {
+      watcher.external(Object.keys(pkg.dependencies));
+    }
+    return watcher.bundle()
+      .on('error', function (e) {
+        notifier.notify({
+          title: 'Oops! Browserify errored:',
+          message: e.message
+        });
+          console.log('Sass error:', e);
+          // Allows the watch to continue.
+          this.emit('end');
+      })
+      .pipe(source('bundle.js'))
+      .pipe(buffer())
+      // Source maps.
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest('.tmp/assets/scripts'))
+      .pipe(reload({stream: true}));
+  }
+
+  watcher
+  .on('log', gutil.log)
+  .on('update', bundler);
+
+  return bundler();
+});
+
+// Vendor scripts. Basically all the dependencies in the package.js.
+// Therefore be careful and keep the dependencies clean.
+gulp.task('vendorScripts', function() {
+  // Ensure package is updated.
   readPackage();
   var vb = browserify({
     debug: true,
@@ -65,26 +134,40 @@ function vendorBundle () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('.tmp/scripts/'))
+    .pipe(gulp.dest('.tmp/assets/scripts/'))
     .pipe(reload({stream: true}));
-}
-gulp.task('vendorScripts', vendorBundle);
+});
 
-function bundle () {
-  return b.bundle()
-    // log errors if they happen
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('bundle.js'))
-    // optional, remove if you don't need to buffer file contents
-    .pipe(buffer())
-    // optional, remove if you dont want sourcemaps
-    .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
-     // Add transformation tasks to the pipeline here.
-    .pipe(sourcemaps.write('./')) // writes .map file
-    .pipe(gulp.dest('.tmp/scripts/')) // write to .tmp for serve command
+
+////////////////////////////////////////////////////////////////////////////////
+//--------------------------- Helper tasks -----------------------------------//
+//----------------------------------------------------------------------------//
+
+gulp.task('styles', function () {
+  return gulp.src('app/assets/styles/main.scss')
+    .pipe($.plumber(function (e) {
+      notifier.notify({
+        title: 'Oops! Sass errored:',
+        message: e.message
+      });
+        console.log('Sass error:', e.toString());
+        // Allows the watch to continue.
+        this.emit('end');
+    }))
+    .pipe($.sourcemaps.init())
+    .pipe($.sass({
+      outputStyle: 'nested', // libsass doesn't support expanded yet
+      precision: 10,
+      includePaths: ['.'].concat(require('node-bourbon').includePaths),
+    }))
+    // Power to the user. Sass provides enough mixins to handle prefix.
+    /*.pipe($.postcss([
+      require('autoprefixer-core')({browsers: ['last 1 version']})
+    ]))*/
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest('.tmp/assets/styles'))
     .pipe(reload({stream: true}));
-}
-gulp.task('javascript', bundle);
+});
 
 gulp.task('html', ['styles'], function () {
   var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
@@ -97,12 +180,12 @@ gulp.task('html', ['styles'], function () {
     .pipe(assets.restore())
     .pipe($.useref())
     .pipe(revReplace())
-    .pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
+    //.pipe($.if('*.html', $.minifyHtml({conditionals: true, loose: true})))
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', function () {
-  return gulp.src('app/images/**/*')
+  return gulp.src('app/assets/graphics/**/*')
     .pipe($.cache($.imagemin({
       progressive: true,
       interlaced: true,
@@ -110,59 +193,24 @@ gulp.task('images', function () {
       // as hooks for embedding and styling
       svgoPlugins: [{cleanupIDs: false}]
     })))
-    .pipe(gulp.dest('dist/images'));
+    .pipe(gulp.dest('dist/assets/graphics'));
 });
 
 gulp.task('fonts', function () {
-  return gulp.src('app/fonts/**/*')
-    .pipe(gulp.dest('.tmp/fonts'))
-    .pipe(gulp.dest('dist/fonts'));
+  return gulp.src('app/assets/fonts/**/*')
+    .pipe(gulp.dest('.tmp/assets/fonts'))
+    .pipe(gulp.dest('dist/assets/fonts'));
 });
 
 gulp.task('extras', function () {
   return gulp.src([
-    'app/*.*',
-    '!app/*.html'
+    'app/**/*',
+    '!app/*.html',
+    '!app/assets/graphics/**',
+    '!app/assets/vendor/**',
+    '!app/assets/styles/**',
+    '!app/assets/scripts/**'
   ], {
     dot: true
   }).pipe(gulp.dest('dist'));
-});
-
-gulp.task('clean', require('del').bind(null, ['.tmp', 'dist']));
-
-gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
-  browserSync({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: ['.tmp', 'app'],
-      routes: {
-        '/node_modules': './node_modules'
-      }
-    }
-  });
-
-  // watch for changes
-  gulp.watch([
-    'app/*.html',
-    'app/images/**/*',
-    '.tmp/fonts/**/*'
-  ]).on('change', reload);
-
-  gulp.watch('app/styles/**/*.scss', ['styles']);
-  // gulp.watch('app/scripts/**/*.js', ['javascript']);
-  gulp.watch('app/fonts/**/*', ['fonts']);
-  gulp.watch('package.json', ['vendorScripts']);
-});
-
-gulp.task('build', ['javascript'], function () {
-  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
-    return gulp.src('dist/**/*')
-      .pipe($.size({title: 'build', gzip: true}))
-      .pipe(exit());
-  });
-});
-
-gulp.task('default', ['clean'], function () {
-  gulp.start('build');
 });
