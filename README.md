@@ -58,6 +58,4 @@ We're using [semistandard](https://github.com/Flet/semistandard) for linting.
 
 - `npm run lint` - will run linter and warn of any errors.
 
-Travis will run the linter but will not fail a build if errros exist, it will just be present in the logs (we all look at Travis logs, right?).
-
 There are linting plugins for popular editors listed in the semistandard repo.
