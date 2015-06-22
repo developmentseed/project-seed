@@ -1,3 +1,5 @@
 'use strict';
 
-console.log('Heyo!');
+var config = require('./config');
+
+console.log.apply(console, config.consoleMessage);

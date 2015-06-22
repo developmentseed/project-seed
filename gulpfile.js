@@ -15,6 +15,7 @@ var exit = require('gulp-exit');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var notifier = require('node-notifier');
+var rename = require('gulp-rename');
 
 ////////////////////////////////////////////////////////////////////////////////
 //--------------------------- Variables --------------------------------------//
@@ -59,7 +60,6 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function 
   ]).on('change', reload);
 
   gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  // gulp.watch('app/scripts/**/*.js', ['javascript']);
   gulp.watch('app/assets/fonts/**/*', ['fonts']);
   gulp.watch('package.json', ['vendorScripts']);
 });
@@ -82,7 +82,7 @@ gulp.task('build', ['javascript'], function () {
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
-gulp.task('javascript', function() {
+gulp.task('javascript', ['config'], function() {
   var watcher  = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
@@ -150,15 +150,15 @@ gulp.task('styles', function () {
         title: 'Oops! Sass errored:',
         message: e.message
       });
-        console.log('Sass error:', e.toString());
-        // Allows the watch to continue.
-        this.emit('end');
+      console.log('Sass error:', e.toString());
+      // Allows the watch to continue.
+      this.emit('end');
     }))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
       outputStyle: 'nested', // libsass doesn't support expanded yet
       precision: 10,
-      includePaths: ['.'].concat(require('node-bourbon').includePaths),
+      includePaths: ['.'].concat(require('node-bourbon').includePaths)
     }))
     // Power to the user. Sass provides enough mixins to handle prefix.
     /*.pipe($.postcss([
@@ -167,6 +167,26 @@ gulp.task('styles', function () {
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
     .pipe(reload({stream: true}));
+});
+
+gulp.task('config', function () {
+  var environment;
+  // Use production unless we (a) are on travis, and (b) are NOT on
+  // the production branch.
+  // This ensures that, when developing, the default will be to copy
+  // config.production.js to config.js.
+  if (!process.env.TRAVIS_BRANCH
+  || process.env.TRAVIS_BRANCH === process.env.DEPLOY_BRANCH) {
+    environment = 'production';
+  } else {
+    environment = 'staging';
+  }
+
+  if (!fs.existsSync(__dirname + '/app/assets/scripts/config.js')) {
+    gulp.src('app/assets/scripts/config.' + environment + '.js')
+      .pipe(rename('config.js'))
+      .pipe(gulp.dest('app/assets/scripts'));
+  }
 });
 
 gulp.task('html', ['styles'], function () {
