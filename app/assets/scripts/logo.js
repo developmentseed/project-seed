@@ -26,7 +26,6 @@ logo = logo
 .map(function (line, i) {
   return line
   .replace(/(^|[|│])|(░+)|(█+)/g, function (match, p1, p2, p3) {
-    console.log(match, p1, p2, p3);
     if (p1) {
       colors.push('black');
       return '%c' + p1;
