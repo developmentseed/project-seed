@@ -18,8 +18,8 @@
   "scripts": {
     "serve": "gulp serve",
     "build": "gulp",
-    "lint": "semistandard app/scripts/**/*.js",
-    "test": "echo no other tests yet!"
+    "lint": "semistandard app/assets/scripts/**/*.js",
+    "test": "echo NO TESTS YET"
   },
   "devDependencies": {
     "autoprefixer-core": "^5.2.0",

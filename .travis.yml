@@ -17,7 +17,7 @@ before_install:
 - chmod +x ./.build_scripts/lint.sh
 
 before_script:
-- ./.build_scripts/lint.sh || true
+- ./.build_scripts/lint.sh
 - npm test
 
 script:
