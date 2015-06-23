@@ -170,22 +170,15 @@ gulp.task('styles', function () {
 });
 
 gulp.task('config', function () {
-  var environment;
-  // Use production unless we (a) are on travis, and (b) are NOT on
-  // the production branch.
-  // This ensures that, when developing, the default will be to copy
-  // config.production.js to config.js.
-  if (!process.env.TRAVIS_BRANCH
-  || process.env.TRAVIS_BRANCH === process.env.DEPLOY_BRANCH) {
-    environment = 'production';
-  } else {
-    environment = 'staging';
-  }
-
-  if (!fs.existsSync(__dirname + '/app/assets/scripts/config.js')) {
-    gulp.src('app/assets/scripts/config.' + environment + '.js')
-      .pipe(rename('config.js'))
-      .pipe(gulp.dest('app/assets/scripts'));
+  // If we're not on the production deployment, copy `config.staging.js` over
+  // as `config.local.js` if one doesn't already exist.
+  if (!fs.existsSync(__dirname + '/app/assets/scripts/config/local.js')) {
+    if (!process.env.TRAVIS_BRANCH
+    || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
+      gulp.src('app/assets/scripts/config/staging.js')
+        .pipe(rename('local.js'))
+        .pipe(gulp.dest('app/assets/scripts/config'));
+    }
   }
 });
 
