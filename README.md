@@ -25,6 +25,8 @@ There are two commands, both run via npm.
 app/assets/
 |
 +- scripts/: The user scripts
+|  |
+|  +- config/: configuration files (see configuration section)
 |
 +- styles/: The sass styles
 |
@@ -37,6 +39,17 @@ app/assets/
 |  +- content/: Content image
 |
 ```
+
+### Configurations and environment variables
+
+At times, it may be necessary to include environment variables specific to `production`, `staging` or `local` in the code. To handle this, there is a generated config.js file. This file should not be modified.  Instead, modify one of:
+
+- config/production.js - production settings
+
+- config/local.js - local (development) overrides the production settings. This file is gitignored, so you can safely change it without polluting the repo.
+
+- config/staging.js - overrides the production settings for staging server (basically Travis not on the DEPLOY branch): build copies this over as `config.local.js` whenever that file doesn't already exist.
+
 
 ### How scripts are built
 
