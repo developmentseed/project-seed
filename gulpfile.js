@@ -128,7 +128,7 @@ gulp.task('vendorScripts', function() {
     debug: true,
     require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
   });
-  vb.bundle()
+  return vb.bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('vendor.js'))
     .pipe(buffer())
