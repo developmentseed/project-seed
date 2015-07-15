@@ -82,14 +82,26 @@ gulp.task('build', ['vendorScripts', 'javascript'], function () {
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
-gulp.task('javascript', ['config'], function() {
-  var watcher  = watchify(browserify({
+gulp.task('javascript', function () {
+  // set the correct environment, which controls what happens in config.js
+  if (!process.env.DS_ENV) {
+    if (!process.env.TRAVIS_BRANCH
+    || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
+      process.env.DS_ENV = 'production';
+    } else {
+      process.env.DS_ENV = 'staging';
+    }
+  }
+
+  var watcher = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
-    cache: {}, packageCache: {}, fullPaths: true
+    cache: {},
+    packageCache: {},
+    fullPaths: true
   }));
 
-  function bundler() {
+  function bundler () {
     if (pkg.dependencies) {
       watcher.external(Object.keys(pkg.dependencies));
     }
@@ -99,9 +111,9 @@ gulp.task('javascript', ['config'], function() {
           title: 'Oops! Browserify errored:',
           message: e.message
         });
-          console.log('Sass error:', e);
-          // Allows the watch to continue.
-          this.emit('end');
+        console.log('Sass error:', e);
+        // Allows the watch to continue.
+        this.emit('end');
       })
       .pipe(source('bundle.js'))
       .pipe(buffer())
@@ -167,19 +179,6 @@ gulp.task('styles', function () {
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
     .pipe(reload({stream: true}));
-});
-
-gulp.task('config', function () {
-  // If we're not on the production deployment, copy `config.staging.js` over
-  // as `config.local.js` if one doesn't already exist.
-  if (!fs.existsSync(__dirname + '/app/assets/scripts/config/local.js')) {
-    if (!process.env.TRAVIS_BRANCH
-    || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
-      gulp.src('app/assets/scripts/config/staging.js')
-        .pipe(rename('local.js'))
-        .pipe(gulp.dest('app/assets/scripts/config'));
-    }
-  }
 });
 
 gulp.task('html', ['styles'], function () {

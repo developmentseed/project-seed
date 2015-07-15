@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
+    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
     "serve": "gulp serve",
     "build": "gulp",
     "lint": "semistandard app/assets/scripts/**/*.js",
@@ -23,7 +24,8 @@
   },
   "browserify": {
     "transform": [
-      "require-globify"
+      "require-globify",
+      "envify"
     ]
   },
   "devDependencies": {
@@ -31,6 +33,7 @@
     "browser-sync": "^2.7.6",
     "browserify": "^10.2.3",
     "del": "^1.2.0",
+    "envify": "^3.4.0",
     "gulp": "^3.9.0",
     "gulp-cache": "^0.2.9",
     "gulp-csso": "^1.0.0",
