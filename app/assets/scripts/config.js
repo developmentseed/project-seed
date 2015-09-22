@@ -1,16 +1,18 @@
 /*
  * App configuration.
  *
- * Uses settings in config.production.js, with any properties set by
- * config.local.js overriding them.
+ * Uses settings in config/production.js, with any properties set by
+ * config/staging.js or config/local.js overriding them depending upon the
+ * environment.
  *
  * This file should not be modified.  Instead, modify one of:
  *
  *  - config/production.js - production settings
  *  - config/staging.js - overrides to production settings for staging server
- *    This file is gitignored, so you can safely change it without polluting
- *    the repo.
  *  - config/local.js - local (development) overrides to production settings.
+ *    This last file is gitignored, so you can safely change it without
+ *    polluting the repo.
+ *
  *
  */
 
