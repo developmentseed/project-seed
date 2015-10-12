@@ -111,7 +111,7 @@ gulp.task('javascript', function () {
           title: 'Oops! Browserify errored:',
           message: e.message
         });
-        console.log('Sass error:', e);
+        console.log('Javascript error:', e);
         // Allows the watch to continue.
         this.emit('end');
       })
