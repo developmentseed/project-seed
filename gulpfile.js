@@ -87,9 +87,9 @@ gulp.task('javascript', function () {
   if (!process.env.DS_ENV) {
     if (!process.env.TRAVIS_BRANCH
     || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
-      process.env.DS_ENV = 'production';
-    } else {
       process.env.DS_ENV = 'staging';
+    } else {
+      process.env.DS_ENV = 'production';
     }
   }
 
