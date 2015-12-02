@@ -5,7 +5,7 @@ A basic starting point for web projects
 ## Overview
 
 Steps to follow as soon as you download this structure to start a project:
-- [ ] Update `README.md` with data about the project (name, repo, license...)
+- [ ] Update `package.js` with data about the project (name, repo, license...)
 - [ ] If the license is known update `LICENSE`
 - [ ] Update `.travis.yml` with correct repo and other needed information.
 - [ ] On `index.html` update the project title and check for other boostrap information that can be changed or removed.
