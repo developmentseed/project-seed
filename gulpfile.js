@@ -98,7 +98,6 @@ gulp.task('build', ['vendorScripts', 'javascript'], function () {
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
 gulp.task('javascript', function () {
-
   var watcher = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
