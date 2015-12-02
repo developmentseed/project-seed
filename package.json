@@ -62,5 +62,7 @@
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "lodash.defaultsdeep": "^3.10.0"
+  }
 }

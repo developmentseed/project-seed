@@ -1,3 +1,4 @@
+'use strict';
 var logo = require('./logo');
 /*
  * App config for production.
