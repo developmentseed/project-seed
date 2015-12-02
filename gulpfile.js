@@ -17,25 +17,35 @@ var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
 var notifier = require('node-notifier');
 
-// //////////////////////////////////////////////////////////////////////////////
-// --------------------------- Variables --------------------------------------//
-// ----------------------------------------------------------------------------//
+// /////////////////////////////////////////////////////////////////////////////
+// --------------------------- Variables -------------------------------------//
+// ---------------------------------------------------------------------------//
 
 // The package.json
 var pkg;
 
-// //////////////////////////////////////////////////////////////////////////////
-// ------------------------- Helper functions ---------------------------------//
-// ----------------------------------------------------------------------------//
+// Environment
+// Set the correct environment, which controls what happens in config.js
+if (!process.env.DS_ENV) {
+  if (!process.env.TRAVIS_BRANCH || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
+    process.env.DS_ENV = 'staging';
+  } else {
+    process.env.DS_ENV = 'production';
+  }
+}
+
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Helper functions --------------------------------//
+// ---------------------------------------------------------------------------//
 
 function readPackage () {
   pkg = JSON.parse(fs.readFileSync('package.json'));
 }
 readPackage();
 
-// //////////////////////////////////////////////////////////////////////////////
-// ------------------------- Callable tasks -----------------------------------//
-// ----------------------------------------------------------------------------//
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Callable tasks ----------------------------------//
+// ---------------------------------------------------------------------------//
 
 gulp.task('default', ['clean'], function () {
   gulp.start('build');
@@ -65,7 +75,10 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function 
 });
 
 gulp.task('clean', function () {
-  return del(['.tmp', 'dist']);
+  return del(['.tmp', 'dist'])
+    .then(function () {
+      $.cache.clearAll();
+    });
 });
 
 gulp.task('build', ['vendorScripts', 'javascript'], function () {
@@ -76,23 +89,15 @@ gulp.task('build', ['vendorScripts', 'javascript'], function () {
   });
 });
 
-// //////////////////////////////////////////////////////////////////////////////
-// ------------------------- Browserify tasks ---------------------------------//
-// ------------------- (Not to be called directly) ----------------------------//
-// ----------------------------------------------------------------------------//
+// /////////////////////////////////////////////////////////////////////////////
+// ------------------------- Browserify tasks --------------------------------//
+// ------------------- (Not to be called directly) ---------------------------//
+// ---------------------------------------------------------------------------//
 
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
 gulp.task('javascript', function () {
-  // set the correct environment, which controls what happens in config.js
-  if (!process.env.DS_ENV) {
-    if (!process.env.TRAVIS_BRANCH || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
-      process.env.DS_ENV = 'staging';
-    } else {
-      process.env.DS_ENV = 'production';
-    }
-  }
 
   var watcher = watchify(browserify({
     entries: ['./app/assets/scripts/main.js'],
@@ -168,7 +173,7 @@ gulp.task('styles', function () {
     }))
     .pipe($.sourcemaps.init())
     .pipe($.sass({
-      outputStyle: 'nested', // libsass doesn't support expanded yet
+      outputStyle: 'expanded',
       precision: 10,
       includePaths: ['.'].concat(require('node-bourbon').includePaths)
     }))
@@ -178,15 +183,11 @@ gulp.task('styles', function () {
 });
 
 gulp.task('html', ['styles'], function () {
-  var assets = $.useref.assets({searchPath: ['.tmp', 'app', '.']});
-
   return gulp.src('app/*.html')
-    .pipe(assets)
+    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
     .pipe($.if('*.js', $.uglify()))
     .pipe($.if('*.css', $.csso()))
-    .pipe(rev())
-    .pipe(assets.restore())
-    .pipe($.useref())
+    .pipe($.if(/\.(css|js)$/, rev()))
     .pipe(revReplace())
     .pipe(gulp.dest('dist'));
 });
