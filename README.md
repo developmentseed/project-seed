@@ -4,6 +4,17 @@ A basic starting point for web projects
 
 ## Overview
 
+Steps to follow as soon as you download this structure to start a project:
+- [ ] Update `package.js` with data about the project (name, repo, license...)
+- [ ] If the license is known update `LICENSE`
+- [ ] Update `.travis.yml` with correct repo and other needed information.
+- [ ] On `index.html` update the project title and check for other boostrap information that can be changed or removed.
+- [ ] Remove unneeded images from the `graphics` folder and replace the favicon with a project related one.
+- [ ] **Delete this `README.md` and rename `_README.md`. Fill in the needed data. This is the most important task.** Others need to be able to know what the project is about and how to work with it. This can't be stressed enough.
+
+It's better to do this straight away so no traces of project-seed are ever pushed to github and just looks more professional.
+The values that are not immediately know should be left blank and filled ASAP.
+
 ## Gulp for building
 The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-gulp-webapp) yeoman generator. The build system currently supports:
 

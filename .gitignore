@@ -1,8 +1,14 @@
+## Dependencies
 node_modules
+bower_components
+.sass-cache
+test/bower_components
+
+## Build
 dist
 .tmp
-.sass-cache
-bower_components
-test/bower_components
 npm-debug.log
+
+## Locals
 app/assets/scripts/config/local.js
+.resources/
