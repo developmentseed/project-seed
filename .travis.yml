@@ -17,6 +17,7 @@ addons:
       - g++-4.8
 
 cache:
+  apt: true
   directories:
     - node_modules
 
