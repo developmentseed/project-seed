@@ -26,7 +26,7 @@ The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-g
 
 There are two commands, both run via npm.
 
-- `npm run build` or `gulp build` or `gulp` - clean & build everything and put it into dist folder
+- `npm run build` or `gulp` - clean & build everything and put it into dist folder
 - `npm run serve` or `gulp serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
 
