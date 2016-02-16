@@ -34,6 +34,8 @@ if (!process.env.DS_ENV) {
   }
 }
 
+var prodBuild = false;
+
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Helper functions --------------------------------//
 // ---------------------------------------------------------------------------//
@@ -48,6 +50,7 @@ readPackage();
 // ---------------------------------------------------------------------------//
 
 gulp.task('default', ['clean'], function () {
+  prodBuild = true;
   gulp.start('build');
 });
 
@@ -81,14 +84,6 @@ gulp.task('clean', function () {
     });
 });
 
-gulp.task('build', ['vendorScripts', 'javascript'], function () {
-  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
-    return gulp.src('dist/**/*')
-      .pipe($.size({title: 'build', gzip: true}))
-      .pipe(exit());
-  });
-});
-
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Browserify tasks --------------------------------//
 // ------------------- (Not to be called directly) ---------------------------//
@@ -117,6 +112,9 @@ gulp.task('javascript', function () {
           message: e.message
         });
         console.log('Javascript error:', e);
+        if (prodBuild) {
+          process.exit(1);
+        }
         // Allows the watch to continue.
         this.emit('end');
       })
@@ -159,6 +157,14 @@ gulp.task('vendorScripts', function () {
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
+gulp.task('build', ['vendorScripts', 'javascript'], function () {
+  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
+    return gulp.src('dist/**/*')
+      .pipe($.size({title: 'build', gzip: true}))
+      .pipe(exit());
+  });
+});
+
 gulp.task('styles', function () {
   return gulp.src('app/assets/styles/main.scss')
     .pipe($.plumber(function (e) {
@@ -167,6 +173,9 @@ gulp.task('styles', function () {
         message: e.message
       });
       console.log('Sass error:', e.toString());
+      if (prodBuild) {
+        process.exit(1);
+      }
       // Allows the watch to continue.
       this.emit('end');
     }))
