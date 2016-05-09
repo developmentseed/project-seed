@@ -17,7 +17,7 @@
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
     "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo 'module.exports = {};' > app/assets/scripts/config/local.js",
-    "serve": "gulp serve",
+    "serve": "DS_ENV=development gulp serve",
     "build": "NODE_ENV=production gulp",
     "lint": "eslint app/assets/scripts/ --ext .js",
     "test": "echo \"No tests\" && exit 0"
@@ -41,30 +41,30 @@
     "babel": "^6.5.2",
     "babel-preset-es2015": "^6.6.0",
     "babel-preset-react": "^6.5.0",
-    "babelify": "^7.2.0",
-    "browser-sync": "^2.11.2",
-    "browserify": "^13.0.0",
+    "babelify": "^7.3.0",
+    "browser-sync": "^2.12.5",
+    "browserify": "^13.0.1",
     "del": "^2.2.0",
     "envify": "^3.4.0",
-    "eslint": "^2.7.0",
-    "eslint-config-standard": "^5.1.0",
+    "eslint": "^2.9.0",
+    "eslint-config-standard": "^5.3.1",
     "eslint-plugin-promise": "^1.1.0",
     "eslint-plugin-standard": "^1.3.2",
     "gulp": "^3.9.1",
     "gulp-cache": "^0.4.4",
     "gulp-csso": "^2.0.0",
     "gulp-exit": "0.0.2",
-    "gulp-if": "^2.0.0",
+    "gulp-if": "^2.0.1",
     "gulp-imagemin": "^2.4.0",
-    "gulp-load-plugins": "^1.2.0",
+    "gulp-load-plugins": "^1.2.2",
     "gulp-plumber": "^1.1.0",
     "gulp-rev": "^7.0.0",
     "gulp-rev-replace": "^0.4.3",
-    "gulp-sass": "^2.2.0",
+    "gulp-sass": "^2.3.1",
     "gulp-size": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
-    "gulp-useref": "^3.0.8",
+    "gulp-useref": "^3.1.0",
     "gulp-util": "^3.0.7",
     "node-bourbon": "^4.2.8",
     "node-notifier": "^4.5.0",
@@ -74,6 +74,6 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
-    "lodash.defaultsdeep": "^4.3.4"
+    "lodash.defaultsdeep": "^4.3.5"
   }
 }
