@@ -19,9 +19,18 @@
 
 // Scss starts here!
 .header {
-  padding-top: 160px;
-  background: url("/assets/graphics/layout/DevelopmentSeed.png") no-repeat center;
+  padding: 256px 32px;
   text-align: center;
-  font-style: italic;
-  font-size: 22px;
+  font-size: 20px;
+  line-height: 1.5;
+
+  h1 {
+    margin-bottom: 32px;
+    > img {
+      width: auto;
+      height: 64px;
+      max-width: 100%;
+      vertical-align: top;
+    }
+  }
 }
