@@ -212,7 +212,7 @@ gulp.task('images', function () {
   return gulp.src('app/assets/graphics/**/*')
     .pipe($.cache($.imagemin([
       $.imagemin.gifsicle({interlaced: true}),
-      $.imagemin.mozjpeg({progressive: true}),
+      $.imagemin.jpegtran({progressive: true}),
       $.imagemin.optipng({optimizationLevel: 5}),
       // don't remove IDs from SVGs, they are often used
       // as hooks for embedding and styling
