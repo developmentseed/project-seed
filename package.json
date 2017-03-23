@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
-    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"'use strict';\n\nmodule.exports = {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
+    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"'use strict';\n\nexport default {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
     "serve": "DS_ENV=development gulp serve",
     "build": "DS_ENV=production NODE_ENV=production gulp",
     "stage": "DS_ENV=staging NODE_ENV=staging gulp",

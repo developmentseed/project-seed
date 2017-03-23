@@ -1,5 +1,5 @@
 'use strict';
-var logo = [
+let logo = [
   '╭──────────────────────────────────────╮',
   '│░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░│',
   '│░░░░░░░░░░░░░░█░░░░░░░░░░░░░░░░░░░░░░░│',
@@ -22,11 +22,9 @@ var logo = [
   '╰──────────────────────────────────────╯'
 ];
 
-var colors = [];
+let colors = [];
 logo = logo
-.map(function (line, i) {
-  return line
-  .replace(/(^|[|│])|(░+)|(█+)/g, function (match, p1, p2, p3) {
+  .map((line, i) => line.replace(/(^|[|│])|(░+)|(█+)/g, (match, p1, p2, p3) => {
     if (p1) {
       colors.push('black');
       return '%c' + p1;
@@ -37,17 +35,14 @@ logo = logo
       colors.push('black');
       return '%c' + (p3 || '');
     }
-  });
-})
-.concat([
-  '                                        ',
-  '%c           DEVELOPMENT SEED             '
-])
-.join('\n');
+  }))
+  .concat([
+    '                                        ',
+    '%c           DEVELOPMENT SEED             '
+  ])
+  .join('\n');
 
-colors = colors.map(function (c) {
-  return 'color: ' + c;
-})
+colors = colors.map(c => `color: ${c}`)
 .concat(['color: #cf3f02; font-weight: bold']);
 
-module.exports = [logo].concat(colors);
+export default [logo].concat(colors);
