@@ -17,6 +17,7 @@ addons:
 
 cache:
   apt: true
+  yarn: true
   directories:
     - node_modules
 
@@ -26,10 +27,10 @@ before_install:
 
 before_script:
 - ./.build_scripts/lint.sh
-- npm test
+- yarn test
 
 script:
-- npm run build
+- yarn run build
 
 deploy:
   provider: script
