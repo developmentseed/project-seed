@@ -10,6 +10,7 @@ Steps to follow as soon as you download this structure to start a project:
 - [ ] Update `.travis.yml` with correct repo and other needed information.
 - [ ] On `index.html` update the project title and check for other boostrap information that can be changed or removed.
 - [ ] Remove unneeded images from the `graphics` folder and replace the favicon with a project related one.
+- [ ] Update the modules to the most recent version.
 - [ ] **Delete this `README.md` and rename `_README.md`. Fill in the needed data. This is the most important task.** Others need to be able to know what the project is about and how to work with it. This can't be stressed enough.
 
 It's better to do this straight away so no traces of project-seed are ever pushed to github and just looks more professional.
@@ -26,8 +27,8 @@ The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-g
 
 There are two commands, both run via [`yarn`](https://yarnpkg.com/en/).
 
-- `yarn run build` or `gulp` - clean & build everything and put it into dist folder
-- `yarn run serve` or `gulp serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+- `yarn run build` - clean & build everything and put it into dist folder
+- `yarn run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
 
 ## Assets Structure
@@ -59,7 +60,7 @@ At times, it may be necessary to include options/variables specific to `producti
 - config/staging.js - overrides the production settings for staging server (basically Travis not on the DEPLOY branch)
 - config/local.js - local (development) overrides. This file is gitignored, so you can safely change it without polluting the repo.
 
-When developing locally with `gulp serve`, the default will be to use `production` (with overrides from `local.js`).  However, if you need to run with the staging settings, use: `DS_ENV=staging gulp serve` from the command line.
+When developing locally with `yarn run serve`, the default will be to use `production.js` (with overrides from `local.js`).  However, if you need to run with the staging settings, use: `yarn run stage` (this will not start a server)
 
 
 ### How scripts are built
