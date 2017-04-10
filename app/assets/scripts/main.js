@@ -1,5 +1,5 @@
 'use strict';
-var config = require('./config');
+import config from './config';
 
 console.log.apply(console, config.consoleMessage);
 console.log('Environment', config.environment);

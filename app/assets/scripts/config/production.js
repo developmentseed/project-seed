@@ -1,10 +1,7 @@
 'use strict';
-var logo = require('./logo');
-/*
- * App config for production.
- */
-module.exports = {
+import logo from './logo';
+
+export default {
   environment: 'production',
   consoleMessage: logo
 };
-

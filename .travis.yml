@@ -14,16 +14,20 @@ addons:
     - g++-4.8
 cache:
   apt: true
+  yarn: true
   directories:
   - node_modules
 before_install:
 - chmod +x ./.build_scripts/deploy.sh
 - chmod +x ./.build_scripts/lint.sh
 before_script:
+
 - "./.build_scripts/lint.sh"
-- npm test
+- yarn test
+
 script:
-- npm run build
+- yarn run build
+
 deploy:
   provider: script
   skip_cleanup: true
