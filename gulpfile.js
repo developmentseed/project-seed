@@ -228,6 +228,10 @@ gulp.task('fonts', function () {
 });
 
 gulp.task('extras', function () {
+  gulp.src([
+    'app/assets/styles/*.css'], {
+    dot: true
+  }).pipe(gulp.dest('dist/styles'));
   return gulp.src([
     'app/**/*',
     '!app/*.html',
