@@ -1,43 +1,27 @@
 <!doctype html>
-<!--[if lt IE 10]> <html class="lt-ie10 no-js"  lang=""> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+ <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="description" content="">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-    <link rel="shortcut icon" href="assets/graphics/meta/favicon.ico" type="image/x-icon" />
-    <title>Project Starter</title>
-
-    <!-- build:css assets/styles/vendor.css -->
-    <!-- endbuild -->
-
-    <!-- build:css assets/styles/main.css -->
-    <link rel="stylesheet" href="assets/styles/main.css">
-    <!-- endbuild -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="author" type="text/plain" href="humans.txt" />
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    
+    <title>Project Starter</title>
+
+    <link rel="shortcut icon" href="assets/graphics/meta/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" sizes="57x57" href="assets/graphics/meta/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="assets/graphics/meta/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="assets/graphics/meta/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="assets/graphics/meta/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="assets/graphics/meta/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="assets/graphics/meta/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="assets/graphics/meta/apple-touch-icon-152x152.png" />
+
+    <link rel="stylesheet" href="assets/styles/main-<%= htmlWebpackPlugin.options.cssHash %>.css">
   </head>
+
   <body>
-    <!--[if lt IE 10]>
-      <div id="nocando">
-        <h1>No can do!</h1>
-        <p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-      </div>
-    <![endif]-->
 
-    <div id="site-canvas">
-      <!-- Content goes inside #site-canvas -->
-      <div class="header">
-        <h1><img src="/assets/graphics/layout/ds-logo-pos.svg" alt="Development Seed logotype" width="188" height="32" /></h1>
-        <p>In the beginning the Universe was created.<p>
-        <p>This has made a lot of people very angry and been widely regarded as a bad move.</p>
-      </div>
-      <!-- Content goes inside #site-canvas -->
-    </div>
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
     <script>
       (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
       function(){(b[l].q=b[l].q||[]).push(arguments)});b[l].l=+new Date;
@@ -47,11 +31,7 @@
       ga('create','UA-XXXXX-X');ga('send','pageview');
     </script>
 
-    <!-- build:js assets/scripts/vendor.js -->
-    <script src="assets/scripts/vendor.js"></script>
-    <!-- endbuild -->
-    <!-- build:js assets/scripts/bundle.js -->
-    <script src="assets/scripts/bundle.js"></script>
-    <!-- endbuild -->
-</body>
+    <script src="assets/scripts/bundle-<%= htmlWebpackPlugin.options.jsHash %>.js"></script>
+
+  </body>
 </html>

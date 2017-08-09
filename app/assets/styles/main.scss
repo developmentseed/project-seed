@@ -23,6 +23,14 @@
 @import "bourbon";
 
 
+/**
+ * Using Development Seed Collecticons icon font:
+ * http://collecticons.io/
+ */
+
+@import "core/collecticons";
+
+
 /* Reboot
    ========================================================================== */
 
@@ -45,4 +53,9 @@
 /* Main
    ========================================================================== */
 
-@import "base";
+@import "core/base";
+
+@import "views/home";
+@import "views/uhoh";
+
+@import "components/header";
