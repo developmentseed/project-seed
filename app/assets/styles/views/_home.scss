@@ -2,4 +2,22 @@
   h1 {
     text-align: center;
   }
+  .home__test-control {
+    width: 25rem;
+    margin: 2rem auto;
+    padding: 0.25rem 1rem;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    font-size: 0.8rem;
+    p {
+      margin: 0.75rem 0;
+    }
+    input {
+      width: 100%;
+      padding: 0.25rem;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+  }
 }
