@@ -129,8 +129,8 @@ gulp.task('javascript', function () {
   }
 
   watcher
-  .on('log', gutil.log)
-  .on('update', bundler);
+    .on('log', gutil.log)
+    .on('update', bundler);
 
   return bundler();
 });
@@ -159,7 +159,7 @@ gulp.task('vendorScripts', function () {
 // ----------------------------------------------------------------------------//
 
 gulp.task('build', ['vendorScripts', 'javascript'], function () {
-  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
+  gulp.start(['html', 'images', 'extras'], function () {
     return gulp.src('dist/**/*')
       .pipe($.size({title: 'build', gzip: true}))
       .pipe(exit());
@@ -221,12 +221,6 @@ gulp.task('images', function () {
       $.imagemin.svgo({plugins: [{cleanupIDs: false}]})
     ])))
     .pipe(gulp.dest('dist/assets/graphics'));
-});
-
-gulp.task('fonts', function () {
-  return gulp.src('app/assets/fonts/**/*')
-    .pipe(gulp.dest('.tmp/assets/fonts'))
-    .pipe(gulp.dest('dist/assets/fonts'));
 });
 
 gulp.task('extras', function () {
