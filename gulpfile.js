@@ -55,7 +55,7 @@ gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
 
-gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
+gulp.task('serve', ['vendorScripts', 'javascript', 'styles'], function () {
   browserSync({
     port: 3000,
     server: {
@@ -69,12 +69,10 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function 
   // watch for changes
   gulp.watch([
     'app/*.html',
-    'app/assets/graphics/**/*',
-    '.tmp/assets/fonts/**/*'
+    'app/assets/graphics/**/*'
   ]).on('change', reload);
 
   gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('app/assets/fonts/**/*', ['fonts']);
   gulp.watch('package.json', ['vendorScripts']);
 });
 
