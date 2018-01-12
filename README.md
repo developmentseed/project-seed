@@ -7,7 +7,7 @@ A basic starting point for web projects
 Steps to follow as soon as you download this structure to start a project:
 - [ ] Update `package.js` with data about the project (name, repo, license...)
 - [ ] If the license is known update `LICENSE`
-- [ ] Update `.travis.yml` with correct repo and other needed information.
+- [ ] Update `.circleci/config.yml` with correct repo and other needed information.
 - [ ] On `index.html` update the project title and check for other boostrap information that can be changed or removed.
 - [ ] Remove unneeded images from the `graphics` folder and replace the favicon with a project related one.
 - [ ] Update the modules to the most recent version.
@@ -27,8 +27,8 @@ The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-g
 
 There are two commands, both run via [`yarn`](https://yarnpkg.com/en/).
 
-- `yarn run build` - clean & build everything and put it into dist folder
-- `yarn run serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+- `yarn build` - clean & build everything and put it into dist folder
+- `yarn serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
 
 
 ## Assets Structure
@@ -75,12 +75,12 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
    dependencies of the app: namely, all the packages you install using `yarn
    add ...`.
 
-## Travis for testing and deployment
-The .travis.yml file enables the usage of [Travis](http://travis.org) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
+## Circle CI for testing and deployment
+The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
 
 ## semistandard for linting
 We're using [semistandard](https://github.com/Flet/semistandard) for linting.
 
-- `yarn run lint` - will run linter and warn of any errors.
+- `yarn lint` - will run linter and warn of any errors.
 
 There are linting plugins for popular editors listed in the semistandard repo.
