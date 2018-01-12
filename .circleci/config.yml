@@ -11,7 +11,7 @@ jobs:
     environment:
       - STAGING_BRANCH: develop
       - PRODUCTION_BRANCH: master
-      - GH_REF: git@github.com:org/repo.git
+      - GH_REF: git@github.com:developmentseed/project-seed.git
       - GH_NAME: "Development Seed"
       - GH_EMAIL: "dev@developmentseed.org"
 
