@@ -80,6 +80,7 @@ lib-cov
 *.out
 *.pid
 npm-debug.log
+yarn-error.log
 
 
 ################################################
@@ -101,6 +102,7 @@ _README.md
 *~
 *#
 .DS_STORE
+.DS_Store
 .netbeans
 nbproject
 .idea

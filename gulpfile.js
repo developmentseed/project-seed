@@ -11,7 +11,7 @@ var browserify = require('browserify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
 var sourcemaps = require('gulp-sourcemaps');
-var gutil = require('gulp-util');
+var log = require('fancy-log');
 var exit = require('gulp-exit');
 var rev = require('gulp-rev');
 var revReplace = require('gulp-rev-replace');
@@ -28,7 +28,7 @@ var pkg;
 // Environment
 // Set the correct environment, which controls what happens in config.js
 if (!process.env.DS_ENV) {
-  if (!process.env.TRAVIS_BRANCH || process.env.TRAVIS_BRANCH !== process.env.DEPLOY_BRANCH) {
+  if (!process.env.CIRCLE_BRANCH || process.env.CIRCLE_BRANCH !== process.env.PRODUCTION_BRANCH) {
     process.env.DS_ENV = 'staging';
   } else {
     process.env.DS_ENV = 'production';
@@ -55,7 +55,7 @@ gulp.task('default', ['clean'], function () {
   gulp.start('build');
 });
 
-gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function () {
+gulp.task('serve', ['vendorScripts', 'javascript', 'styles'], function () {
   browserSync({
     port: 3000,
     server: {
@@ -69,12 +69,10 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles', 'fonts'], function 
   // watch for changes
   gulp.watch([
     'app/*.html',
-    'app/assets/graphics/**/*',
-    '.tmp/assets/fonts/**/*'
+    'app/assets/graphics/**/*'
   ]).on('change', reload);
 
   gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('app/assets/fonts/**/*', ['fonts']);
   gulp.watch('package.json', ['vendorScripts']);
 });
 
@@ -129,8 +127,8 @@ gulp.task('javascript', function () {
   }
 
   watcher
-  .on('log', gutil.log)
-  .on('update', bundler);
+    .on('log', log)
+    .on('update', bundler);
 
   return bundler();
 });
@@ -145,7 +143,7 @@ gulp.task('vendorScripts', function () {
     require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
   });
   return vb.bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .on('error', log.bind(log, 'Browserify Error'))
     .pipe(source('vendor.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
@@ -159,7 +157,7 @@ gulp.task('vendorScripts', function () {
 // ----------------------------------------------------------------------------//
 
 gulp.task('build', ['vendorScripts', 'javascript'], function () {
-  gulp.start(['html', 'images', 'fonts', 'extras'], function () {
+  gulp.start(['html', 'images', 'extras'], function () {
     return gulp.src('dist/**/*')
       .pipe($.size({title: 'build', gzip: true}))
       .pipe(exit());
@@ -201,7 +199,9 @@ gulp.task('styles', function () {
 gulp.task('html', ['styles'], function () {
   return gulp.src('app/*.html')
     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.if('*.js', $.uglify()))
+    // Do not compress comparisons, to avoid MapboxGLJS minification issue
+    // https://github.com/mapbox/mapbox-gl-js/issues/4359#issuecomment-286277540
+    .pipe($.if('*.js', $.uglify({compress: {comparisons: false}})))
     .pipe($.if('*.css', $.csso()))
     .pipe($.if(/\.(css|js)$/, rev()))
     .pipe(revReplace())
@@ -219,12 +219,6 @@ gulp.task('images', function () {
       $.imagemin.svgo({plugins: [{cleanupIDs: false}]})
     ])))
     .pipe(gulp.dest('dist/assets/graphics'));
-});
-
-gulp.task('fonts', function () {
-  return gulp.src('app/assets/fonts/**/*')
-    .pipe(gulp.dest('.tmp/assets/fonts'))
-    .pipe(gulp.dest('dist/assets/fonts'));
 });
 
 gulp.task('extras', function () {

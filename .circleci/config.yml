@@ -1,0 +1,65 @@
+# https://github.com/developmentseed/how/issues/149
+# ssh-keygen -t rsa -b 4096 -C ORG/REPO -f deploy_key
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:8
+
+    working_directory: ~/repo
+
+    environment:
+      - STAGING_BRANCH: develop
+      - PRODUCTION_BRANCH: master
+      - GH_REF: git@github.com:developmentseed/project-seed.git
+      - GH_NAME: "Development Seed"
+      - GH_EMAIL: "dev@developmentseed.org"
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: yarn test
+
+      - add_ssh_keys:
+          fingerprints:
+            - ""
+
+      - run:
+          name: Building site
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
+              yarn build
+            else
+              echo "Skip building site"
+            fi
+
+      - run:
+          name: Deploy to GH Pages
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
+              cd build
+              git init
+              git config user.name "$GH_NAME"
+              git config user.email "$GH_EMAIL"
+              git add .
+              git commit -m "CI deploy [skip ci]"
+              git remote add origin $GH_REF
+              git push origin --force --quiet HEAD:gh-pages
+              rm -rf .git
+            else
+              echo "Skip deploying to Github"
+            fi
