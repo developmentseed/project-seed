@@ -20,12 +20,14 @@ import defaultsDeep from 'lodash.defaultsdeep';
  */
 
 var configurations = require('./config/*.js', {mode: 'hash'});
-var config = configurations.local || {};
+var config = configurations.production || {};
 
 if (process.env.DS_ENV === 'staging') {
-  defaultsDeep(config, configurations.staging);
+  config = defaultsDeep(configurations.staging, config);
 }
-defaultsDeep(config, configurations.production);
+if (process.env.DS_ENV !== 'staging' && process.env.DS_ENV !== 'production') {
+  config = defaultsDeep(configurations.local || {}, config);
+}
 
 // The require doesn't play super well with es6 imports. It creates an internal
 // 'default' property. Export that.
