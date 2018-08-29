@@ -1,22 +1,21 @@
 'use strict';
 
-var fs = require('fs');
-var gulp = require('gulp');
-var $ = require('gulp-load-plugins')();
-var del = require('del');
-var browserSync = require('browser-sync');
-var reload = browserSync.reload;
-var watchify = require('watchify');
-var browserify = require('browserify');
-var source = require('vinyl-source-stream');
-var buffer = require('vinyl-buffer');
-var sourcemaps = require('gulp-sourcemaps');
-var log = require('fancy-log');
-var exit = require('gulp-exit');
-var rev = require('gulp-rev');
-var revReplace = require('gulp-rev-replace');
-var SassString = require('node-sass').types.String;
-var notifier = require('node-notifier');
+const fs = require('fs');
+const gulp = require('gulp');
+const $ = require('gulp-load-plugins')();
+const del = require('del');
+const browserSync = require('browser-sync');
+const reload = browserSync.reload;
+const watchify = require('watchify');
+const browserify = require('browserify');
+const source = require('vinyl-source-stream');
+const buffer = require('vinyl-buffer');
+const sourcemaps = require('gulp-sourcemaps');
+const log = require('fancy-log');
+const SassString = require('node-sass').types.String;
+const notifier = require('node-notifier');
+const runSequence = require('run-sequence');
+const through2 = require('through2');
 
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
@@ -77,10 +76,7 @@ gulp.task('serve', ['vendorScripts', 'javascript', 'styles'], function () {
 });
 
 gulp.task('clean', function () {
-  return del(['.tmp', 'dist'])
-    .then(function () {
-      $.cache.clearAll();
-    });
+  return del(['.tmp', 'dist']);
 });
 
 // /////////////////////////////////////////////////////////////////////////////
@@ -98,7 +94,7 @@ gulp.task('javascript', function () {
     cache: {},
     packageCache: {},
     fullPaths: true
-  }), {poll: true});
+  }), { poll: true });
 
   function bundler () {
     if (pkg.dependencies) {
@@ -120,10 +116,10 @@ gulp.task('javascript', function () {
       .pipe(source('bundle.js'))
       .pipe(buffer())
       // Source maps.
-      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest('.tmp/assets/scripts'))
-      .pipe(reload({stream: true}));
+      .pipe(reload({ stream: true }));
   }
 
   watcher
@@ -146,21 +142,21 @@ gulp.task('vendorScripts', function () {
     .on('error', log.bind(log, 'Browserify Error'))
     .pipe(source('vendor.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.init({ loadMaps: true }))
     .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp/assets/scripts/'))
-    .pipe(reload({stream: true}));
+    .pipe(reload({ stream: true }));
 });
 
 // //////////////////////////////////////////////////////////////////////////////
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-gulp.task('build', ['vendorScripts', 'javascript'], function () {
-  gulp.start(['html', 'images', 'extras'], function () {
+gulp.task('build', function () {
+  runSequence(['vendorScripts', 'javascript', 'styles'], ['html', 'images', 'extras'], function () {
     return gulp.src('dist/**/*')
-      .pipe($.size({title: 'build', gzip: true}))
-      .pipe(exit());
+      .pipe($.size({ title: 'build', gzip: true }))
+      .pipe($.exit());
   });
 });
 
@@ -189,35 +185,36 @@ gulp.task('styles', function () {
           return v;
         }
       },
-      includePaths: ['.'].concat(require('node-bourbon').includePaths)
+      includePaths: require('node-bourbon').includePaths
     }))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
-    .pipe(reload({stream: true}));
+    .pipe(reload({ stream: true }));
 });
 
-gulp.task('html', ['styles'], function () {
+gulp.task('html', function () {
   return gulp.src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
+    .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
+    .pipe(cacheUseref())
     // Do not compress comparisons, to avoid MapboxGLJS minification issue
     // https://github.com/mapbox/mapbox-gl-js/issues/4359#issuecomment-286277540
-    .pipe($.if('*.js', $.uglify({compress: {comparisons: false}})))
+    .pipe($.if('*.js', $.uglify({ compress: { comparisons: false } })))
     .pipe($.if('*.css', $.csso()))
-    .pipe($.if(/\.(css|js)$/, rev()))
-    .pipe(revReplace())
+    .pipe($.if(/\.(css|js)$/, $.rev()))
+    .pipe($.revRewrite())
     .pipe(gulp.dest('dist'));
 });
 
 gulp.task('images', function () {
   return gulp.src('app/assets/graphics/**/*')
-    .pipe($.cache($.imagemin([
-      $.imagemin.gifsicle({interlaced: true}),
-      $.imagemin.jpegtran({progressive: true}),
-      $.imagemin.optipng({optimizationLevel: 5}),
+    .pipe($.imagemin([
+      $.imagemin.gifsicle({ interlaced: true }),
+      $.imagemin.jpegtran({ progressive: true }),
+      $.imagemin.optipng({ optimizationLevel: 5 }),
       // don't remove IDs from SVGs, they are often used
       // as hooks for embedding and styling
-      $.imagemin.svgo({plugins: [{cleanupIDs: false}]})
-    ])))
+      $.imagemin.svgo({ plugins: [{ cleanupIDs: false }] })
+    ]))
     .pipe(gulp.dest('dist/assets/graphics'));
 });
 
@@ -233,3 +230,28 @@ gulp.task('extras', function () {
     dot: true
   }).pipe(gulp.dest('dist'));
 });
+
+/**
+ * Caches the useref files.
+ * Avoid sending repeated js and css files through the minification pipeline.
+ * This happens when there are multiple html pages to process.
+ */
+function cacheUseref () {
+  let files = {
+    // path: content
+  };
+  return through2.obj(function (file, enc, cb) {
+    const path = file.relative;
+    if (files[path]) {
+      // There's a file in cache. Check if it's the same.
+      const prev = files[path];
+      if (Buffer.compare(file.contents, prev) !== 0) {
+        this.push(file);
+      }
+    } else {
+      files[path] = file.contents;
+      this.push(file);
+    }
+    cb();
+  });
+}
