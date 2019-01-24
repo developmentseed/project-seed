@@ -78,9 +78,14 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
 ## Circle CI for testing and deployment
 The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
 
-## semistandard for linting
-We're using [semistandard](https://github.com/Flet/semistandard) for linting.
+## Linting
 
-- `yarn lint` - will run linter and warn of any errors.
+Our [ESLint rules](.eslintrc) are based on `standard` rules, with semicolons enabled. To check  linting errors run:
 
-There are linting plugins for popular editors listed in the semistandard repo.
+    yarn lint
+
+## Coding style
+
+File [.editorconfig](.editorconfig) defines basic code styling rules, like indent sizes. 
+
+[Prettier](https://prettier.io) is the recommended code formatter. Atom and VSCode have extensions supporting Prettier-ESLint integration, which will help maintain style consistency while following linting rules.
