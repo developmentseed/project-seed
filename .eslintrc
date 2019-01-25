@@ -4,20 +4,20 @@
     "es6": true,
     "browser": true
   },
-  "plugins": [
-    "react"
-  ],
+  "plugins": ["react"],
   "parserOptions": {
-    "ecmaVersion": 2017,
+    "ecmaVersion": 2018,
     "ecmaFeatures": {
       "jsx": true
     }
   },
   "rules": {
     "semi": [2, "always"],
+    "jsx-quotes": [2, "prefer-single"],
+    "no-console": 2,
     "no-extra-semi": 2,
     "semi-spacing": [2, { "before": false, "after": true }],
-    "react/display-name": 1 ,
+    "react/display-name": 1,
     "react/jsx-no-duplicate-props": 2,
     "react/jsx-no-undef": 2,
     "react/jsx-uses-react": 2,

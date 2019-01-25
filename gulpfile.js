@@ -106,7 +106,7 @@ gulp.task('javascript', function () {
           title: 'Oops! Browserify errored:',
           message: e.message
         });
-        console.log('Javascript error:', e);
+        console.log('Javascript error:', e); // eslint-disable-line
         if (prodBuild) {
           process.exit(1);
         }
@@ -167,7 +167,7 @@ gulp.task('styles', function () {
         title: 'Oops! Sass errored:',
         message: e.message
       });
-      console.log('Sass error:', e.toString());
+      console.log('Sass error:', e.toString()); // eslint-disable-line
       if (prodBuild) {
         process.exit(1);
       }
