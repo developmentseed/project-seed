@@ -5,79 +5,101 @@ const gulp = require('gulp');
 const $ = require('gulp-load-plugins')();
 const del = require('del');
 const browserSync = require('browser-sync');
-const reload = browserSync.reload;
-const watchify = require('watchify');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
-const sourcemaps = require('gulp-sourcemaps');
 const log = require('fancy-log');
 const SassString = require('node-sass').types.String;
 const notifier = require('node-notifier');
-const runSequence = require('run-sequence');
+const historyApiFallback = require('connect-history-api-fallback');
 const through2 = require('through2');
 
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
 // ---------------------------------------------------------------------------//
 
-// The package.json
-var pkg;
+const bs = browserSync.create();
 
 // Environment
 // Set the correct environment, which controls what happens in config.js
-if (!process.env.DS_ENV) {
-  if (!process.env.CIRCLE_BRANCH || process.env.CIRCLE_BRANCH !== process.env.PRODUCTION_BRANCH) {
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+process.env.DS_ENV = process.env.DS_ENV || process.env.NODE_ENV;
+
+// When being built by circle is set to staging unless we're in the prod branch
+if (process.env.CIRCLE_BRANCH) {
+  if (process.env.CIRCLE_BRANCH === process.env.PRODUCTION_BRANCH) {
+    process.env.NODE_ENV = 'staging';
     process.env.DS_ENV = 'staging';
   } else {
+    process.env.NODE_ENV = 'production';
     process.env.DS_ENV = 'production';
   }
 }
-
-var prodBuild = false;
 
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Helper functions --------------------------------//
 // ---------------------------------------------------------------------------//
 
-function readPackage () {
-  pkg = JSON.parse(fs.readFileSync('package.json'));
-}
-readPackage();
+const isProd = () => process.env.NODE_ENV === 'production';
+const readPackage = () => JSON.parse(fs.readFileSync('package.json'));
 
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Callable tasks ----------------------------------//
 // ---------------------------------------------------------------------------//
 
-gulp.task('default', ['clean'], function () {
-  prodBuild = true;
-  gulp.start('build');
-});
+function clean () {
+  return del(['.tmp', 'dist']);
+}
 
-gulp.task('serve', ['vendorScripts', 'javascript', 'styles'], function () {
-  browserSync({
-    port: 3000,
+function serve () {
+  bs.init({
+    port: 9000,
     server: {
       baseDir: ['.tmp', 'app'],
       routes: {
         '/node_modules': './node_modules'
-      }
+      },
+      ghostMode: false,
+      middleware: [
+        historyApiFallback()
+      ]
     }
   });
 
   // watch for changes
   gulp.watch([
     'app/*.html',
-    'app/assets/graphics/**/*'
-  ]).on('change', reload);
+    'app/assets/graphics/**/*',
+    '!app/assets/icons/collecticons/**/*'
+  ], bs.reload);
 
-  gulp.watch('app/assets/styles/**/*.scss', ['styles']);
-  gulp.watch('package.json', ['vendorScripts']);
-});
+  gulp.watch('app/assets/styles/**/*.scss', styles);
+  gulp.watch('app/assets/scripts/**/**', javascript);
+  gulp.watch('package.json', vendorScripts);
+}
 
-gulp.task('clean', function () {
-  return del(['.tmp', 'dist']);
-});
+module.exports.clean = clean;
+module.exports.serve = gulp.series(
+  gulp.parallel(
+    vendorScripts,
+    javascript,
+    styles
+  ),
+  serve
+);
+module.exports.default = gulp.series(
+  clean,
+  gulp.parallel(
+    vendorScripts,
+    javascript
+  ),
+  styles,
+  gulp.parallel(
+    html,
+    imagesImagemin
+  ),
+  finish
+);
 
 // /////////////////////////////////////////////////////////////////////////////
 // ------------------------- Browserify tasks --------------------------------//
@@ -87,53 +109,44 @@ gulp.task('clean', function () {
 // Compiles the user's script files to bundle.js.
 // When including the file in the index.html we need to refer to bundle.js not
 // main.js
-gulp.task('javascript', function () {
-  var watcher = watchify(browserify({
+function javascript () {
+  // Ensure package is updated.
+  const pkg = readPackage();
+  return browserify({
     entries: ['./app/assets/scripts/main.js'],
     debug: true,
     cache: {},
     packageCache: {},
+    bundleExternal: false,
     fullPaths: true
-  }), { poll: true });
-
-  function bundler () {
-    if (pkg.dependencies) {
-      watcher.external(Object.keys(pkg.dependencies));
-    }
-    return watcher.bundle()
-      .on('error', function (e) {
-        notifier.notify({
-          title: 'Oops! Browserify errored:',
-          message: e.message
-        });
-        console.log('Javascript error:', e); // eslint-disable-line
-        if (prodBuild) {
-          process.exit(1);
-        }
-        // Allows the watch to continue.
-        this.emit('end');
-      })
-      .pipe(source('bundle.js'))
-      .pipe(buffer())
-      // Source maps.
-      .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest('.tmp/assets/scripts'))
-      .pipe(reload({ stream: true }));
-  }
-
-  watcher
-    .on('log', log)
-    .on('update', bundler);
-
-  return bundler();
-});
+  })
+    .external(pkg.dependencies ? Object.keys(pkg.dependencies) : [])
+    .bundle()
+    .on('error', function (e) {
+      notifier.notify({
+        title: 'Oops! Browserify errored:',
+        message: e.message
+      });
+      console.log('Javascript error:', e); // eslint-disable-line
+      if (isProd()) {
+        throw new Error(e);
+      }
+      // Allows the watch to continue.
+      this.emit('end');
+    })
+    .pipe(source('bundle.js'))
+    .pipe(buffer())
+    .pipe($.sourcemaps.init({ loadMaps: true }))
+    .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest('.tmp/assets/scripts/'))
+    .pipe(bs.stream());
+}
 
 // Vendor scripts. Basically all the dependencies in the package.js.
 // Therefore be careful and keep the dependencies clean.
-gulp.task('vendorScripts', function () {
+function vendorScripts () {
   // Ensure package is updated.
-  readPackage();
+  const pkg = readPackage();
   var vb = browserify({
     debug: true,
     require: pkg.dependencies ? Object.keys(pkg.dependencies) : []
@@ -142,25 +155,22 @@ gulp.task('vendorScripts', function () {
     .on('error', log.bind(log, 'Browserify Error'))
     .pipe(source('vendor.js'))
     .pipe(buffer())
-    .pipe(sourcemaps.init({ loadMaps: true }))
-    .pipe(sourcemaps.write('./'))
+    .pipe($.sourcemaps.init({ loadMaps: true }))
+    .pipe($.sourcemaps.write('./'))
     .pipe(gulp.dest('.tmp/assets/scripts/'))
-    .pipe(reload({ stream: true }));
-});
+    .pipe(bs.stream());
+}
 
 // //////////////////////////////////////////////////////////////////////////////
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-gulp.task('build', function () {
-  runSequence(['vendorScripts', 'javascript', 'styles'], ['html', 'images', 'extras'], function () {
-    return gulp.src('dist/**/*')
-      .pipe($.size({ title: 'build', gzip: true }))
-      .pipe($.exit());
-  });
-});
+function finish () {
+  return gulp.src('dist/**/*')
+    .pipe($.size({ title: 'build', gzip: true }));
+}
 
-gulp.task('styles', function () {
+function styles () {
   return gulp.src('app/assets/styles/main.scss')
     .pipe($.plumber(function (e) {
       notifier.notify({
@@ -168,8 +178,8 @@ gulp.task('styles', function () {
         message: e.message
       });
       console.log('Sass error:', e.toString()); // eslint-disable-line
-      if (prodBuild) {
-        process.exit(1);
+      if (isProd()) {
+        throw new Error(e);
       }
       // Allows the watch to continue.
       this.emit('end');
@@ -185,51 +195,43 @@ gulp.task('styles', function () {
           return v;
         }
       },
-      includePaths: require('node-bourbon').includePaths
+      includePaths: require('bourbon').includePaths.concat('node_modules/jeet')
     }))
     .pipe($.sourcemaps.write())
     .pipe(gulp.dest('.tmp/assets/styles'))
-    .pipe(reload({ stream: true }));
-});
+    // https://browsersync.io/docs/gulp#gulp-sass-maps
+    .pipe(bs.stream({ match: '**/*.css' }));
+}
 
-gulp.task('html', function () {
+// After being rendered by jekyll process the html files. (merge css files, etc)
+function html () {
   return gulp.src('app/*.html')
     .pipe($.useref({ searchPath: ['.tmp', 'app', '.'] }))
     .pipe(cacheUseref())
     // Do not compress comparisons, to avoid MapboxGLJS minification issue
     // https://github.com/mapbox/mapbox-gl-js/issues/4359#issuecomment-286277540
-    .pipe($.if('*.js', $.uglify({ compress: { comparisons: false } })))
+    // https://github.com/mishoo/UglifyJS2/issues/1609 -> Just until gulp-uglify updates
+    .pipe($.if('*.js', $.uglify({ compress: { comparisons: false, collapse_vars: false } })))
     .pipe($.if('*.css', $.csso()))
     .pipe($.if(/\.(css|js)$/, $.rev()))
     .pipe($.revRewrite())
     .pipe(gulp.dest('dist'));
-});
+}
 
-gulp.task('images', function () {
-  return gulp.src('app/assets/graphics/**/*')
+function imagesImagemin () {
+  return gulp.src([
+    'app/assets/graphics/**/*'
+  ])
     .pipe($.imagemin([
       $.imagemin.gifsicle({ interlaced: true }),
       $.imagemin.jpegtran({ progressive: true }),
       $.imagemin.optipng({ optimizationLevel: 5 }),
       // don't remove IDs from SVGs, they are often used
-      // as hooks for embedding and styling
+      // as hooks for embedding and styling.
       $.imagemin.svgo({ plugins: [{ cleanupIDs: false }] })
     ]))
     .pipe(gulp.dest('dist/assets/graphics'));
-});
-
-gulp.task('extras', function () {
-  return gulp.src([
-    'app/**/*',
-    '!app/*.html',
-    '!app/assets/graphics/**',
-    '!app/assets/vendor/**',
-    '!app/assets/styles/**',
-    '!app/assets/scripts/**'
-  ], {
-    dot: true
-  }).pipe(gulp.dest('dist'));
-});
+}
 
 /**
  * Caches the useref files.

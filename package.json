@@ -1,6 +1,6 @@
 {
   "name": "project-seed",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A basic project starting template.",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
     "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"'use strict';\n\nexport default {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
-    "serve": "DS_ENV=development gulp serve",
+    "serve": "DS_ENV=development NODE_ENV=development gulp serve",
     "build": "DS_ENV=production NODE_ENV=production gulp",
     "stage": "DS_ENV=staging NODE_ENV=staging gulp",
     "lint": "eslint app/assets/scripts/ --ext .js",
@@ -64,14 +64,14 @@
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
     "fancy-log": "^1.3.2",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-csso": "^3.0.1",
     "gulp-exit": "0.0.2",
     "gulp-if": "^2.0.2",
-    "gulp-imagemin": "^4.1.0",
+    "gulp-imagemin": "^5.0.3",
     "gulp-load-plugins": "^1.5.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-rev": "^8.1.1",
+    "gulp-rev": "^9.0.0",
     "gulp-rev-rewrite": "^1.1.1",
     "gulp-sass": "^4.0.1",
     "gulp-size": "^3.0.0",
@@ -82,11 +82,9 @@
     "node-notifier": "^5.2.1",
     "node-sass": "^4.9.0",
     "require-globify": "^1.4.1",
-    "run-sequence": "^2.2.1",
-    "through2": "^2.0.3",
+    "through2": "^3.0.0",
     "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0",
-    "watchify": "^3.11.0"
+    "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
     "lodash.defaultsdeep": "^4.6.0"

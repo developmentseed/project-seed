@@ -1,5 +1,5 @@
 # https://github.com/developmentseed/how/issues/149
-# ssh-keygen -t rsa -b 4096 -C ORG/REPO -f deploy_key
+# ssh-keygen -m pem -t rsa -b 4096 -C ORG/REPO -f deploy_key
 version: 2
 jobs:
   build:
