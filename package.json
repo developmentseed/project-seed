@@ -21,6 +21,7 @@
     "build": "DS_ENV=production NODE_ENV=production gulp",
     "stage": "DS_ENV=staging NODE_ENV=staging gulp",
     "lint": "eslint app/assets/scripts/ --ext .js",
+    "lint:css": "stylelint app/assets/styles/**/** app/assets/scripts/**/*.js",
     "test": "echo \"No tests\" && exit 0"
   },
   "engines": {
@@ -82,6 +83,8 @@
     "node-notifier": "^5.2.1",
     "node-sass": "^4.9.0",
     "require-globify": "^1.4.1",
+    "stylelint": "^9.10.1",
+    "stylelint-config-recommended": "^2.1.0",
     "through2": "^3.0.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
