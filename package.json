@@ -32,12 +32,12 @@
         "babelify",
         {
           "presets": [
-            "env",
-            "react"
+            "@babel/preset-env",
+            "@babel/preset-react"
           ],
           "plugins": [
-            "transform-es2015-spread",
-            "transform-object-rest-spread"
+            "@babel/plugin-transform-spread",
+            "@babel/plugin-proposal-object-rest-spread"
           ]
         }
       ],
@@ -46,13 +46,12 @@
     ]
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.3",
-    "babel-plugin-transform-es2015-spread": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
-    "babelify": "^8.0.0",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-transform-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "babelify": "^10.0.0",
     "browser-sync": "^2.24.4",
     "browserify": "^16.2.2",
     "del": "^3.0.0",
@@ -60,7 +59,7 @@
     "eslint": "^5.4.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^7.0.1",
+    "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.0",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-standard": "^4.0.0",
