@@ -21,11 +21,11 @@
     "build": "DS_ENV=production NODE_ENV=production gulp",
     "stage": "DS_ENV=staging NODE_ENV=staging gulp",
     "lint": "eslint app/assets/scripts/ --ext .js",
-    "lint:css": "stylelint app/assets/styles/**/** app/assets/scripts/**/*.js",
+    "lint:css": "stylelint 'app/assets/styles/**/**' 'app/assets/scripts/**/*.js'",
     "test": "echo \"No tests\" && exit 0"
   },
   "engines": {
-    "node": "8.x"
+    "node": "10.x"
   },
   "browserify": {
     "transform": [
