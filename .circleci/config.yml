@@ -51,7 +51,7 @@ jobs:
           name: Deploy to GH Pages
           command: |
             if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
-              cd build
+              cd dist
               git init
               git config user.name "$GH_NAME"
               git config user.email "$GH_EMAIL"
