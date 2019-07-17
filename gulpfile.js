@@ -28,11 +28,11 @@ process.env.DS_ENV = process.env.DS_ENV || process.env.NODE_ENV;
 // When being built by circle is set to staging unless we're in the prod branch
 if (process.env.CIRCLE_BRANCH) {
   if (process.env.CIRCLE_BRANCH === process.env.PRODUCTION_BRANCH) {
-    process.env.NODE_ENV = 'staging';
-    process.env.DS_ENV = 'staging';
-  } else {
     process.env.NODE_ENV = 'production';
     process.env.DS_ENV = 'production';
+  } else {
+    process.env.NODE_ENV = 'staging';
+    process.env.DS_ENV = 'staging';
   }
 }
 
