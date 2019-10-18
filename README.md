@@ -2,6 +2,8 @@
 
 A basic starting point for web projects
 
+> **NOTE:** We've been using [styled-components](https://www.styled-components.com/) more and more in projects. Checkout [project-seed-styled](https://github.com/developmentseed/project-seed-styled) for a starter with styled-components.
+
 ## Overview
 
 Steps to follow as soon as you download this structure to start a project:
