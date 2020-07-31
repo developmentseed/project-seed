@@ -25,7 +25,7 @@
     "test": "echo \"No tests\" && exit 0"
   },
   "engines": {
-    "node": "10.x"
+    "node": "12.x"
   },
   "browserify": {
     "transform": [
