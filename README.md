@@ -1,6 +1,9 @@
 # project-seed
 
-A basic starting point for web projects
+A basic starting point for web projects that use [styled-components](https://www.styled-components.com/).
+
+Since style components need react, it is already included.  
+It also includes collecticons. See the section below for more info.
 
 > **NOTE:** We've been using [styled-components](https://www.styled-components.com/) more and more in projects. Checkout [project-seed-styled](https://github.com/developmentseed/project-seed-styled) for a starter with styled-components.
 
@@ -19,10 +22,9 @@ It's better to do this straight away so no traces of project-seed are ever pushe
 The values that are not immediately know should be left blank and filled ASAP.
 
 ## Gulp for building
-The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-gulp-webapp) yeoman generator. The build system currently supports:
+The build system currently supports:
 
 - Image optimization
-- Sass compilation
 - Watchify for JS bundling
 - Minification/uglification where appropriate
 - Serving and live reloading of pages
@@ -30,7 +32,7 @@ The gulpfile is based on the [gulp-webapp](https://github.com/yeoman/generator-g
 There are two commands, both run via [`yarn`](https://yarnpkg.com/en/).
 
 - `yarn build` - clean & build everything and put it into dist folder
-- `yarn serve` - serve the pages and utilize live reload on changes to styles, fonts, images, scripts and HTML.
+- `yarn serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
 
 
 ## Assets Structure
@@ -41,8 +43,8 @@ app/assets/
 +- scripts/: The user scripts
 |  |
 |  +- config/: configuration files (see configuration section)
-|
-+- styles/: The sass styles
+|  |
+|  +- styles/: the styled components
 |
 +- vendor/: Any third-party script that can't be required()
 |
@@ -53,6 +55,34 @@ app/assets/
 |  +- content/: Content image
 |
 ```
+
+## Collecticons
+Collecticons comes bundles with `project-seed`. SVG icons go inside `app/assets/icons/collecticons` and they're compiled into a webfont.  
+
+To use them with styled components:
+```js
+import collecticon from './styles/collecticons'; // Import the font from app/assets/scripts/styles/collecticons/index
+
+// The icon name will be the icon's file name
+const CloseBtn = styled.button`
+  &::before {
+    ${collecticon('xmark--small')}
+  }
+`
+```
+
+#### Remove collecticons
+If you don't need collecticons, it is easy to remove:  
+1) From `app/assets/scripts/styles/global.js` remove the inclusion of `collecticonsFont`  
+
+2)  
+```
+rm -rf app/assets/icons/collecticons
+rm -rf app/assets/scripts/styles/collecticons
+yarn remove collecticons-processor
+```
+
+3) You also need to manually remove the build task from `gulpfile.js`
 
 ### Configurations and environment variables
 
@@ -78,11 +108,10 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
    add ...`.
 
 ## Circle CI for testing and deployment
-The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, Travis will be looking for any changes to the repo and when a change is made to the `master` branch, Travis will build the project and deploy it to the `gh-pages` branch.
-
+The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, circle uses workflows with the linting, test, a build phases running simultaneously. When a commit is made to master the deploy phase will also run, given that the previous succeed.
 ## Linting
 
-Our [ESLint rules](.eslintrc) are based on `standard` rules, with semicolons enabled. To check  linting errors run:
+Our [ESLint rules](.eslintrc) are based on `standard` rules, with some custom options. To check linting errors run:
 
     yarn lint
 

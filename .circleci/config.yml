@@ -1,65 +1,100 @@
 # https://github.com/developmentseed/how/issues/149
-# ssh-keygen -m pem -t rsa -b 4096 -C ORG/REPO -f deploy_key
-version: 2
+# ssh-keygen -m pem -t rsa -b 4096 -C developmentseed/project-seed -f deploy_key
+
+# YAML anchors for base definitions
+base_def: &base_def
+  docker:
+    - image: node:10
+  working_directory: ~/repo
+  environment:
+    - DEVELOPMENT_BRANCH: develop
+    - PRODUCTION_BRANCH: master
+
+restore_cache_def: &restore_cache_def
+  # Download and cache dependencies
+  keys:
+  - v1-dependencies-{{ checksum "package.json" }}
+  - v1-dependencies-  # fallback if checksum fails
+
+##
+## START Circle CI configuration
+##
+
+version: 2.1
 jobs:
-  build:
-    docker:
-      - image: node:8
-
-    working_directory: ~/repo
-
-    environment:
-      - STAGING_BRANCH: develop
-      - PRODUCTION_BRANCH: master
-      - GH_REF: git@github.com:developmentseed/project-seed.git
-      - GH_NAME: "Development Seed"
-      - GH_EMAIL: "dev@developmentseed.org"
-
+  prepare:
+    <<: *base_def
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
+          <<: *restore_cache_def
       - run: yarn install
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
+  lint:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: yarn lint
+      - run: yarn lint:css
+  test:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
       - run: yarn test
-
-      - add_ssh_keys:
-          fingerprints:
-            - ""
-
+  build:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - run: yarn build
+      - persist_to_workspace:
+          root: ~/repo
+          paths:
+              - dist/*
+  deploy-surge:
+    <<: *base_def
+    steps:
+      - checkout
+      - restore_cache:
+          <<: *restore_cache_def
+      - attach_workspace:
+          at: /workspace
       - run:
-          name: Building site
+          name: Deploy to surge
           command: |
-            if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
-              yarn build
-            else
-              echo "Skip building site"
-            fi
+            cp /workspace/dist/index.html /workspace/dist/200.html
+            # Enable to use surge deployment
+            # CIRCLE will need the surge login variables:
+            # SURGE_LOGIN & SURGE_TOKEN
+            #./node_modules/surge/lib/cli.js --project /workspace/dist --domain <the domain>.surge.sh
 
-      - run:
-          name: Deploy to GH Pages
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
-              cd dist
-              git init
-              git config user.name "$GH_NAME"
-              git config user.email "$GH_EMAIL"
-              git add .
-              git commit -m "CI deploy [skip ci]"
-              git remote add origin $GH_REF
-              git push origin --force --quiet HEAD:gh-pages
-              rm -rf .git
-            else
-              echo "Skip deploying to Github"
-            fi
+workflows:
+  version: 2
+  main:
+    jobs:
+      - prepare
+      - lint:
+          requires:
+            - prepare
+      - test:
+          requires:
+            - prepare
+      - build:
+          requires:
+            - prepare
+      - deploy-surge:
+          requires:
+            - lint
+            - test
+            - build
+          filters:
+            branches:
+              only: master
