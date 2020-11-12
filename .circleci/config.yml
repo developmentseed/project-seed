@@ -4,7 +4,7 @@
 # YAML anchors for base definitions
 base_def: &base_def
   docker:
-    - image: node:10
+    - image: node:14
   working_directory: ~/repo
   environment:
     - DEVELOPMENT_BRANCH: develop
