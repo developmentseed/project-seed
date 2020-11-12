@@ -5,8 +5,6 @@ A basic starting point for web projects that use [styled-components](https://www
 Since style components need react, it is already included.  
 It also includes collecticons. See the section below for more info.
 
-> **NOTE:** We've been using [styled-components](https://www.styled-components.com/) more and more in projects. Checkout [project-seed-styled](https://github.com/developmentseed/project-seed-styled) for a starter with styled-components.
-
 ## Overview
 
 Steps to follow as soon as you download this structure to start a project:
