@@ -109,7 +109,7 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
 The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, circle uses workflows with the linting, test, a build phases running simultaneously. When a commit is made to master the deploy phase will also run, given that the previous succeed.
 ## Linting
 
-Our [ESLint rules](.eslintrc) are based on `standard` rules, with some custom options. To check linting errors run:
+Our [ESLint rules](.eslintrc) are based on `eslint:recommended` rules, with some custom options. To check linting errors run:
 
     yarn lint
 
