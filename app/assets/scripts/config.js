@@ -1,4 +1,3 @@
-'use strict';
 import defaultsDeep from 'lodash.defaultsdeep';
 /*
  * App configuration.
