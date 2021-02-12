@@ -11,7 +11,8 @@ Steps to follow as soon as you download this structure to start a project:
 - [ ] Update `package.js` with data about the project (name, repo, license...)
 - [ ] If the license is known update `LICENSE`
 - [ ] Update `.circleci/config.yml` with correct repo and other needed information.
-- [ ] On `index.html` update the project title and check for other boostrap information that can be changed or removed.
+- [ ] Check `index.html` for bootstrap information that can be changed or removed.
+- [ ] Update the application title and description in `/app/assets/scripts/config/production.js`
 - [ ] Remove unneeded images from the `graphics` folder and replace the favicon with a project related one.
 - [ ] Update the modules to the most recent version.
 - [ ] **Delete this `README.md` and rename `_README.md`. Fill in the needed data. This is the most important task.** Others need to be able to know what the project is about and how to work with it. This can't be stressed enough.
@@ -92,7 +93,6 @@ At times, it may be necessary to include options/variables specific to `producti
 
 When developing locally with `yarn run serve`, the default will be to use `production.js` (with overrides from `local.js`).  However, if you need to run with the staging settings, use: `yarn run stage` (this will not start a server)
 
-
 ### How scripts are built
 
 The script build, which uses `browserify`, outputs two js files: `bundle.js` and
@@ -106,7 +106,9 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
    add ...`.
 
 ## Circle CI for testing and deployment
+
 The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, circle uses workflows with the linting, test, a build phases running simultaneously. When a commit is made to master the deploy phase will also run, given that the previous succeed.
+
 ## Linting
 
 Our [ESLint rules](.eslintrc) are based on `eslint:recommended` rules, with some custom options. To check linting errors run:
