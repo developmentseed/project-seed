@@ -1,7 +1,7 @@
 
-# Deploy the site to AWS on a push to the 'main' branch
+# Deploy the site to AWS S3 on a push to the 'main' branch
 
-name: Deploy AWS
+name: Deploy S3
 
 on:
   push:

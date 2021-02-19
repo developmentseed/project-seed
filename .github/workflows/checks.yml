@@ -1,7 +1,7 @@
 # This workflow performs basic checks:
 #
 #   1. run a preparation step to install and cache node modules
-#   2. once prep succeeds, run lint and test in parallel
+#   2. once prep succeeds, lint and test run in parallel
 #
 # The checks are skipped on the 'main' branch. The project relies on branch
 # protection to avoid pushes straight to 'main'.

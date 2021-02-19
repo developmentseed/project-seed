@@ -1,7 +1,7 @@
 
-# Deploy the site to AWS on a push to the 'main' branch
+# Deploy the site to Surge on a push to the 'main' branch
 
-name: Deploy AWS
+name: Deploy Surge
 
 on:
   push:
@@ -10,7 +10,7 @@ on:
 
 env:
   NODE: 14
-  PROD_BUCKET:
+  SURGE_DOMAIN:
 
 jobs:
   build:
@@ -65,12 +65,8 @@ jobs:
           path: dist
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
 
-      - name: Deploy to S3
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --acl public-read --follow-symlinks --delete
-        env:
-          AWS_S3_BUCKET: ${{ env.PROD_BUCKET }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          SOURCE_DIR: ./dist
+      - name: Deploy to Surge
+        run: |
+          cp ./dist/index.html ./dist/200.html
+          npm install -g surge
+          surge ./dist ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
