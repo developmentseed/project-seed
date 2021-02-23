@@ -24,8 +24,8 @@ This workflow assumes that the site is served from the root of the URL (eg. devs
           cp index.html explorer
 ```
 
-# `deploy-s3-yml`
-A workflow that builds the site and deploys it to S3.
+# `deploy-surge-yml`
+A workflow that builds the site and deploys it to Surge.
 
 This workflow gets triggered with every push to the main branch, and doesn't verify if the checks were successful. It relies on branch protection to do so.
 

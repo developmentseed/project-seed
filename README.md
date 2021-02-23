@@ -107,7 +107,7 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
 ## Github Actions for CI
 Testing and deployment is taken care of by Github Actions. It is set up to:
 
-1. run checks (test & lint) on every push, except on pushes to the `main` branch
+1. run checks (test & lint) on every non-draft Pull Request
 2. build and deploy the application on pushes to the `main` branch
 
 To make sure that the site deploys with passing checks, branch protection should be set up for the `main` branch (`Require status checks to pass before merging`).

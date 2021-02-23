@@ -3,15 +3,19 @@
 #   1. run a preparation step to install and cache node modules
 #   2. once prep succeeds, lint and test run in parallel
 #
-# The checks are skipped on the 'main' branch. The project relies on branch
-# protection to avoid pushes straight to 'main'.
+# The checks only run on non-draft Pull Requests. They don't run on the main
+# branch prior to deploy. It's recommended to use branch protection to avoid
+# pushes straight to 'main'.
 
 name: Checks
 
 on:
-  push:
-    branches-ignore:
-    - 'main'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
 
 env:
   NODE: 14
