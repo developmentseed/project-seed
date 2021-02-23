@@ -10,7 +10,6 @@ It also includes collecticons. See the section below for more info.
 Steps to follow as soon as you download this structure to start a project:
 - [ ] Update `package.js` with data about the project (name, repo, license...)
 - [ ] If the license is known update `LICENSE`
-- [ ] Update `.circleci/config.yml` with correct repo and other needed information.
 - [ ] Check `index.html` for bootstrap information that can be changed or removed.
 - [ ] Update the application title and description in `/app/assets/scripts/config/production.js`
 - [ ] Remove unneeded images from the `graphics` folder and replace the favicon with a project related one.
@@ -105,9 +104,15 @@ The script build, which uses `browserify`, outputs two js files: `bundle.js` and
    dependencies of the app: namely, all the packages you install using `yarn
    add ...`.
 
-## Circle CI for testing and deployment
+## Github Actions for CI
+Testing and deployment is taken care of by Github Actions. It is set up to:
 
-The `.circleci/config.yml` file enables the usage of [Circle CI](http://circleci.com/) as a test and deployment system. In this particular case, circle uses workflows with the linting, test, a build phases running simultaneously. When a commit is made to master the deploy phase will also run, given that the previous succeed.
+1. run checks (test & lint) on every non-draft Pull Request
+2. build and deploy the application on pushes to the `main` branch
+
+To make sure that the site deploys with passing checks, branch protection should be set up for the `main` branch (`Require status checks to pass before merging`).
+
+Deploy is not set up by default, but the project contains [sample workflows](.github/_workflow-samples/README.md) that can be used to set it up.
 
 ## Linting
 

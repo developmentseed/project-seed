@@ -1,0 +1,72 @@
+
+# Deploy the site to Surge on a push to the 'main' branch
+
+name: Deploy Surge
+
+on:
+  push:
+    branches:
+    - 'main'
+
+env:
+  NODE: 14
+  SURGE_DOMAIN:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.8.0
+        with:
+          access_token: ${{ github.token }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ env.NODE }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ env.NODE }}
+
+      - name: Cache node_modules
+        uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+
+      - name: Cache dist
+        uses: actions/cache@v2
+        id: cache-dist
+        with:
+          path: dist
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+
+      - name: Install
+        run: yarn install
+
+      - name: Build
+        run: yarn build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Restore dist cache
+        uses: actions/cache@v2
+        id: cache-node-modules
+        with:
+          path: dist
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+
+      - name: Deploy to Surge
+        run: |
+          cp ./dist/index.html ./dist/200.html
+          npm install -g surge
+          surge ./dist ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
