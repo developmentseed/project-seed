@@ -44,7 +44,12 @@
         }
       ],
       "require-globify",
-      "envify"
+      [
+        "envify",
+        {
+          "_": "purge"
+        }
+      ]
     ]
   },
   "devDependencies": {
