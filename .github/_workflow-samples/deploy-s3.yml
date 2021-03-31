@@ -10,7 +10,6 @@ on:
 
 env:
   NODE: 14
-  NODE_ENV: production
   DEPLOY_BUCKET:
 
 jobs:
