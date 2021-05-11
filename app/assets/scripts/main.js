@@ -28,8 +28,8 @@ function Root() {
           }
         }
       ],
-      './sqlite.worker.js',
-      './sql-wasm.wasm'
+      '/sqlite.worker.js',
+      '/sql-wasm.wasm'
     ).then((worker) => {
       // Do a query
       worker.db

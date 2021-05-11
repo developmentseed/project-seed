@@ -88,12 +88,14 @@ function serve() {
 module.exports.clean = clean;
 module.exports.serve = gulp.series(
   collecticons,
+  copyVendorFiles,
   gulp.parallel(vendorScripts, javascript),
   serve
 );
 module.exports.default = gulp.series(
   clean,
   collecticons,
+  copyVendorFiles,
   gulp.parallel(vendorScripts, javascript),
   gulp.parallel(html, imagesImagemin),
   copyFiles,
@@ -203,6 +205,15 @@ function collecticons() {
 // //////////////////////////////////////////////////////////////////////////////
 // --------------------------- Helper tasks -----------------------------------//
 // ----------------------------------------------------------------------------//
+
+function copyVendorFiles() {
+  return gulp
+    .src([
+      './node_modules/sql.js-httpvfs/dist/sqlite.worker.js',
+      './node_modules/sql.js-httpvfs/dist/sql-wasm.wasm'
+    ])
+    .pipe(gulp.dest(isDev() ? '.tmp' : 'dist'));
+}
 
 function copyFiles() {
   return gulp
