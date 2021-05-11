@@ -104,6 +104,7 @@
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "sql.js-httpvfs": "^0.8.9",
     "styled-components": "^5.2.1"
   }
 }
