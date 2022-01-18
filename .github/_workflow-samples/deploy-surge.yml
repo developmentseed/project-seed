@@ -9,7 +9,7 @@ on:
     - 'main'
 
 env:
-  NODE: 14
+  NODE: 16
   SURGE_DOMAIN:
 
 jobs:

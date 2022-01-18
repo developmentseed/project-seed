@@ -1,5 +1,5 @@
 {
-  "parser": "babel-eslint", // Specifies the ESLint parser
+  "parser": "@babel/eslint-parser", // Specifies the ESLint parser
   "extends": [
     "eslint:recommended",
     "plugin:react/recommended",
@@ -17,6 +17,13 @@
   },
   "plugins": ["react", "react-hooks", "inclusive-language"],
   "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ]
+    },
     "ecmaFeatures": {
       "jsx": true
     },

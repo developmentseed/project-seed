@@ -1,8 +1,5 @@
 import React, { useEffect } from 'react';
-import { ThemeProvider } from 'styled-components';
 import { render } from 'react-dom';
-
-import GlobalStyles from './styles/global';
 
 // Root component.
 function Root() {
@@ -13,12 +10,7 @@ function Root() {
     setTimeout(() => banner.remove(), 500);
   }, []);
 
-  return (
-    <ThemeProvider theme={{}}>
-      <GlobalStyles />
-      <p>Hello from Starter</p>
-    </ThemeProvider>
-  );
+  return <p>Hello from Starter</p>;
 }
 
 render(<Root />, document.querySelector('#app-container'));

@@ -3,32 +3,10 @@
   <head>
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
-
-    <link rel='icon' type='image/png' sizes='96x96' href='{{baseurl}}/assets/graphics/meta/favicon.png' />
-    <link rel='icon' type='image/png' sizes='192x192' href='{{baseurl}}/assets/graphics/meta/android-chrome.png' />
-    <link rel='apple-touch-icon' sizes='180x180' href='{{baseurl}}/assets/graphics/meta/apple-touch-icon.png' />
+    <link rel='icon' type='image/png' sizes='96x96' href='./media/meta/favicon.png' />
 
     <title>{{appTitle}}</title>
     <meta name='description' content='{{appDescription}}' />
-
-    <meta name='twitter:card' content='summary' />
-    <meta name='twitter:site' content='' />
-    <meta name='twitter:title' content='{{appTitle}}' />
-    <meta name='twitter:description' content='{{appDescription}}' />
-    <meta name='twitter:image:src' content='{{baseurl}}/assets/graphics/meta/default-meta-image.png' />
-
-    <meta property='og:type' content='website' />
-    <meta property='og:url' content='{{baseurl}}' />
-    <meta property='og:site_name' content='{{appTitle}}' />
-    <meta property='og:title' content='{{appTitle}}' />
-    <meta property='og:image' content='{{baseurl}}/assets/graphics/meta/default-meta-image.png' />
-    <meta property='og:description' content='{{appDescription}}' />
-
-    <!-- build:css /assets/styles/vendor.css -->
-    <!-- endbuild -->
-
-    <link rel='author' type='text/plain' href='humans.txt' />
-
 
     <style>
       #welcome-banner {
@@ -47,52 +25,59 @@
         padding: 1rem;
         font-family: sans-serif;
         font-size: 1rem;
-
+  
         transition: all 320ms ease-in-out;
       }
+  
+      #welcome-banner h1 {
+        height: 3rem;
+      }
+  
       #welcome-banner.dismissed {
         opacity: 0;
         visibility: hidden;
       }
+  
+      .loading {
+        margin-top: 2rem;
+        opacity: 0.64;
+      }
     </style>
   </head>
-
+  
   <body>
     <!-- Welcome banner gets hidden by React -->
     <div id='welcome-banner'>
       <div>
         <!-- 
-          To avoid an abrupt transition when the app loads, this banner is
-          transitioned out. Replace the contents with something appropriate
-          for the project.
-        -->
-        <h1><img src="/assets/graphics/layout/ds-logo-pos.svg" alt="Development Seed logotype" width="188" height="32" /></h1>
-        <p>In the beginning the Universe was created.<p>
+            To avoid an abrupt transition when the app loads, this banner is
+            transitioned out. Replace the contents with something appropriate
+            for the project.
+          -->
+        <h1><img src="./media/layout/ds-logo-pos.svg" alt="Development Seed logotype" width="188" height="32" /></h1>
+        <p>In the beginning the Universe was created.
+        <p>
         <p>This has made a lot of people very angry and been widely regarded as a bad move.</p>
       </div>
     </div>
-
+    </div>
+  
     <div id='app-container'>
       <!-- Content rendered here via React -->
     </div>
-
+  
     <script>
       // https://stackoverflow.com/a/9851769/728583
-
+  
       // internet explorer 6-11
       var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-
+  
       if (isIE) {
         document.body.innerHTML =
           'Unfortunately, your browser is not currently supported.<br />Recommended browsers: Edge, Firefox, Safari, Chrome';
       }
     </script>
 
-    <!-- build:js /assets/scripts/vendor.js -->
-    <script src='/assets/scripts/vendor.js'></script>
-    <!-- endbuild -->
-    <!-- build:js /assets/scripts/bundle.js -->
-    <script src='/assets/scripts/bundle.js'></script>
-    <!-- endbuild -->
+    <script src="./scripts/main.js" type="module"></script>
   </body>
 </html>

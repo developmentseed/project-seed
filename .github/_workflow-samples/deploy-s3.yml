@@ -9,7 +9,7 @@ on:
     - 'main'
 
 env:
-  NODE: 14
+  NODE: 16
   DEPLOY_BUCKET:
 
 jobs:
@@ -60,7 +60,7 @@ jobs:
 
       - name: Restore dist cache
         uses: actions/cache@v2
-        id: cache-node-modules
+        id: cache-dist
         with:
           path: dist
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}

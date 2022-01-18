@@ -3,13 +3,12 @@
 {{Description}}
 
 ## Installation and Usage
-
 The steps below will walk you through setting up your own instance of the project.
 
 ### Install Project Dependencies
 To set up the development environment for this website, you'll need to install the following on your system:
 
-- [Node](http://nodejs.org/) (see [.nvmrc](./.nvmrc)) (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
+- [Node](http://nodejs.org/) v16 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
 - [Yarn](https://yarnpkg.com/) Package manager
 
 ### Install Application Dependencies
@@ -26,35 +25,25 @@ Install Node modules:
 yarn install
 ```
 
-### Usage
+## Usage
 
-#### Config files
-All the config files can be found in `app/assets/scripts/config`.
-After installing the projects there will be 3 main files:
-  - `local.js` - Used only for local development. On production this file should not exist or be empty.
-  - `staging.js`
-  - `production.js`
+### Config files
+Configuration is done using [dot.env](https://parceljs.org/features/node-emulation/#.env-files) files.
 
-The `production.js` file serves as base and the other 2 will override it as needed:
-  - `staging.js` will be loaded whenever the env variable `DS_ENV` is set to staging.
-  - `local.js` will be loaded if it exists.
+These files are used to simplify the configuration of the app and should not contain sensitive information.
 
-The following options must be set: (The used file will depend on the context):
-  - `value` - Description
+Run the project locally by copying the `.env` to `.env.local` and setting the following environment variables:
 
-Example:
-```
-module.exports = {
-  value: 'some-value'
-};
-```
 
-#### Starting the app
+| --- | --- |
+| `{{VARIABLE}}` | {{description}} |
+
+### Starting the app
 
 ```
 yarn serve
 ```
-Compiles the javascript and launches the server making the site available at `http://localhost:9000/`
+Compiles the sass files, javascript, and launches the server making the site available at `http://localhost:9000/`
 The system will watch files and execute tasks whenever one of them changes.
 The site will automatically refresh since it is bundled with livereload.
 
@@ -70,3 +59,10 @@ yarn stage
 ```
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
+
+**When building the site for deployment provide the base url trough the `PUBLIC_URL` environment variable. Omit the leading slash. (E.g. https://example.com)**
+
+If you want to use any other parcel feature it is also possible. Example:
+```
+PARCEL_BUNDLE_ANALYZER=true yarn parcel build app/index.html
+```

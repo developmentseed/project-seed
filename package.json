@@ -1,7 +1,7 @@
 {
   "name": "project-seed",
-  "version": "4.0.0",
   "description": "Starter application by Development Seed",
+  "version": "5.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/developmentseed/project-seed.git"
@@ -16,94 +16,45 @@
   },
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
-    "postinstall": "[ -f app/assets/scripts/config/local.js ] || echo \"'use strict';\n\nexport default {\n  environment: 'development'\n};\" > app/assets/scripts/config/local.js",
     "serve": "NODE_ENV=development gulp serve",
     "build": "NODE_ENV=production gulp",
     "stage": "NODE_ENV=staging gulp",
-    "lint": "eslint app/assets/scripts/ --ext .js",
-    "lint:css": "stylelint 'app/assets/styles/**/**' 'app/assets/scripts/**/*.js'",
-    "test": "echo \"No tests\" && exit 0"
+    "clean": "gulp clean",
+    "lint": "yarn lint:js && yarn lint:css",
+    "lint:js": "eslint app/scripts/ --ext .js",
+    "lint:css": "stylelint 'app/styles/**/**' 'app/scripts/**/*.js'"
   },
   "engines": {
-    "node": "14.x"
-  },
-  "browserify": {
-    "transform": [
-      [
-        "babelify",
-        {
-          "presets": [
-            "@babel/preset-env",
-            "@babel/preset-react"
-          ],
-          "plugins": [
-            "babel-plugin-styled-components",
-            "@babel/plugin-transform-spread",
-            "@babel/plugin-proposal-object-rest-spread"
-          ]
-        }
-      ],
-      "require-globify",
-      [
-        "envify",
-        {
-          "_": "purge"
-        }
-      ]
-    ]
+    "node": "16.x"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
-    "@babel/plugin-transform-spread": "^7.12.13",
-    "@babel/preset-env": "^7.12.16",
-    "@babel/preset-react": "^7.12.13",
-    "babel-eslint": "^10.1.0",
-    "babelify": "^10.0.0",
-    "browser-sync": "^2.26.14",
-    "browserify": "^17.0.0",
-    "collecticons-processor": "^4.1.0",
+    "@babel/core": "^7.16.7",
+    "@babel/eslint-parser": "^7.16.5",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-react": "^7.16.7",
+    "@parcel/reporter-bundle-analyzer": "^2.2.1",
+    "@parcel/reporter-bundle-buddy": "^2.2.1",
+    "@parcel/transformer-image": "2.2.1",
     "del": "^6.0.0",
-    "envify": "^4.1.0",
-    "errorify": "^0.3.1",
-    "eslint": "^7.19.0",
-    "eslint-config-prettier": "^7.2.0",
-    "eslint-config-react-app": "^6.0.0",
-    "eslint-plugin-inclusive-language": "^2.1.1",
-    "eslint-plugin-prettier": "^3.3.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "fancy-log": "^1.3.3",
+    "eslint": "^8.7.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-config-react-app": "^7.0.0",
+    "eslint-plugin-inclusive-language": "^2.2.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-plugin-react-hooks": "^4.3.0",
+    "fancy-log": "^2.0.0",
+    "fs-extra": "^10.0.0",
     "gulp": "^4.0.2",
-    "gulp-csso": "^4.0.1",
-    "gulp-exit": "0.0.2",
-    "gulp-if": "^3.0.0",
-    "gulp-imagemin": "^7.1.0",
-    "gulp-load-plugins": "^2.0.6",
-    "gulp-plumber": "^1.2.1",
-    "gulp-rev": "^9.0.0",
-    "gulp-rev-rewrite": "^4.0.0",
-    "gulp-size": "^3.0.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-terser": "^2.0.1",
-    "gulp-useref": "^5.0.0",
-    "prettier": "^2.2.1",
-    "require-globify": "^1.4.1",
-    "stylelint": "^13.10.0",
-    "stylelint-config-recommended": "^3.0.0",
-    "surge": "^0.21.7",
-    "through2": "^4.0.2",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0",
-    "watchify": "^4.0.0"
+    "parcel": "^2.2.1",
+    "portscanner": "^2.2.0",
+    "posthtml-expressions": "^1.9.0",
+    "prettier": "^2.5.1",
+    "stylelint": "^13.12",
+    "stylelint-config-recommended": "^3.0.0"
   },
   "dependencies": {
-    "gulp-replace": "^1.0.0",
-    "lodash.defaultsdeep": "^4.6.1",
-    "polished": "^4.1.0",
-    "prop-types": "^15.7.2",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "styled-components": "^5.2.1"
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
   }
 }
