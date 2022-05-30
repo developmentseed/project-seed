@@ -27,6 +27,7 @@
   "engines": {
     "node": "16.x"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "devDependencies": {
     "@babel/core": "^7.18.2",
     "@babel/eslint-parser": "^7.16.5",
