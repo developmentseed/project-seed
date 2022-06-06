@@ -22,23 +22,25 @@
     "clean": "gulp clean",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint app/scripts/ --ext .js",
-    "lint:css": "stylelint 'app/styles/**/**' 'app/scripts/**/*.js'"
+    "lint:css": "stylelint 'app/styles/**/**' 'app/scripts/**/*.js'",
+    "test": "echo 'No tests available'"
   },
   "engines": {
     "node": "16.x"
   },
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "devDependencies": {
-    "@babel/core": "^7.16.7",
+    "@babel/core": "^7.18.2",
     "@babel/eslint-parser": "^7.16.5",
     "@babel/preset-env": "^7.16.8",
     "@babel/preset-react": "^7.16.7",
-    "@parcel/reporter-bundle-analyzer": "^2.2.1",
-    "@parcel/reporter-bundle-buddy": "^2.2.1",
-    "@parcel/transformer-image": "2.2.1",
+    "@parcel/reporter-bundle-analyzer": "^2.6.0",
+    "@parcel/reporter-bundle-buddy": "^2.6.0",
+    "@parcel/transformer-image": "2.6.0",
     "del": "^6.0.0",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-config-react-app": "^7.0.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-inclusive-language": "^2.2.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.28.0",
@@ -46,15 +48,16 @@
     "fancy-log": "^2.0.0",
     "fs-extra": "^10.0.0",
     "gulp": "^4.0.2",
-    "parcel": "^2.2.1",
+    "parcel": "^2.6.0",
     "portscanner": "^2.2.0",
     "posthtml-expressions": "^1.9.0",
     "prettier": "^2.5.1",
+    "process": "^0.11.10",
     "stylelint": "^13.12",
     "stylelint-config-recommended": "^3.0.0"
   },
   "dependencies": {
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
   }
 }
