@@ -22,7 +22,8 @@
     "clean": "gulp clean",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint app/scripts/ --ext .js",
-    "lint:css": "stylelint 'app/styles/**/**' 'app/scripts/**/*.js'"
+    "lint:css": "stylelint 'app/styles/**/**' 'app/scripts/**/*.js'",
+    "test": "echo 'No tests available'"
   },
   "engines": {
     "node": "16.x"
