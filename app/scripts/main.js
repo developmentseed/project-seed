@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 // Root component.
 function Root() {
@@ -13,4 +13,6 @@ function Root() {
   return <p>Hello from Starter</p>;
 }
 
-render(<Root />, document.querySelector('#app-container'));
+const container = document.getElementById('app-container');
+const root = createRoot(container);
+root.render(<Root />);
