@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
+import { render } from 'react-dom';
 
 // Root component.
 function Root() {
@@ -13,6 +13,7 @@ function Root() {
   return <p>Hello from Starter</p>;
 }
 
-const container = document.getElementById('app-container');
-const root = createRoot(container);
-root.render(<Root />);
+// React legacy API is used because react-helmet is not compatible with the
+// new one introduced in React v18. See:
+// https://github.com/nfl/react-helmet/issues/669#issuecomment-1134228545
+render(<Root />, document.querySelector('#app-container'));
