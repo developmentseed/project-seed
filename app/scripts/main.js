@@ -13,7 +13,6 @@ function Root() {
   return <p>Hello from Starter</p>;
 }
 
-// React legacy API is used because react-helmet is not compatible with the
-// new one introduced in React v18. See:
-// https://github.com/nfl/react-helmet/issues/669#issuecomment-1134228545
+// project-seed does not use the latest React API introduced in version 18
+// as commonly used modules might be incompatible with it (e.g. react-helmet v6.1.0).
 render(<Root />, document.querySelector('#app-container'));
