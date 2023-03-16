@@ -78,3 +78,9 @@ The following paths are predefined, but feel free to change them to whatever is 
 ```
 
 For example, to import a component from a file called `page-header` in the `"~/app/scripts/components"` folder, you'd just need to do `import Component from '$components/page-header'`.
+
+## Pull Request templates
+
+Project seed comes with pull request templates to simplify and standardize the pull requests in the project. This [issue on the how repo](https://github.com/developmentseed/how/issues/360#issuecomment-1041292591) provides some context to how this works.
+
+To add more templates create them in the `.github/PULL_REQUEST_TEMPLATE` folder and link them in the [PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md) file.
