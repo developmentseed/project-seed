@@ -9,7 +9,7 @@ on:
     - 'main'
 
 env:
-  NODE: 16
+  NODE: 18
   DEPLOY_BUCKET:
 
 jobs:
