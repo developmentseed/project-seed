@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom';
 
 // Root component.
 function Root() {
@@ -13,6 +13,6 @@ function Root() {
   return <p>Hello from Starter</p>;
 }
 
-// project-seed does not use the latest React API introduced in version 18
-// as commonly used modules might be incompatible with it (e.g. react-helmet v6.1.0).
-render(<Root />, document.querySelector('#app-container'));
+const rootNode = document.querySelector('#app-container');
+const root = createRoot(rootNode);
+root.render(<Root />);

@@ -1,8 +1,21 @@
 {
+  "processors": [
+    "stylelint-processor-styled-components"
+  ],
   "extends": [
-    "stylelint-config-recommended"
+    "stylelint-config-recommended",
+    "stylelint-config-styled-components"
   ],
   "rules": {
-    "font-family-no-missing-generic-family-keyword": null
-  }
+    "font-family-no-missing-generic-family-keyword": null,
+    "no-descending-specificity": [
+      true,
+      {
+        "severity": "warning"
+      }
+    ]
+  },
+  "ignoreFiles": [
+    "**/*.d.ts"
+  ]
 }
