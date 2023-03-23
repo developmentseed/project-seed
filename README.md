@@ -1,4 +1,4 @@
-# project-seed
+# project-seed v6
 
 A basic starting point for web projects that uses parcel as a Build System.  
 This is the result of a [build system research](https://github.com/developmentseed/project-seed/issues/97) and [experimentation](https://github.com/danielfdsilva/parcel-gulp/).  
@@ -53,6 +53,14 @@ Deploy is not set up by default, but the project contains [sample workflows](.gi
 Our [ESLint rules](.eslintrc) are based on `eslint:recommended` rules, with some custom options. To check linting errors run:
 
     yarn lint
+
+## Tests
+
+Tests are setup using [Jest](https://jestjs.io/), and can be run with
+
+```
+yarn test
+```
 
 ## Coding style
 
