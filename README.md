@@ -59,3 +59,28 @@ Our [ESLint rules](.eslintrc) are based on `eslint:recommended` rules, with some
 File [.editorconfig](.editorconfig) defines basic code styling rules, like indent sizes. 
 
 [Prettier](https://prettier.io) is the recommended code formatter. Atom and VSCode have extensions supporting Prettier-ESLint integration, which will help maintain style consistency while following linting rules.
+
+## Path alias
+
+Path alias allow you to define aliases for commonly used folders and avoid having very long file paths like `../../../component`. This also allows you to more easily move files around without worrying the imports will break.  
+
+Paths are defined in the [package.json](./package.json) under `alias`. They start with a `$` and point to a folder.
+
+The following paths are predefined, but feel free to change them to whatever is convenient to your project needs.
+
+```json
+"alias": {
+    "$components": "~/app/scripts/components",
+    "$styles": "~/app/scripts/styles",
+    "$utils": "~/app/scripts/utils",
+    "$test": "~/test"
+  }
+```
+
+For example, to import a component from a file called `page-header` in the `"~/app/scripts/components"` folder, you'd just need to do `import Component from '$components/page-header'`.
+
+## Pull Request templates
+
+Project seed comes with pull request templates to simplify and standardize the pull requests in the project. This [issue on the how repo](https://github.com/developmentseed/how/issues/360#issuecomment-1041292591) provides some context to how this works.
+
+To add more templates create them in the `.github/PULL_REQUEST_TEMPLATE` folder and link them in the [PULL_REQUEST_TEMPLATE.md](./.github/PULL_REQUEST_TEMPLATE.md) file.

@@ -9,7 +9,7 @@ on:
     - 'main'
 
 env:
-  NODE: 16
+  NODE: 18
   DEPLOY_BUCKET:
 
 jobs:
@@ -18,27 +18,27 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.8.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Use Node.js ${{ env.NODE }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ env.NODE }}
 
       - name: Cache node_modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-node-modules
         with:
           path: node_modules
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
 
       - name: Cache dist
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-dist
         with:
           path: dist
@@ -56,10 +56,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Restore dist cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         id: cache-dist
         with:
           path: dist

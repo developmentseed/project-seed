@@ -1,10 +1,14 @@
-const fs = require('fs-extra');
-const path = require('path');
-const { spawn } = require('child_process');
-const gulp = require('gulp');
-const del = require('del');
-const portscanner = require('portscanner');
-const log = require('fancy-log');
+import { spawn } from 'child_process';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs-extra';
+import gulp from 'gulp';
+import { deleteAsync } from 'del';
+import portscanner from 'portscanner';
+import log from 'fancy-log';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // /////////////////////////////////////////////////////////////////////////////
 // --------------------------- Variables -------------------------------------//
@@ -40,9 +44,9 @@ function watcher() {
 // ---------------------------- Base tasks -----------------------------------//
 // ---------------------------------------------------------------------------//
 
-function clean() {
+function cleanTask() {
   // Remove build cache and dist.
-  return del(['dist', '.parcel-cache']);
+  return deleteAsync(['dist', '.parcel-cache']);
 }
 
 // Simple task to copy the static files to the dist directory. The static
@@ -61,7 +65,7 @@ function parcelServe(cb) {
       log.warn(`  Port 9000 is busy.`);
     }
 
-    const args = ['--config', parcelConfig, '--port', port, '--open'];
+    const args = ['--config', parcelConfig, '--port', port];
 
     // Run parcel in serve mode using the same stdio that started gulp. This is
     // needed to ensure the output is colored and behaves correctly.
@@ -75,21 +79,30 @@ function parcelServe(cb) {
 function parcelBuild(cb) {
   // Build the app using parcel. Since the build task finishes, we have to
   // listen for it to mark the gulp task as finished.
-  const args = ['--config', parcelConfig];
-  const pr = spawn('node', [parcelCli, 'build', parcelTarget, ...args], {
+
+  const args = [
+    '--config',
+    parcelConfig,
+    '--public-url',
+    process.env.PUBLIC_URL || '/'
+  ];
+
+  const pr = spawn('node', [parcelCli, 'build', ...args, parcelTarget], {
     stdio: 'inherit'
   });
-  pr.on('close', () => cb());
+  pr.on('close', (code) => {
+    cb(code ? 'Build failed' : undefined);
+  });
 }
 
 // //////////////////////////////////////////////////////////////////////////////
 // ---------------------------- Task export -----------------------------------//
 // ----------------------------------------------------------------------------//
 
-module.exports.clean = clean;
+export const clean = cleanTask;
 
 // Task orchestration used during the development process.
-module.exports.serve = gulp.series(
+export const serve = gulp.series(
   gulp.parallel(
     // Additional tasks:
     // -- Include additional tasks here
@@ -101,7 +114,7 @@ module.exports.serve = gulp.series(
 );
 
 // Task orchestration used during the production process.
-module.exports.default = gulp.series(
+export default gulp.series(
   clean,
   gulp.parallel(
     // Additional tasks:

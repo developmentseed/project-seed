@@ -19,7 +19,7 @@ This workflow assumes that the site is served from the root of the URL (eg. devs
 
 ```
       - name: Build
-        run: BASEURL="https://devseed.com/explorer" yarn build
+        run: PUBLIC_URL="https://devseed.com/explorer" yarn build
 
       - name: Serve site from subpath
         run: |
