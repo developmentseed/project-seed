@@ -8,8 +8,7 @@ The steps below will walk you through setting up your own instance of the projec
 ### Install Project Dependencies
 To set up the development environment for this website, you'll need to install the following on your system:
 
-- [Node](http://nodejs.org/) v18 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
-- [Yarn](https://yarnpkg.com/) Package manager
+- [Node](http://nodejs.org/) v20 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
 
 ### Install Application Dependencies
 
@@ -22,7 +21,7 @@ nvm install
 Install Node modules:
 
 ```
-yarn install
+npm install
 ```
 
 ## Usage
@@ -51,11 +50,11 @@ The site will automatically refresh since it is bundled with livereload.
 To prepare the app for deployment run:
 
 ```
-yarn build
+npm run build
 ```
 or
 ```
-yarn stage
+npm run stage
 ```
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
@@ -64,5 +63,5 @@ The app can then be run by any web server.
 
 If you want to use any other parcel feature it is also possible. Example:
 ```
-PARCEL_BUNDLE_ANALYZER=true yarn parcel build app/index.html
+PARCEL_BUNDLE_ANALYZER=true npm run parcel build app/index.html
 ```

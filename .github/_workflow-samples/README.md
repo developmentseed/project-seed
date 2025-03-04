@@ -15,26 +15,21 @@ This workflow gets triggered with every push to the main branch, and doesn't ver
 - add the bucket name as an evironemnt variable (`DEPLOY_BUCKET`) to the deploy workflow. Omit `s3://` from the bucket name.
 
 ## Serving site from sub-path
-This workflow assumes that the site is served from the root of the URL (eg. devseed.com). To support a URL served from a sub-path (eg. devseed.com/explorer), replace the `yarn build` step in the build job with the following steps:
+This workflow assumes that the site is served from the root of the URL (eg. devseed.com). To support a URL served from a sub-path (eg. devseed.com/explorer), add the following step:
 
 ```
-      - name: Build
-        run: PUBLIC_URL="https://devseed.com/explorer" yarn build
-
       - name: Serve site from subpath
         run: |
           cd dist
-          mkdir explorer
-          mv assets explorer/assets
-          cp index.html explorer
+          mkdir <subfolder>
+          mv assets <subfolder>/assets
+          cp index.html <subfolder>
 ```
 
-# `deploy-surge-yml`
-A workflow that builds the site and deploys it to Surge.
+# `deploy-gh-yml`
+A workflow that builds the site and deploys it to Github pages.
 
 This workflow gets triggered with every push to the main branch, and doesn't verify if the checks were successful. It relies on branch protection to do so.
 
-## First-time setup
-- create a user on Surge
-- add the secret token from Surge as [an encrypted secret to the project repository](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository). Use `SURGE_TOKEN`
-- add `SURGE_DOMAIN` to the `deploy.yml`. This ensure the app is deployed to the same domain every time.
+# S3 previews
+Check the [Implementing S3 deploy previews](https://github.com/developmentseed/how/issues/423) guide to set up S3 previews for feature branches.

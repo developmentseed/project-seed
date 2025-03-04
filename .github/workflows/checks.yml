@@ -18,7 +18,11 @@ on:
       - ready_for_review
 
 env:
-  NODE: 18
+  NODE: 20
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   prep:
@@ -26,13 +30,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ env.NODE }}
         uses: actions/setup-node@v3
@@ -47,7 +46,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
 
       - name: Install
-        run: yarn install
+        run: npm install
 
   lint:
     needs: prep
@@ -55,7 +54,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ env.NODE }}
         uses: actions/setup-node@v3
@@ -70,10 +69,10 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Lint
-        run: yarn lint
+        run: npm run lint
 
   test:
     needs: prep
@@ -81,7 +80,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ env.NODE }}
         uses: actions/setup-node@v3
@@ -96,7 +95,7 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Test
-        run: yarn test
+        run: npm run test

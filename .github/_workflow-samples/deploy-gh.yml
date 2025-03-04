@@ -1,7 +1,4 @@
-
-# Deploy the site to Surge on a push to the 'main' branch
-
-name: Deploy Surge
+name: Deploy Github Pages
 
 on:
   push:
@@ -9,26 +6,27 @@ on:
     - 'main'
 
 env:
-  NODE: 18
-  SURGE_DOMAIN:
+  PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: 
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.11.0
-        with:
-          access_token: ${{ github.token }}
-
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Use Node.js ${{ env.NODE }}
+      - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ env.NODE }}
+          node-version-file: '.nvmrc'
 
       - name: Cache node_modules
         uses: actions/cache@v3
@@ -45,10 +43,10 @@ jobs:
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
 
       - name: Install
-        run: yarn install
+        run: npm install
 
       - name: Build
-        run: yarn build
+        run: npm run all:build
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,15 +54,8 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Restore node_modules
-        uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
-    
       - name: Restore dist cache
         uses: actions/cache@v3
         id: cache-dist
@@ -72,7 +63,10 @@ jobs:
           path: dist
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
 
-      - name: Deploy to Surge
-        run: |
-          cp ./dist/index.html ./dist/200.html
-          node_modules/surge/lib/cli.js ./dist ${{ env.SURGE_DOMAIN }} --token ${{ secrets.SURGE_TOKEN }}
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          clean: true
+          single-commit: true
+          folder: /dist
