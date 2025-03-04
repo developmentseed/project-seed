@@ -26,6 +26,11 @@ There are two commands, both run via `npm`
 - `npm run build` - clean & build everything and put it into dist folder
 - `npm run serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
 
+## Chakra UI for styling
+
+Project Seed uses [Chakra UI](https://chakra-ui.com/) for styling as a UI framework. It is a component library that provides a set of accessible and reusable components facilitating the development of web applications.
+
+If you don't want it, you just need to remove the `@chakra-ui/react` dependency from the `package.json` and remove the import from the `main.tsx` file.
 
 ### Configurations and environment variables
 
