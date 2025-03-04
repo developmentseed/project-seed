@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // If using a router add the public url to the base path.
-// const publicUrl = process.env.PUBLIC_URL || '';
+// const publicUrl = process.env.BASE_URL || '';
 
 // Root component.
 function Root() {

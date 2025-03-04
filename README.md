@@ -1,4 +1,4 @@
-# project-seed v7
+# project-seed v8
 
 A basic starting point for web projects that uses parcel as a Build System. 
 
@@ -18,12 +18,9 @@ Steps to follow as soon as you download this structure to start a project:
 It's better to do this straight away so no traces of project-seed are ever pushed to github and just looks more professional.
 The values that are not immediately know should be left blank and filled ASAP.
 
-## Parcel for building, node to orchestrate
+## Vite for building
 
-[Parcel](https://parceljs.org/) is used to bundle all the needed assets for the application, but there are some edge cases in some projects that parcel can't handle very well. Anything that must happen outside the final bundle, parcel can't deal with properly. For example, [parcel's static file plugin](https://github.com/elwin013/parcel-reporter-static-files-copy) will just copy the files to the dist folder, [without watching them](https://github.com/elwin013/parcel-reporter-static-files-copy#flaws-and-problems) for changes.
-
-To solve this problem, some node glue code is used to orchestrate tasks. With it, tasks can be setup to do all that is needed, and then parcel is executed to bundle the app.  
-
+[Vite](https://vite.dev/) is used to bundle all the needed assets for the application.
 There are two commands, both run via `npm`
 
 - `npm run build` - clean & build everything and put it into dist folder
@@ -33,7 +30,7 @@ There are two commands, both run via `npm`
 ### Configurations and environment variables
 
 At times, it may be necessary to include options/variables specific to `production`, `staging` or `local` in the code. To handle this, there you can use `.env` files.
-See Parcel documentation on [env variables](https://parceljs.org/features/node-emulation/#environment-variables).
+See Vite's documentation on [env variables](https://vite.dev/guide/env-and-mode.html#env-variables-and-modes).
 
 ## Github Actions for CI
 Testing and deployment is taken care of by Github Actions. It is set up to:
