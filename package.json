@@ -69,11 +69,11 @@
     "react-icons": "^5.5.0"
   },
   "alias": {
-    "$components": "~/src/components",
-    "$styles": "~/src/styles",
-    "$utils": "~/src/utils",
-    "$hooks": "~/src/hooks",
-    "$pages": "~/src/pages",
+    "$components": "~/app/components",
+    "$styles": "~/app/styles",
+    "$utils": "~/app/utils",
+    "$hooks": "~/app/hooks",
+    "$pages": "~/app/pages",
     "$test": "~/test"
   }
 }

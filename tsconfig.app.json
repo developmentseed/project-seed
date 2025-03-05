@@ -16,11 +16,11 @@
     "jsx": "react-jsx",
     "paths": {
       /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "$components/*": ["./src/components/*"],
-      "$utils/*": ["./src/utils/*"],
-      "$styles/*": ["./src/styles/*"],
-      "$hooks/*": ["./src/hooks/*"],
-      "$pages/*": ["./src/pages/*"]
+      "$components/*": ["./app/components/*"],
+      "$utils/*": ["./app/utils/*"],
+      "$styles/*": ["./app/styles/*"],
+      "$hooks/*": ["./app/hooks/*"],
+      "$pages/*": ["./app/pages/*"]
     },
 
     /* Linting */
@@ -30,5 +30,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["app"]
 }
