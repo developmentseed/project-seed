@@ -1,28 +1,7 @@
 {
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "strictNullChecks": true,
-    "baseUrl": "./",
-    "jsx": "react",
-    "paths": {
-      /* Specify a set of entries that re-map imports to additional lookup locations. */
-      "$components/*": ["./src/components/*"],
-      "$utils/*": ["./src/utils/*"],
-      "$styles/*": ["./src/styles/*"],
-      "$hooks/*": ["./src/hooks/*"],
-      "$pages/*": ["./src/pages/*"]
-    }
-  },
-  "exclude": [
-    ".git",
-    ".app-cache",
-    ".parcel-cache",
-    "parcel-bundle-reports",
-    ".npm",
-    ".npm-tmp",
-    "dist",
-    "dist*",
-    "node_modules",
-    "**/node_modules/*"
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ]
 }

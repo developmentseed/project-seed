@@ -2,18 +2,17 @@ import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginReact from 'eslint-plugin-react';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   {
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
-    settings: {
-      react: {
-        version: 'detect'
-      }
-    },
-    languageOptions: { globals: globals.browser }
+    settings: { react: { version: 'detect' } },
+    languageOptions: { ecmaVersion: 2020, globals: globals.browser },
+    plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh }
   },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
@@ -52,7 +51,7 @@ export default [
         2,
         { namedComponents: ['function-declaration', 'arrow-function'] }
       ],
-      // 'react-hooks/rules-of-hooks': 2, // Checks rules of Hooks
+      'react-hooks/rules-of-hooks': 2, // Checks rules of Hooks
       // 'react-hooks/exhaustive-deps': 1, // Checks effect dependencies
       // 'fp/no-mutating-methods': 1,
       '@typescript-eslint/no-explicit-any': 'warn'
