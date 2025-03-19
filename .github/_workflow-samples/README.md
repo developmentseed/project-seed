@@ -12,7 +12,7 @@ This workflow gets triggered with every push to the main branch, and doesn't ver
   ```
 - create an IAM with a policy that provides it with programmatic access to the bucket
 - add the AWS Access Key and Secret from the IAM [as encrypted secrets to the project repository](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository). Use `AWS_ACCESS_KEY_ID` & `AWS_SECRET_ACCESS_KEY`
-- add the bucket name as an evironemnt variable (`DEPLOY_BUCKET`) to the deploy workflow. Omit `s3://` from the bucket name.
+- add the bucket name as an environment variable (`DEPLOY_BUCKET`) to the deploy workflow. Omit `s3://` from the bucket name.
 
 ## Serving site from sub-path
 This workflow assumes that the site is served from the root of the URL (eg. devseed.com). To support a URL served from a sub-path (eg. devseed.com/explorer), add the following step:
