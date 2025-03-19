@@ -21,10 +21,10 @@ The values that are not immediately know should be left blank and filled ASAP.
 ## Vite for building
 
 [Vite](https://vite.dev/) is used to bundle all the needed assets for the application.
-There are two commands, both run via `npm`
+There are two commands, both run via `pnpm`
 
-- `npm run build` - clean & build everything and put it into dist folder
-- `npm run serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
+- `pnpm build` - clean & build everything and put it into dist folder
+- `pnpm serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
 
 ## Chakra UI for styling
 

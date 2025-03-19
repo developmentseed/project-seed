@@ -16,11 +16,11 @@
   },
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
-    "serve": "npm run clean && NODE_ENV=development vite --port 9000",
-    "build": "npm run clean && NODE_ENV=production tsc -b && vite build",
-    "stage": "npm run clean && NODE_ENV=staging tsc -b && vite build",
+    "serve": "pnpm clean && NODE_ENV=development vite",
+    "build": "pnpm clean && NODE_ENV=production tsc -b && vite build",
+    "stage": "pnpm clean && NODE_ENV=staging tsc -b && vite build",
     "clean": "rm -rf dist node_modules/.vite",
-    "lint": "npm run lint:scripts",
+    "lint": "pnpm lint:scripts",
     "lint:scripts": "eslint app/",
     "ts-check": "npx tsc --noEmit --skipLibCheck",
     "test": "jest"
@@ -61,7 +61,7 @@
     "@testing-library/react": "^16.2.0",
     "@testing-library/user-event": "^14.6.0",
     "@types/react": "^19.0.0",
-    "@types/react-dom": "^19.3.1",
+    "@types/react-dom": "^19.0.4",
     "next-themes": "^0.4.4",
     "polished": "^4.3.1",
     "react": "^18.0.0",
@@ -75,5 +75,6 @@
     "$hooks": "~/app/hooks",
     "$pages": "~/app/pages",
     "$test": "~/test"
-  }
+  },
+  "packageManager": "pnpm@10.6.4+sha512.da3d715bfd22a9a105e6e8088cfc7826699332ded60c423b14ec613a185f1602206702ff0fe4c438cb15c979081ce4cb02568e364b15174503a63c7a8e2a5f6c"
 }
