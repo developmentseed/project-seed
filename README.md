@@ -1,4 +1,4 @@
-# project-seed v7
+# project-seed v8
 
 A basic starting point for web projects that uses parcel as a Build System. 
 
@@ -18,22 +18,24 @@ Steps to follow as soon as you download this structure to start a project:
 It's better to do this straight away so no traces of project-seed are ever pushed to github and just looks more professional.
 The values that are not immediately know should be left blank and filled ASAP.
 
-## Parcel for building, node to orchestrate
+## Vite for building
 
-[Parcel](https://parceljs.org/) is used to bundle all the needed assets for the application, but there are some edge cases in some projects that parcel can't handle very well. Anything that must happen outside the final bundle, parcel can't deal with properly. For example, [parcel's static file plugin](https://github.com/elwin013/parcel-reporter-static-files-copy) will just copy the files to the dist folder, [without watching them](https://github.com/elwin013/parcel-reporter-static-files-copy#flaws-and-problems) for changes.
+[Vite](https://vite.dev/) is used to bundle all the needed assets for the application.
+There are two commands, both run via `pnpm`
 
-To solve this problem, some node glue code is used to orchestrate tasks. With it, tasks can be setup to do all that is needed, and then parcel is executed to bundle the app.  
+- `pnpm build` - clean & build everything and put it into dist folder
+- `pnpm serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
 
-There are two commands, both run via `npm`
+## Chakra UI for styling
 
-- `npm run build` - clean & build everything and put it into dist folder
-- `npm run serve` - serve the pages and utilize live reload on changes to fonts, images, scripts and HTML.
+Project Seed uses [Chakra UI](https://chakra-ui.com/) for styling as a UI framework. It is a component library that provides a set of accessible and reusable components facilitating the development of web applications.
 
+If you don't want it, you just need to remove the `@chakra-ui/react` dependency from the `package.json` and remove the import from the `main.tsx` file.
 
 ### Configurations and environment variables
 
 At times, it may be necessary to include options/variables specific to `production`, `staging` or `local` in the code. To handle this, there you can use `.env` files.
-See Parcel documentation on [env variables](https://parceljs.org/features/node-emulation/#environment-variables).
+See Vite's documentation on [env variables](https://vite.dev/guide/env-and-mode.html#env-variables-and-modes).
 
 ## Github Actions for CI
 Testing and deployment is taken care of by Github Actions. It is set up to:

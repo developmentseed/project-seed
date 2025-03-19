@@ -5,16 +5,17 @@
   <meta charset='utf-8'>
   <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no' />
 
-  <link rel="icon" href="{{baseurl}}/meta/favicon.png" type='image/png' sizes="32x32">
-  <link rel="icon" href="{{baseurl}}/meta/icon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{baseurl}}/meta/apple-touch-icon.png">
+  <link rel="icon" href="%BASE_URL%/meta/favicon.png" type='image/png' sizes="32x32">
+  <link rel="icon" href="%BASE_URL%/meta/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="%BASE_URL%/meta/apple-touch-icon.png">
 
-  <meta property="og:image" content='{{baseurl}}/meta/meta-image.png'>
-  <meta name="twitter:image" content='{{baseurl}}/meta/meta-image.png'>
-  <meta property='og:url' content='{{baseurl}}'>
+  <meta property="og:image" content='%BASE_URL%/meta/meta-image.png'>
+  <meta name="twitter:image" content='%BASE_URL%/meta/meta-image.png'>
+  <meta property='og:url' content='%BASE_URL%/'>
 
-  <title>{{appTitle}}</title>
-  <meta name='description' content='{{appDescription}}' />
+  <title>%VITE_APP_TITLE%</title>
+  <meta name='title' content='%VITE_APP_TITLE%'>
+  <meta name='description' content='%VITE_APP_DESCRIPTION%'>
 
   <style>
     #welcome-banner {
@@ -39,6 +40,9 @@
 
     #welcome-banner h1 {
       height: 3rem;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1.5rem;
     }
 
     #welcome-banner.dismissed {
@@ -62,7 +66,7 @@
             transitioned out. Replace the contents with something appropriate
             for the project.
           -->
-      <h1><img src="./media/layout/ds-logo-pos.svg" alt="Development Seed logotype" width="188" height="32" /></h1>
+      <h1><img src="./app/media/layout/ds-logo-pos.svg" alt="Development Seed logotype" width="188" height="32" /></h1>
       <p>In the beginning the Universe was created.
       <p>
       <p>This has made a lot of people very angry and been widely regarded as a bad move.</p>
@@ -86,7 +90,7 @@
     }
   </script>
 
-  <script src="./scripts/main.tsx" type="module"></script>
+  <script src="./app/main.tsx" type="module"></script>
 </body>
 
 </html>
