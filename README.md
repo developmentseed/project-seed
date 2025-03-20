@@ -1,6 +1,6 @@
 # project-seed v8
 
-A basic starting point for web projects that uses parcel as a Build System. 
+A basic starting point for web projects that uses vite as a Build System. 
 
 Uses typescript and jest for testing
 

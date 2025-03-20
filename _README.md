@@ -28,7 +28,7 @@ pnpm install
 ## Usage
 
 ### Config files
-Configuration is done using [dot.env](https://parceljs.org/features/node-emulation/#.env-files) files.
+Configuration is done using [dot.env](https://vite.dev/guide/env-and-mode#env-files) files.
 
 These files are used to simplify the configuration of the app and should not contain sensitive information.
 

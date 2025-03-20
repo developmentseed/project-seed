@@ -37,14 +37,14 @@ jobs:
         id: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
 
       - name: Cache dist
         uses: actions/cache@v4
         id: cache-dist
         with:
           path: dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - name: Install
         run: pnpm install
@@ -65,7 +65,7 @@ jobs:
         id: cache-dist
         with:
           path: dist
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ github.sha }}
+          key: ${{ runner.os }}-build-${{ github.sha }}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
