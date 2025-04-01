@@ -44,7 +44,7 @@ jobs:
         id: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
 
       - name: Install
         run: pnpm install
@@ -71,7 +71,7 @@ jobs:
         id: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
 
       - name: Install
         run: pnpm install
@@ -101,10 +101,10 @@ jobs:
         id: cache-node-modules
         with:
           path: node_modules
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package.json') }}
+          key: ${{ runner.os }}-build-${{ hashFiles('**/package.json') }}
 
       - name: Install
         run: pnpm install
 
       - name: Test
-        run: pnpm run test
+        run: pnpm test
