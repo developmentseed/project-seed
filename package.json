@@ -1,7 +1,7 @@
 {
   "name": "project-seed",
   "description": "Starter application by Development Seed",
-  "version": "8.0.0",
+  "version": "8.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/developmentseed/project-seed.git"
