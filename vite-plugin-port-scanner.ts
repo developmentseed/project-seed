@@ -8,7 +8,7 @@ export default function vitePortScanner() {
     // Vite config hooks
     async config(config, { command }) {
       if (command === 'serve') {
-        const startPort = config.server?.port || 5173;
+        const startPort = config.server?.port || 9000;
         const port = await portscanner.findAPortNotInUse(
           startPort,
           startPort + 100
