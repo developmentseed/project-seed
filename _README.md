@@ -60,4 +60,4 @@ pnpm stage
 This will package the app and place all the contents in the `dist` directory.
 The app can then be run by any web server.
 
-**When building the site for deployment provide the base url trough the `BASE_URL` environment variable. Omit the leading slash. (E.g. https://example.com)**
+**When building the site for deployment provide the base url trough the `VITE_BASE_URL` environment variable. Omit the leading slash. (E.g. https://example.com)**

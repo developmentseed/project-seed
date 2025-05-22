@@ -6,7 +6,7 @@ on:
     - 'main'
 
 env:
-  PUBLIC_URL: ${{ vars.PUBLIC_URL }}
+  VITE_BASE_URL: ${{ vars.VITE_BASE_URL }}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -73,4 +73,4 @@ jobs:
           branch: gh-pages
           clean: true
           single-commit: true
-          folder: /dist
+          folder: dist
