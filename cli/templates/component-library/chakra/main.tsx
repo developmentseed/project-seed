@@ -1,5 +1,8 @@
+import { ChakraProvider } from '@chakra-ui/react';
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+
+import system from './styles/theme';
 
 // Root component.
 function Root() {
@@ -11,9 +14,9 @@ function Root() {
   }, []);
 
   return (
-    <div>
+    <ChakraProvider value={system}>
       <p>Hello World</p>
-    </div>
+    </ChakraProvider>
   );
 }
 

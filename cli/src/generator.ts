@@ -81,7 +81,61 @@ async function updatePackageJson(
   }
 }
 
-export async function generateProject(projectName?: string): Promise<void> {
+async function applyComponentLibrary(
+  targetDir: string,
+  componentLibrary: string
+): Promise<void> {
+  const componentLibDir = path.resolve(
+    __dirname,
+    '../templates/component-library',
+    componentLibrary
+  );
+
+  if (!(await fs.pathExists(componentLibDir))) {
+    throw new Error(
+      `Component library template not found: ${componentLibrary}`
+    );
+  }
+
+  // Copy all files from component library variant (except package.json)
+  const items = await fs.readdir(componentLibDir);
+
+  for (const item of items) {
+    if (item === 'package.json') continue; // Handle package.json separately
+
+    const srcPath = path.join(componentLibDir, item);
+    const destPath = path.join(targetDir, 'app', item);
+    const stat = await fs.stat(srcPath);
+
+    if (stat.isDirectory()) {
+      await fs.copy(srcPath, destPath);
+    } else {
+      await fs.copy(srcPath, destPath);
+    }
+  }
+
+  // Merge package.json dependencies
+  const packageJsonPath = path.join(targetDir, 'package.json');
+  const variantPackagePath = path.join(componentLibDir, 'package.json');
+
+  if (await fs.pathExists(variantPackagePath)) {
+    const basePackage = await fs.readJson(packageJsonPath);
+    const variantPackage = await fs.readJson(variantPackagePath);
+
+    // Merge dependencies
+    basePackage.dependencies = {
+      ...basePackage.dependencies,
+      ...variantPackage.dependencies
+    };
+
+    await fs.writeJson(packageJsonPath, basePackage, { spaces: 2 });
+  }
+}
+
+export async function generateProject(
+  projectName?: string,
+  componentLibrary: string = 'chakra'
+): Promise<void> {
   if (!projectName) {
     throw new Error('Project name is required');
   }
@@ -94,8 +148,12 @@ export async function generateProject(projectName?: string): Promise<void> {
   }
 
   try {
-    // Copy base template files only
+    // Copy base template files
     await copyBaseTemplateFiles(baseTemplateDir, targetDir);
+
+    // Apply component library specific modifications
+    await applyComponentLibrary(targetDir, componentLibrary);
+
     await updatePackageJson(targetDir, projectName);
     await processReadme(targetDir, projectName);
     await createEnvFile(targetDir, projectName);
