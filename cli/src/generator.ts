@@ -1,26 +1,12 @@
 import fs from 'fs-extra';
 import path from 'path';
 
-const EXCLUDE = [
-  'cli',
-  'cli/generated',
-  'node_modules',
-  'dist',
-  '.git',
-  'pnpm-lock.yaml',
-  'package-lock.json',
-  'yarn.lock',
-  '.DS_Store'
-];
-
-async function copyProjectFiles(src: string, dest: string): Promise<void> {
+async function copyBaseTemplateFiles(src: string, dest: string): Promise<void> {
   await fs.ensureDir(dest);
 
   const items = await fs.readdir(src);
 
   for (const item of items) {
-    if (EXCLUDE.includes(item)) continue;
-
     const srcPath = path.join(src, item);
     const destPath = path.join(dest, item);
     const stat = await fs.stat(srcPath);
@@ -100,14 +86,16 @@ export async function generateProject(projectName?: string): Promise<void> {
     throw new Error('Project name is required');
   }
 
-  const targetDir = path.resolve('cli/generated', projectName);
+  const targetDir = path.resolve(__dirname, '../generated', projectName);
+  const baseTemplateDir = path.resolve(__dirname, '../templates/base');
 
   if (await fs.pathExists(targetDir)) {
     throw new Error(`Target directory ${targetDir} already exists.`);
   }
 
   try {
-    await copyProjectFiles(path.resolve('.'), targetDir);
+    // Copy base template files only
+    await copyBaseTemplateFiles(baseTemplateDir, targetDir);
     await updatePackageJson(targetDir, projectName);
     await processReadme(targetDir, projectName);
     await createEnvFile(targetDir, projectName);
