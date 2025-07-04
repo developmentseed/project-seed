@@ -1,0 +1,36 @@
+{
+  "name": "project-seed",
+  "description": "Command line interface for project-seed",
+  "version": "9.0.0",
+  "type": "commonjs",
+  "bin": {
+    "project-seed": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "vitest",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "fs-extra": "^11.2.0",
+    "inquirer": "^9.2.15"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^22.10.7",
+    "eslint": "^9.21.0",
+    "tsup": "^8.0.2",
+    "typescript": "~5.7.2",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
