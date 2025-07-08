@@ -20,7 +20,7 @@ export default function MapComponent() {
       <div
         style={{
           width: '100%',
-          height: '400px',
+          height: '100vh',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -47,7 +47,7 @@ export default function MapComponent() {
   }
 
   return (
-    <div style={{ width: '100%', height: '400px' }}>
+    <div style={{ width: '100%', height: '100vh' }}>
       <Map
         {...viewState}
         onMove={(event) => setViewState(event.viewState)}
