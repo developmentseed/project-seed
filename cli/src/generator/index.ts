@@ -1,0 +1,57 @@
+import fs from 'fs-extra';
+import path from 'path';
+import { copyBaseTemplateFiles } from './copy-base-template-files';
+import { createEnvFile } from './create-env-file';
+import { processReadme } from './process-readme';
+import { updatePackageJson } from './update-package-json';
+import { applyComponentLibrary } from './apply-component-library';
+
+/**
+ * Main project generation function that orchestrates the entire project creation process.
+ * Copies base template files, applies component library modifications, updates configuration
+ * files, and handles error cleanup if the generation fails.
+ *
+ * @param projectName - Name of the project to generate
+ * @param componentLibrary - Component library template to apply (e.g., 'chakra', 'uswds', 'none')
+ * @param force - Whether to overwrite existing directory if it exists
+ * @param targetDir - Target directory where the project will be generated
+ * @throws {Error} When target directory exists and force is false, or when generation fails
+ */
+export async function generateProject(
+  projectName: string,
+  componentLibrary: string,
+  force: boolean,
+  targetDir: string
+): Promise<void> {
+  const baseTemplateDir = path.resolve(__dirname, '../../templates/base');
+
+  if (await fs.pathExists(targetDir)) {
+    if (!force) {
+      throw new Error(
+        `Target directory ${targetDir} already exists. Use --force to overwrite.`
+      );
+    }
+    // Remove existing directory if force is enabled
+    await fs.remove(targetDir);
+  }
+
+  try {
+    // Copy base template files
+    await copyBaseTemplateFiles(baseTemplateDir, targetDir);
+
+    // Apply component library specific modifications
+    await applyComponentLibrary(targetDir, componentLibrary);
+
+    await updatePackageJson(targetDir, projectName);
+    await processReadme(targetDir, projectName);
+    await createEnvFile(targetDir, projectName);
+
+    // eslint-disable-next-line no-console
+    console.log(`Project generated at ${targetDir}`);
+  } catch (error) {
+    if (await fs.pathExists(targetDir)) {
+      await fs.remove(targetDir);
+    }
+    throw error;
+  }
+}

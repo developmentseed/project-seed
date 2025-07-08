@@ -2,7 +2,7 @@
 
 import { Command } from 'commander';
 import inquirer from 'inquirer';
-import { generateProject } from './generator.ts';
+import { generateProject } from './generator/index.ts';
 import pkg from '../package.json';
 
 const program = new Command();
@@ -46,6 +46,11 @@ program
           finalProjectName = name;
         }
 
+        // Ensure we have a valid project name
+        if (!finalProjectName || !finalProjectName.trim()) {
+          throw new Error('Project name is required');
+        }
+
         // If component library is not provided, prompt for it
         if (!componentLibrary) {
           const { library } = await inquirer.prompt([
@@ -61,6 +66,11 @@ program
             }
           ]);
           componentLibrary = library;
+        }
+
+        // Ensure we have a valid component library
+        if (!componentLibrary) {
+          throw new Error('Component library is required');
         }
 
         // Check if directory exists and handle interactive confirmation
@@ -98,9 +108,9 @@ program
         }
 
         await generateProject(
-          finalProjectName,
+          finalProjectName!,
           componentLibrary,
-          options.force,
+          options.force || false,
           targetDir
         );
       } catch (error) {
