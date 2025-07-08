@@ -5,14 +5,16 @@ import { createEnvFile } from './create-env-file';
 import { processReadme } from './process-readme';
 import { updatePackageJson } from './update-package-json';
 import { applyComponentLibrary } from './apply-component-library';
+import { applyMapLibrary } from './apply-map-library';
 
 /**
  * Main project generation function that orchestrates the entire project creation process.
- * Copies base template files, applies component library modifications, updates configuration
- * files, and handles error cleanup if the generation fails.
+ * Copies base template files, applies component library modifications, applies map library
+ * modifications, updates configuration files, and handles error cleanup if the generation fails.
  *
  * @param projectName - Name of the project to generate
  * @param componentLibrary - Component library template to apply (e.g., 'chakra', 'uswds', 'none')
+ * @param mapLibrary - Map library template to apply (e.g., 'mapbox-gl', 'maplibre', 'none')
  * @param force - Whether to overwrite existing directory if it exists
  * @param targetDir - Target directory where the project will be generated
  * @throws {Error} When target directory exists and force is false, or when generation fails
@@ -20,6 +22,7 @@ import { applyComponentLibrary } from './apply-component-library';
 export async function generateProject(
   projectName: string,
   componentLibrary: string,
+  mapLibrary: string,
   force: boolean,
   targetDir: string
 ): Promise<void> {
@@ -42,9 +45,12 @@ export async function generateProject(
     // Apply component library specific modifications
     await applyComponentLibrary(targetDir, componentLibrary);
 
+    // Apply map library specific modifications
+    await applyMapLibrary(targetDir, mapLibrary);
+
     await updatePackageJson(targetDir, projectName);
     await processReadme(targetDir, projectName);
-    await createEnvFile(targetDir, projectName);
+    await createEnvFile(targetDir, projectName, mapLibrary);
 
     // eslint-disable-next-line no-console
     console.log(`Project generated at ${targetDir}`);

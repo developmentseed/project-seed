@@ -15,15 +15,26 @@ program
     '-c, --component-library <library>',
     'Component library to use (none, chakra, uswds)'
   )
+  .option('-m, --map', 'Include map functionality')
+  .option(
+    '-l, --map-library <library>',
+    'Map library to use (mapbox-gl, maplibre)'
+  )
   .option('-f, --force', 'Overwrite existing directory if it exists')
   .action(
     async (
       projectName: string | undefined,
-      options: { componentLibrary?: string; force?: boolean }
+      options: {
+        componentLibrary?: string;
+        map?: boolean;
+        mapLibrary?: string;
+        force?: boolean;
+      }
     ) => {
       try {
         let finalProjectName = projectName;
         let componentLibrary = options.componentLibrary;
+        let mapLibrary = options.mapLibrary;
 
         // If project name is not provided, prompt for it
         if (!finalProjectName) {
@@ -73,6 +84,24 @@ program
           throw new Error('Component library is required');
         }
 
+        // If map library is not provided, prompt for it
+        if (!mapLibrary) {
+          const { mapChoice } = await inquirer.prompt([
+            {
+              type: 'list',
+              name: 'mapChoice',
+              message: 'Would you like to add a map to your project?',
+              choices: [
+                { name: 'No map', value: 'none' },
+                { name: 'Mapbox GL', value: 'mapbox-gl' },
+                { name: 'MapLibre (open source)', value: 'maplibre' }
+              ],
+              default: 'none'
+            }
+          ]);
+          mapLibrary = mapChoice;
+        }
+
         // Check if directory exists and handle interactive confirmation
         const fs = await import('fs-extra');
         const path = await import('path');
@@ -110,6 +139,7 @@ program
         await generateProject(
           finalProjectName!,
           componentLibrary,
+          mapLibrary || 'none',
           options.force || false,
           targetDir
         );

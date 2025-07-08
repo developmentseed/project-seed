@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-map-gl": "^8.0.4",
+    "mapbox-gl": "^3.13.0",
+    "@types/mapbox-gl": "^3.4.1"
+  }
+}
