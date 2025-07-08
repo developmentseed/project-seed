@@ -133,18 +133,21 @@ async function applyComponentLibrary(
 }
 
 export async function generateProject(
-  projectName?: string,
-  componentLibrary: string = 'chakra'
+  projectName: string,
+  componentLibrary: string,
+  force: boolean,
+  targetDir: string
 ): Promise<void> {
-  if (!projectName) {
-    throw new Error('Project name is required');
-  }
-
-  const targetDir = path.resolve(__dirname, '../generated', projectName);
   const baseTemplateDir = path.resolve(__dirname, '../templates/base');
 
   if (await fs.pathExists(targetDir)) {
-    throw new Error(`Target directory ${targetDir} already exists.`);
+    if (!force) {
+      throw new Error(
+        `Target directory ${targetDir} already exists. Use --force to overwrite.`
+      );
+    }
+    // Remove existing directory if force is enabled
+    await fs.remove(targetDir);
   }
 
   try {

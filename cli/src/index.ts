@@ -15,10 +15,11 @@ program
     '-c, --component-library <library>',
     'Component library to use (none, chakra, uswds)'
   )
+  .option('-f, --force', 'Overwrite existing directory if it exists')
   .action(
     async (
       projectName: string | undefined,
-      options: { componentLibrary?: string }
+      options: { componentLibrary?: string; force?: boolean }
     ) => {
       try {
         let finalProjectName = projectName;
@@ -62,7 +63,46 @@ program
           componentLibrary = library;
         }
 
-        await generateProject(finalProjectName, componentLibrary);
+        // Check if directory exists and handle interactive confirmation
+        const fs = await import('fs-extra');
+        const path = await import('path');
+        const targetDir = path.default.resolve(
+          __dirname,
+          '../generated',
+          finalProjectName!
+        );
+
+        if (await fs.default.pathExists(targetDir)) {
+          if (options.force) {
+            // Force is set, proceed with overwrite
+          } else {
+            // Force is not set, ask user for confirmation
+            const { overwrite } = await inquirer.prompt([
+              {
+                type: 'confirm',
+                name: 'overwrite',
+                message: `Directory '${finalProjectName}' already exists. Do you want to overwrite it?`,
+                default: false
+              }
+            ]);
+
+            if (!overwrite) {
+              // eslint-disable-next-line no-console
+              console.log('Project generation cancelled.');
+              return;
+            }
+
+            // Set force to true if user confirms overwrite
+            options.force = true;
+          }
+        }
+
+        await generateProject(
+          finalProjectName,
+          componentLibrary,
+          options.force,
+          targetDir
+        );
       } catch (error) {
         // eslint-disable-next-line no-console
         console.error('Error generating project:', error);
