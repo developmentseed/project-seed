@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import App from './app';
 
 // Root component.
 function Root() {
@@ -10,11 +11,7 @@ function Root() {
     setTimeout(() => banner.remove(), 500);
   }, []);
 
-  return (
-    <div>
-      <p>Hello World</p>
-    </div>
-  );
+  return <App />;
 }
 
 const rootNode = document.querySelector('#app-container')!;
