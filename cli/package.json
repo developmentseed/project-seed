@@ -12,6 +12,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
+    "start": "tsx src/index.ts",
     "test": "vitest",
     "lint": "eslint src/",
     "type-check": "tsc --noEmit"
@@ -27,6 +28,7 @@
     "@types/node": "^22.10.7",
     "eslint": "^9.21.0",
     "tsup": "^8.0.2",
+    "tsx": "^4.19.2",
     "typescript": "~5.7.2",
     "vitest": "^2.1.8"
   },

@@ -8,18 +8,48 @@ The CLI is part of the project-seed repository and can be used locally during de
 
 ## Usage
 
+### Option 1: Run Directly from Source (Development)
+
+For development and testing, you can run the CLI directly from the TypeScript source:
+
 ```bash
-# Generate a new project (interactive prompts)
-node cli/dist/index.js
+# Install dependencies first
+cd cli
+pnpm install
+
+# Run using the convenience script
+pnpm start
 
 # Generate with specific project name and component library
-node cli/dist/index.js my-project-name --component-library chakra
+pnpm start my-project-name --component-library chakra
 
 # Show help
-node cli/dist/index.js --help
+pnpm start --help
 
 # Show version
-node cli/dist/index.js --version
+pnpm start --version
+```
+
+### Option 2: Build and Run (Production)
+
+For production use or when you want to run the compiled version:
+
+```bash
+# Build the CLI
+cd cli
+pnpm build
+
+# Run the built version
+node ./dist/index.js
+
+# Generate with specific project name and component library
+node ./dist/index.js my-project-name --component-library chakra
+
+# Show help
+node ./dist/index.js --help
+
+# Show version
+node ./dist/index.js --version
 ```
 
 ### Component Library Options
@@ -46,14 +76,6 @@ cd cli
 pnpm install
 ```
 
-### Build
-
-```bash
-pnpm build
-```
-
-The CLI is built using [tsup](https://github.com/egoist/tsup) and outputs to `dist/index.js`.
-
 ### Development Mode
 
 ```bash
@@ -72,6 +94,12 @@ pnpm test
 
 ```bash
 pnpm lint
+```
+
+### Type Checking
+
+```bash
+pnpm type-check
 ```
 
 ## Generated Projects
