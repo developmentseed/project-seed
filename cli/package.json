@@ -13,7 +13,6 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "start": "tsx src/index.ts",
-    "test": "vitest",
     "lint": "eslint src/",
     "type-check": "tsc --noEmit"
   },
