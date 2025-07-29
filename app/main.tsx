@@ -4,14 +4,15 @@ import { createRoot } from 'react-dom/client';
 
 import system from './styles/theme';
 
-// If using a router add the public url to the base path.
-const publicUrl = import.meta.env.VITE_BASE_URL || '';
-// The ds.io prefix is used just to get the base path when no public url is set.
-const baseName = new URL(
-  publicUrl.startsWith('http')
-    ? publicUrl
-    : `https://ds.io/${publicUrl.replace(/^\//, '')}`
-  ).pathname;
+// // If using a router add the public url to the base path.
+// const publicUrl = import.meta.env.VITE_BASE_URL || '';
+
+// // The ds.io prefix is used just to get the base path when no public url is set.
+// const baseName = new URL(
+//   publicUrl.startsWith('http')
+//     ? publicUrl
+//     : `https://ds.io/${publicUrl.replace(/^\//, '')}`
+//   ).pathname;
 
 // Root component.
 function Root() {
