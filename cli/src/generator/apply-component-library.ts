@@ -30,12 +30,7 @@ export async function applyComponentLibrary(
     if (item === 'package.json') continue;
     const srcPath = path.join(componentLibDir, item);
     const destPath = path.join(targetDir, 'app', item);
-    const stat = await fs.stat(srcPath);
-    if (stat.isDirectory()) {
-      await fs.copy(srcPath, destPath);
-    } else {
-      await fs.copy(srcPath, destPath);
-    }
+    await fs.copy(srcPath, destPath);
   }
   const packageJsonPath = path.join(targetDir, 'package.json');
   const variantPackagePath = path.join(componentLibDir, 'package.json');
