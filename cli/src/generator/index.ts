@@ -1,6 +1,5 @@
 import fs from 'fs-extra';
 import path from 'path';
-import { copyBaseTemplateFiles } from './copy-base-template-files';
 import { createEnvFile } from './create-env-file';
 import { processReadme } from './process-readme';
 import { updatePackageJson } from './update-package-json';
@@ -40,7 +39,7 @@ export async function generateProject(
 
   try {
     // Copy base template files
-    await copyBaseTemplateFiles(baseTemplateDir, targetDir);
+    await fs.copy(baseTemplateDir, targetDir);
 
     // Apply component library specific modifications
     await applyComponentLibrary(targetDir, componentLibrary);
