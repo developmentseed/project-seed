@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
+import { mergePackageDependencies } from './merge-package-dependencies';
 
 /**
  * Applies the selected map library template to the generated project.
@@ -34,18 +35,6 @@ export async function applyMapLibrary(
     await fs.copy(srcPath, destPath);
   }
 
-  const packageJsonPath = path.join(targetDir, 'package.json');
   const variantPackagePath = path.join(mapLibDir, 'package.json');
-
-  if (await fs.pathExists(variantPackagePath)) {
-    const basePackage = await fs.readJson(packageJsonPath);
-    const variantPackage = await fs.readJson(variantPackagePath);
-
-    basePackage.dependencies = {
-      ...basePackage.dependencies,
-      ...variantPackage.dependencies
-    };
-
-    await fs.writeJson(packageJsonPath, basePackage, { spaces: 2 });
-  }
+  await mergePackageDependencies(targetDir, variantPackagePath);
 }
