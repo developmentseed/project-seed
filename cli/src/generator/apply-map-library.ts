@@ -1,11 +1,19 @@
 import fs from 'fs-extra';
 import path from 'path';
 
+/**
+ * Applies the selected map library template to the generated project.
+ * Copies files from the map library template directory and merges dependencies
+ * from the template's package.json into the main project's package.json.
+ *
+ * @param targetDir - Target directory where the project is being generated
+ * @param mapLibrary - Name of the map library template to apply
+ * @throws {Error} When the map library template directory is not found
+ */
 export async function applyMapLibrary(
   targetDir: string,
   mapLibrary: string
 ): Promise<void> {
-  // If no map library is selected, skip map library application
   if (mapLibrary === 'none') {
     return;
   }
@@ -16,24 +24,16 @@ export async function applyMapLibrary(
     throw new Error(`Map library template not found: ${mapLibrary}`);
   }
 
-  // Copy map components and other files (except main.tsx and package.json)
   const items = await fs.readdir(mapLibDir);
 
   for (const item of items) {
-    if (item === 'package.json' || item === 'main.tsx') continue; // Handle these separately
+    if (item === 'package.json' || item === 'main.tsx') continue;
 
     const srcPath = path.join(mapLibDir, item);
     const destPath = path.join(targetDir, 'app', item);
-    const stat = await fs.stat(srcPath);
-
-    if (stat.isDirectory()) {
-      await fs.copy(srcPath, destPath);
-    } else {
-      await fs.copy(srcPath, destPath);
-    }
+    await fs.copy(srcPath, destPath);
   }
 
-  // Merge package.json dependencies
   const packageJsonPath = path.join(targetDir, 'package.json');
   const variantPackagePath = path.join(mapLibDir, 'package.json');
 
@@ -41,7 +41,6 @@ export async function applyMapLibrary(
     const basePackage = await fs.readJson(packageJsonPath);
     const variantPackage = await fs.readJson(variantPackagePath);
 
-    // Merge dependencies
     basePackage.dependencies = {
       ...basePackage.dependencies,
       ...variantPackage.dependencies

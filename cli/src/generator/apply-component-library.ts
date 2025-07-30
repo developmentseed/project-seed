@@ -5,7 +5,6 @@ import path from 'path';
  * Applies the selected component library template to the generated project.
  * Copies files from the component library template directory and merges dependencies
  * from the template's package.json into the main project's package.json.
- * Skips copying the template's package.json file to avoid conflicts.
  *
  * @param targetDir - Target directory where the project is being generated
  * @param componentLibrary - Name of the component library template to apply
