@@ -2,7 +2,6 @@ import fs from 'fs-extra';
 import path from 'path';
 import { createEnvFile } from './create-env-file';
 import { processReadme } from './process-readme';
-import { updatePackageJson } from './update-package-json';
 import { applyComponentLibrary } from './apply-component-library';
 import { applyMapLibrary } from './apply-map-library';
 
@@ -47,7 +46,17 @@ export async function generateProject(
     // Apply map library specific modifications
     await applyMapLibrary(targetDir, mapLibrary);
 
-    await updatePackageJson(targetDir, projectName);
+    // Update package.json with project name
+    const pkgPath = path.join(targetDir, 'package.json');
+    if (await fs.pathExists(pkgPath)) {
+      const pkg = await fs.readJson(pkgPath);
+      await fs.writeJson(pkgPath, { ...pkg, name: projectName }, { spaces: 2 });
+    } else {
+      throw new Error(
+        'Template package.json not found. Please check the template directory.'
+      );
+    }
+
     await processReadme(targetDir, projectName);
     await createEnvFile(targetDir, projectName, mapLibrary);
 
