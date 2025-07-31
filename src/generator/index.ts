@@ -4,6 +4,7 @@ import { createEnvFile } from './create-env-file';
 import { processReadme } from './process-readme';
 import { applyComponentLibrary } from './apply-component-library';
 import { applyMapLibrary } from './apply-map-library';
+import { getTemplatePath } from './template-paths';
 
 /**
  * Main project generation function that orchestrates the entire project creation process.
@@ -24,7 +25,7 @@ export async function generateProject(
   force: boolean,
   targetDir: string
 ): Promise<void> {
-  const baseTemplateDir = path.resolve(__dirname, '../../templates/base');
+  const baseTemplateDir = getTemplatePath('base');
 
   if (await fs.pathExists(targetDir)) {
     if (!force) {
