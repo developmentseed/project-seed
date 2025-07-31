@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@trussworks/react-uswds": "^10.0.2",
+    "@uswds/uswds": "^3.7.1"
+  }
+}
