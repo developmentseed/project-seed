@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { mergePackageDependencies } from './merge-package-dependencies';
+import { getTemplatePath } from './template-paths';
 
 /**
  * Applies the selected map library template to the generated project.
@@ -19,7 +20,7 @@ export async function applyMapLibrary(
     return;
   }
 
-  const mapLibDir = path.resolve(__dirname, '../../templates/map', mapLibrary);
+  const mapLibDir = getTemplatePath('map', mapLibrary);
 
   if (!(await fs.pathExists(mapLibDir))) {
     throw new Error(`Map library template not found: ${mapLibrary}`);
