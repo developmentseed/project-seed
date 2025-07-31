@@ -5,6 +5,7 @@ import { processReadme } from './process-readme';
 import { applyComponentLibrary } from './apply-component-library';
 import { applyMapLibrary } from './apply-map-library';
 import { getTemplatePath } from './template-paths';
+import { setupGitHooks } from './setup-git-hooks';
 
 /**
  * Main project generation function that orchestrates the entire project creation process.
@@ -60,6 +61,9 @@ export async function generateProject(
 
     await processReadme(targetDir, projectName);
     await createEnvFile(targetDir, projectName, mapLibrary);
+
+    // Initialize git and set up husky hooks
+    await setupGitHooks(targetDir);
 
     // eslint-disable-next-line no-console
     console.log(`Project generated at ${targetDir}`);
