@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@chakra-ui/react": "^3.23.0",
-    "@emotion/react": "^11.14.0"
+    "@emotion/react": "^11.14.0",
+    "polished": "^4.3.1"
   }
 }
