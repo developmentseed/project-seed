@@ -4,6 +4,7 @@ import { createEnvFile } from './create-env-file';
 import { processReadme } from './process-readme';
 import { applyComponentLibrary } from './apply-component-library';
 import { applyMapLibrary } from './apply-map-library';
+import { getTemplatePath } from './template-paths';
 import { setupGitHooks } from './setup-git-hooks';
 
 /**
@@ -25,7 +26,7 @@ export async function generateProject(
   force: boolean,
   targetDir: string
 ): Promise<void> {
-  const baseTemplateDir = path.resolve(__dirname, '../../templates/base');
+  const baseTemplateDir = getTemplatePath('base');
 
   if (await fs.pathExists(targetDir)) {
     if (!force) {

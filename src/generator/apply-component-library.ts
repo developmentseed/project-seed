@@ -1,6 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { mergePackageDependencies } from './merge-package-dependencies';
+import { getTemplatePath } from './template-paths';
 
 /**
  * Applies the selected component library template to the generated project.
@@ -15,9 +16,8 @@ export async function applyComponentLibrary(
   targetDir: string,
   componentLibrary: string
 ): Promise<void> {
-  const componentLibDir = path.resolve(
-    __dirname,
-    '../../templates/component-library',
+  const componentLibDir = getTemplatePath(
+    'component-library',
     componentLibrary
   );
   if (!(await fs.pathExists(componentLibDir))) {
