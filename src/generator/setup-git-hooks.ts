@@ -13,7 +13,24 @@ export async function setupGitHooks(targetDir: string): Promise<void> {
     // Initialize git repository if it doesn't exist
     const gitDir = path.join(targetDir, '.git');
     if (!(await fs.pathExists(gitDir))) {
-      execSync('git init', { cwd: targetDir, stdio: 'inherit' });
+      try {
+        execSync('git init', { cwd: targetDir, stdio: 'inherit' });
+      } catch (gitInitError) {
+        if (gitInitError instanceof Error) {
+          // eslint-disable-next-line no-console
+          console.error(
+            `Error: Failed to initialize Git repository in ${targetDir}.`
+          );
+          // eslint-disable-next-line no-console
+          console.error(`Details: ${gitInitError.message}`);
+        } else {
+          // eslint-disable-next-line no-console
+          console.error(
+            'Error: An unknown error occurred while initializing Git.'
+          );
+        }
+        throw gitInitError; // Re-throw to allow outer catch block to handle it
+      }
     }
 
     // Set git hooks path to .husky directory
@@ -33,8 +50,8 @@ export async function setupGitHooks(targetDir: string): Promise<void> {
         const hookPath = path.join(huskyDir, file);
         const stats = await fs.stat(hookPath);
         if (stats.isFile()) {
-          // Make the hook file executable
-          execSync(`chmod +x "${hookPath}"`, { stdio: 'inherit' });
+          // Make the hook file executable (0o755 = rwxr-xr-x)
+          await fs.chmod(hookPath, 0o755);
         }
       }
     }
