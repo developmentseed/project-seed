@@ -25,6 +25,7 @@ export default [
       'prefer-promise-reject-errors': 0,
       // 'import/order': 2,
       'react/button-has-type': 2,
+      'react/react-in-jsx-scope': 0,
       'react/jsx-closing-bracket-location': 2,
       'react/jsx-closing-tag-location': 2,
       'react/jsx-curly-spacing': 2,
