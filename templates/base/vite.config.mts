@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
-import { resolveFromImportMeta } from '../src/generator/resolve-path';
+import { resolveFromImportMeta } from '../src/generator/resolve-from-import-path';
 
 import vitePortScanner from './vite-plugin-port-scanner';
 import pkg from './package.json';
