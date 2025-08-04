@@ -1,4 +1,5 @@
 import path from 'path';
+import { resolveFromImportMeta } from './resolve-from-import-path';
 
 /**
  * Gets the absolute path to the templates directory.
@@ -9,9 +10,9 @@ import path from 'path';
  */
 function getTemplatesDir(): string {
   // Check if we're running from source (development) or compiled (production)
-  const isDev = __dirname.includes('/src/');
+  const isDev = import.meta.url.includes('/src/');
   const relativePath = isDev ? '../../templates' : '../templates';
-  return path.resolve(__dirname, relativePath);
+  return resolveFromImportMeta(import.meta.url, relativePath);
 }
 
 /**

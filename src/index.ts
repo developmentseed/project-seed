@@ -4,6 +4,8 @@ import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { generateProject } from './generator/index.ts';
 import pkg from '../package.json';
+import fs from 'fs-extra';
+import { resolveFromImportMeta } from './generator/resolve-from-import-path.ts';
 
 const program = new Command();
 
@@ -103,15 +105,13 @@ program
         }
 
         // Check if directory exists and handle interactive confirmation
-        const fs = await import('fs-extra');
-        const path = await import('path');
-        const targetDir = path.default.resolve(
-          __dirname,
+        const targetDir = resolveFromImportMeta(
+          import.meta.url,
           '../generated',
           finalProjectName!
         );
 
-        if (await fs.default.pathExists(targetDir)) {
+        if (await fs.pathExists(targetDir)) {
           if (options.force) {
             // Force is set, proceed with overwrite
           } else {
