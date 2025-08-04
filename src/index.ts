@@ -5,7 +5,7 @@ import inquirer from 'inquirer';
 import { generateProject } from './generator/index.ts';
 import pkg from '../package.json';
 import fs from 'fs-extra';
-import { resolveFromImportMeta } from './generator/resolve-from-import-path.ts';
+import { resolveFromImportMeta } from './generator/resolve-from-import-path';
 
 const program = new Command();
 
