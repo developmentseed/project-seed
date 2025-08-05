@@ -21,7 +21,7 @@ program
   .option('-m, --map', 'Include map functionality')
   .option(
     '-l, --map-library <library>',
-    'Map library to use (mapbox-gl, maplibre)'
+    'Map library to use (mapbox-gl, maplibre-gl)'
   )
   .option('-f, --force', 'Overwrite existing directory if it exists')
   .action(
@@ -97,7 +97,7 @@ program
               choices: [
                 { name: 'No map', value: 'none' },
                 { name: 'Mapbox GL', value: 'mapbox-gl' },
-                { name: 'MapLibre (open source)', value: 'maplibre' }
+                { name: 'MapLibre GL', value: 'maplibre-gl' }
               ],
               default: 'none'
             }

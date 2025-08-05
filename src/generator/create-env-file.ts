@@ -9,7 +9,7 @@ import path from 'path';
  *
  * @param targetDir - Directory where the .env file will be created
  * @param projectName - Project name to use for the app title and description
- * @param mapLibrary - Map library being used (e.g., 'mapbox-gl', 'maplibre', 'none')
+ * @param mapLibrary - Map library being used (e.g., 'mapbox-gl', 'maplibre-gl', 'none')
  */
 export async function createEnvFile(
   targetDir: string,
