@@ -5,7 +5,8 @@ import inquirer from 'inquirer';
 import { generateProject } from './generator/index.ts';
 import pkg from '../package.json';
 import fs from 'fs-extra';
-import { resolveFromImportMeta } from './generator/resolve-from-import-path';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const program = new Command();
 
@@ -105,9 +106,13 @@ program
         }
 
         // Check if directory exists and handle interactive confirmation
-        const targetDir = resolveFromImportMeta(
-          import.meta.url,
-          '../generated',
+        const projectRoot = path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '..'
+        );
+        const targetDir = path.join(
+          projectRoot,
+          'generated',
           finalProjectName!
         );
 
