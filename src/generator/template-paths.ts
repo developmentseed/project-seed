@@ -26,6 +26,13 @@ async function findProjectRoot(startDir: string): Promise<string> {
   );
 }
 
+/**
+ * Gets the absolute path to a specific template subdirectory.
+ *
+ * @param subdir - The subdirectory within templates (e.g., 'base', 'component-library', 'map')
+ * @param name - Optional specific template name within the subdirectory
+ * @returns The absolute path to the template directory
+ */
 export async function getTemplatePath(
   subdir: string,
   name?: string
