@@ -1,27 +1,36 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import fs from 'fs';
+import fs from 'fs/promises';
 
 /**
  * Finds the nearest ancestor directory (including the starting directory) that contains a package.json file.
  * Traverses up the directory tree from the given start directory.
  *
  * @param {string} startDir - The directory to start searching from.
- * @returns {string} The path to the directory containing package.json, or the original startDir if none is found.
- *
- * If no package.json is found in any ancestor directory, returns the original startDir.
+ * @returns {Promise<string>} The path to the directory containing package.json.
+ * @throws {Error} When no package.json is found in any parent directory.
  */
-function findProjectRoot(startDir: string): string {
+async function findProjectRoot(startDir: string): Promise<string> {
   let dir = startDir;
   while (dir !== path.dirname(dir)) {
-    if (fs.existsSync(path.join(dir, 'package.json'))) return dir;
+    try {
+      await fs.access(path.join(dir, 'package.json'));
+      return dir;
+    } catch {
+      // package.json not found in this directory, continue searching up
+    }
     dir = path.dirname(dir);
   }
-  return startDir;
+  throw new Error(
+    `Could not find project root from starting directory: ${startDir}. No package.json found in any parent directory.`
+  );
 }
 
-export function getTemplatePath(subdir: string, name?: string): string {
+export async function getTemplatePath(
+  subdir: string,
+  name?: string
+): Promise<string> {
   const currentFile = fileURLToPath(import.meta.url);
-  const root = findProjectRoot(path.dirname(currentFile));
+  const root = await findProjectRoot(path.dirname(currentFile));
   return path.join(root, 'templates', subdir, ...(name ? [name] : []));
 }

@@ -26,7 +26,7 @@ export async function generateProject(
   force: boolean,
   targetDir: string
 ): Promise<void> {
-  const baseTemplateDir = getTemplatePath('base');
+  const baseTemplateDir = await getTemplatePath('base');
 
   if (await fs.pathExists(targetDir)) {
     if (!force) {
