@@ -20,7 +20,7 @@ export async function applyMapLibrary(
     return;
   }
 
-  const mapLibDir = getTemplatePath('map', mapLibrary);
+  const mapLibDir = await getTemplatePath('map', mapLibrary);
 
   if (!(await fs.pathExists(mapLibDir))) {
     throw new Error(`Map library template not found: ${mapLibrary}`);

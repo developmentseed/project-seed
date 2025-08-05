@@ -16,7 +16,7 @@ export async function applyComponentLibrary(
   targetDir: string,
   componentLibrary: string
 ): Promise<void> {
-  const componentLibDir = getTemplatePath(
+  const componentLibDir = await getTemplatePath(
     'component-library',
     componentLibrary
   );
