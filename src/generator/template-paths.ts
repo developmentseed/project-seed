@@ -1,17 +1,29 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs/promises';
 
 /**
- * Gets the absolute path to the templates directory.
- * Handles both development mode (running from TypeScript source) and
- * production mode (running from compiled JavaScript).
+ * Finds the nearest ancestor directory (including the starting directory) that contains a package.json file.
+ * Traverses up the directory tree from the given start directory.
  *
- * @returns The absolute path to the templates directory
+ * @param {string} startDir - The directory to start searching from.
+ * @returns {Promise<string>} The path to the directory containing package.json.
+ * @throws {Error} When no package.json is found in any parent directory.
  */
-function getTemplatesDir(): string {
-  // Check if we're running from source (development) or compiled (production)
-  const isDev = __dirname.includes('/src/');
-  const relativePath = isDev ? '../../templates' : '../templates';
-  return path.resolve(__dirname, relativePath);
+async function findProjectRoot(startDir: string): Promise<string> {
+  let dir = startDir;
+  while (dir !== path.dirname(dir)) {
+    try {
+      await fs.access(path.join(dir, 'package.json'));
+      return dir;
+    } catch {
+      // package.json not found in this directory, continue searching up
+    }
+    dir = path.dirname(dir);
+  }
+  throw new Error(
+    `Could not find project root from starting directory: ${startDir}. No package.json found in any parent directory.`
+  );
 }
 
 /**
@@ -21,9 +33,13 @@ function getTemplatesDir(): string {
  * @param name - Optional specific template name within the subdirectory
  * @returns The absolute path to the template directory
  */
-export function getTemplatePath(subdir: string, name?: string): string {
-  const templatesDir = getTemplatesDir();
+export async function getTemplatePath(
+  subdir: string,
+  name?: string
+): Promise<string> {
+  const currentFile = fileURLToPath(import.meta.url);
+  const root = await findProjectRoot(path.dirname(currentFile));
   return name
-    ? path.join(templatesDir, subdir, name)
-    : path.join(templatesDir, subdir);
+    ? path.join(root, 'templates', subdir, name)
+    : path.join(root, 'templates', subdir);
 }

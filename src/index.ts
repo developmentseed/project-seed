@@ -4,6 +4,9 @@ import { Command } from 'commander';
 import inquirer from 'inquirer';
 import { generateProject } from './generator/index.ts';
 import pkg from '../package.json';
+import fs from 'fs-extra';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const program = new Command();
 
@@ -18,7 +21,7 @@ program
   .option('-m, --map', 'Include map functionality')
   .option(
     '-l, --map-library <library>',
-    'Map library to use (mapbox-gl, maplibre)'
+    'Map library to use (mapbox-gl, maplibre-gl)'
   )
   .option('-f, --force', 'Overwrite existing directory if it exists')
   .action(
@@ -94,7 +97,7 @@ program
               choices: [
                 { name: 'No map', value: 'none' },
                 { name: 'Mapbox GL', value: 'mapbox-gl' },
-                { name: 'MapLibre (open source)', value: 'maplibre' }
+                { name: 'MapLibre GL', value: 'maplibre-gl' }
               ],
               default: 'none'
             }
@@ -103,15 +106,17 @@ program
         }
 
         // Check if directory exists and handle interactive confirmation
-        const fs = await import('fs-extra');
-        const path = await import('path');
-        const targetDir = path.default.resolve(
-          __dirname,
-          '../generated',
+        const projectRoot = path.resolve(
+          path.dirname(fileURLToPath(import.meta.url)),
+          '..'
+        );
+        const targetDir = path.join(
+          projectRoot,
+          'generated',
           finalProjectName!
         );
 
-        if (await fs.default.pathExists(targetDir)) {
+        if (await fs.pathExists(targetDir)) {
           if (options.force) {
             // Force is set, proceed with overwrite
           } else {

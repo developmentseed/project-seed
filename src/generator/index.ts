@@ -14,7 +14,7 @@ import { setupGitHooks } from './setup-git-hooks';
  *
  * @param projectName - Name of the project to generate
  * @param componentLibrary - Component library template to apply (e.g., 'chakra', 'uswds', 'none')
- * @param mapLibrary - Map library template to apply (e.g., 'mapbox-gl', 'maplibre', 'none')
+ * @param mapLibrary - Map library template to apply (e.g., 'mapbox-gl', 'maplibre-gl', 'none')
  * @param force - Whether to overwrite existing directory if it exists
  * @param targetDir - Target directory where the project will be generated
  * @throws {Error} When target directory exists and force is false, or when generation fails
@@ -26,7 +26,7 @@ export async function generateProject(
   force: boolean,
   targetDir: string
 ): Promise<void> {
-  const baseTemplateDir = getTemplatePath('base');
+  const baseTemplateDir = await getTemplatePath('base');
 
   if (await fs.pathExists(targetDir)) {
     if (!force) {
