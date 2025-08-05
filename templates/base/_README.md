@@ -43,7 +43,7 @@ Run the project locally by copying the `.env` to `.env.local` and setting the fo
 ### Starting the app
 
 ```sh
-pnpm serve
+pnpm dev
 ```
 
 Compiles the sass files, javascript, and launches the server making the site available at `http://localhost:9000/`

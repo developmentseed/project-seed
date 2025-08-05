@@ -17,7 +17,7 @@
   "homepage": "https://github.com/developmentseed/project-seed",
   "scripts": {
     "prepare": "husky",
-    "serve": "pnpm clean && NODE_ENV=development vite",
+    "dev": "pnpm clean && NODE_ENV=development vite",
     "build": "pnpm clean && NODE_ENV=production tsc -b && vite build",
     "stage": "pnpm clean && NODE_ENV=staging tsc -b && vite build",
     "clean": "rm -rf dist node_modules/.vite",
