@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import { fileURLToPath } from 'url';
 import * as path from 'path';
 
-import vitePortScanner from './vite-plugin-port-scanner';
 import pkg from './package.json';
 
 const alias = Object.entries(pkg.alias).reduce((acc, [key, value]) => {
@@ -18,9 +17,12 @@ const alias = Object.entries(pkg.alias).reduce((acc, [key, value]) => {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), vitePortScanner()],
+  plugins: [react()],
   define: {
     APP_VERSION: JSON.stringify(pkg.version)
+  },
+  server: {
+    port: 9000
   },
   resolve: {
     alias
