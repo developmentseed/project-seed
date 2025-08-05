@@ -39,5 +39,7 @@ export async function getTemplatePath(
 ): Promise<string> {
   const currentFile = fileURLToPath(import.meta.url);
   const root = await findProjectRoot(path.dirname(currentFile));
-  return path.join(root, 'templates', subdir, ...(name ? [name] : []));
+  return name
+    ? path.join(root, 'templates', subdir, name)
+    : path.join(root, 'templates', subdir);
 }
