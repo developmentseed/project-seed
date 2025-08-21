@@ -14,7 +14,6 @@ For development and testing, you can run the CLI directly from the TypeScript so
 
 ```bash
 # Install dependencies first
-cd cli
 pnpm install
 
 # Run using the convenience script
@@ -39,7 +38,6 @@ For production use or when you want to run the compiled version:
 
 ```bash
 # Build the CLI
-cd cli
 pnpm build
 
 # Run the built version
@@ -139,7 +137,7 @@ Projects are generated in `cli/generated/` directory. This directory is gitignor
 The CLI uses a modular template system:
 
 ```
-cli/templates/
+templates/
 ├── base/                    # Base template (core project files)
 │   ├── app/
 │   ├── public/
@@ -180,18 +178,18 @@ The generator:
 
 To add a new component library variant:
 
-1. Create a new folder in `cli/templates/component-library/`
+1. Create a new folder in `templates/component-library/`
 2. Add `main.tsx` with the component library setup
 3. Add `package.json` with component library dependencies
-4. Update the CLI choices in `cli/src/index.ts`
+4. Update the CLI choices in `src/index.ts`
 5. Test the new variant
 
 ### Adding New Map Libraries
 
 To add a new map library variant:
 
-1. Create a new folder in `cli/templates/map/`
+1. Create a new folder in `templates/map/`
 2. Add `app.tsx` with the map library setup
 3. Add `package.json` with map library dependencies
-4. Update the CLI choices in `cli/src/index.ts`
+4. Update the CLI choices in `src/index.ts`
 5. Test the new variant
