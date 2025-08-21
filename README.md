@@ -85,7 +85,6 @@ When run without arguments, the CLI will prompt for:
 ### Setup
 
 ```bash
-cd cli
 pnpm install
 ```
 
@@ -105,7 +104,7 @@ For testing and development purposes, you can generate all possible combinations
 pnpm generate-all
 ```
 
-This generates all the projects in the `cli/generated/` directory with descriptive names like `project-seed-chakra-mapbox-gl`. Useful for testing template combinations and QA.
+This generates all the projects in the `generated/` directory with descriptive names like `project-seed-chakra-mapbox-gl`. Useful for testing template combinations and QA.
 
 ### Linting
 
@@ -121,7 +120,7 @@ pnpm type-check
 
 ## Generated Projects
 
-Projects are generated in `cli/generated/` directory. This directory is gitignored to prevent generated projects from being committed.
+Projects are generated in `generated/` directory. This directory is gitignored to prevent generated projects from being committed.
 
 ### What Gets Generated
 
