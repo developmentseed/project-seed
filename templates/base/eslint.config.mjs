@@ -17,5 +17,16 @@ export default [
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
-  eslintPluginPrettierRecommended,  
+  eslintPluginPrettierRecommended,
+  {
+    name: 'Custom Rules',
+    rules: {
+      'no-console': 2,
+      'react/react-in-jsx-scope': 'off',
+      'react/no-array-index-key': 2,
+      'react-hooks/rules-of-hooks': 2, // Checks rules of Hooks
+      'react/jsx-pascal-case': 2,
+      'react/self-closing-comp': 2
+    }
+  }
 ];
