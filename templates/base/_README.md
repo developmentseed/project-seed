@@ -29,16 +29,14 @@ pnpm install
 
 ## Usage
 
-### Config files
+### Environment Configuration
 
-Configuration is done using [dot.env](https://vite.dev/guide/env-and-mode#env-files) files.
+The application uses [dot.env](https://vite.dev/guide/env-and-mode#env-files) files with environment variables for configuration. A template file `.env.example` is provided as a template.
 
-These files are used to simplify the configuration of the app and should not contain sensitive information.
-
-Run the project locally by copying the `.env` to `.env.local` and setting the following environment variables:
-
-| --- | --- |
-| `{{VARIABLE}}` | {{description}} |
+To configure the application:
+1. Copy `.env.example` to `.env`
+2. Modify the `.env` file with your specific configuration values
+3. Never modify `.env.example` directly as it serves as documentation
 
 ### Starting the app
 
