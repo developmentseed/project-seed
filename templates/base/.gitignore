@@ -41,6 +41,14 @@ npm-debug.log
 yarn-error.log
 .parcel-cache
 
+################################################
+# Environment files
+#
+# Common files used to store environment
+################################################
+
+.env*
+!.env.example
 
 ################################################
 # Apidocs

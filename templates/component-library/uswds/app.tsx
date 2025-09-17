@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Header, Grid, GridContainer, Title } from '@trussworks/react-uswds';
 
 function App() {

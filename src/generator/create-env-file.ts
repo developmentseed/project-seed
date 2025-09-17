@@ -26,29 +26,28 @@ export async function createEnvFile(
     );
   }
 
-  const envContent = `# Vite environment variables
-# For local development, these can be left as defaults
-# For production deployment, update these values
+  // Create .env.example file with placeholder for Mapbox token
+  let envContent = `# =============================================
+# Environment Example File
+# =============================================
+# IMPORTANT: DO NOT MODIFY THIS FILE!
+# Instead, create a copy named '.env' and modify that file.
+# This example file serves as a template and documentation.
+# =============================================
+
+# =================
+# App Configuration
+# =================
 
 VITE_BASE_URL=
 VITE_APP_TITLE=${projectName}
 VITE_APP_DESCRIPTION=A web application built with Vite and React
 `;
+
+  if (mapLibrary === 'mapbox-gl') {
+    envContent += `\n# Mapbox API Token (required for Mapbox maps)\nVITE_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here\n`;
+  }
 
   await fs.writeFile(path.join(targetDir, '.env'), envContent);
-
-  // Create .env.example file with placeholder for Mapbox token
-  let exampleContent = `# Vite environment variables
-# For local development, these can be left as defaults
-# For production deployment, update these values
-
-VITE_BASE_URL=
-VITE_APP_TITLE=${projectName}
-VITE_APP_DESCRIPTION=A web application built with Vite and React
-`;
-
-  // Always add Mapbox token placeholder to .env.example
-  exampleContent += `\n# Mapbox API Token (required for Mapbox maps)\nVITE_MAPBOX_ACCESS_TOKEN=your_mapbox_token_here\n`;
-
-  await fs.writeFile(path.join(targetDir, '.env.example'), exampleContent);
+  await fs.writeFile(path.join(targetDir, '.env.example'), envContent);
 }

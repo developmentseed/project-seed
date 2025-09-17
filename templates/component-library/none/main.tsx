@@ -1,14 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './app';
 
 // Root component.
 function Root() {
   useEffect(() => {
-    // Hide the welcome banner.
-    const banner = document.querySelector('#welcome-banner')!;
-    banner.classList.add('dismissed');
-    setTimeout(() => banner.remove(), 500);
+    dispatchEvent(new Event('app-ready'));
   }, []);
 
   return <App />;
