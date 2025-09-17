@@ -6,6 +6,14 @@ Command line interface for scaffolding web map applications.
 
 The CLI is part of the project-seed repository and can be used locally during development.
 
+### Node version
+
+This repository defines the Node version via `.nvmrc`. Before running any commands, select the right version:
+
+```bash
+nvm use
+```
+
 ## Usage
 
 ### Option 1: Run Directly from Source (Development)
@@ -115,7 +123,7 @@ pnpm lint
 ### Type Checking
 
 ```bash
-pnpm type-check
+tsc --noEmit --skipLibCheck
 ```
 
 ## Generated Projects
