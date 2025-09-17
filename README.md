@@ -123,7 +123,7 @@ pnpm lint
 ### Type Checking
 
 ```bash
-tsc --noEmit --skipLibCheck
+pnpm type-check
 ```
 
 ## Generated Projects
