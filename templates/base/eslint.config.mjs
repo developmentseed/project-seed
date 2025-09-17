@@ -21,12 +21,22 @@ export default [
   {
     name: 'Custom Rules',
     rules: {
-      'no-console': 2,
+      // Helps with cleaning debug statements by erroring on console.
+      'no-console': 'error',
+      // It's no longer needed to import React, so this just prevents weird
+      // errors when you don't.
       'react/react-in-jsx-scope': 'off',
-      'react/no-array-index-key': 2,
-      'react-hooks/rules-of-hooks': 2, // Checks rules of Hooks
-      'react/jsx-pascal-case': 2,
-      'react/self-closing-comp': 2
+      // Array indexes as keys should not be used. The occasional time it is
+      // needed, an ignore can be added.
+      'react/no-array-index-key': 'error',
+      // Helps with enforcing rules of hooks. Very helpful to catch wrongly
+      // placed hooks, like conditional usage.
+      'react-hooks/rules-of-hooks': 'error',
+      // Ensure that components are PascalCase
+      'react/jsx-pascal-case': 'error',
+      // Force self closing components when there are no children.
+      // Prevents `<MyComp prop='1'></MyComp>`
+      'react/self-closing-comp': 'error'
     }
   }
 ];
