@@ -10,9 +10,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
     "dev": "tsup --watch",
     "start": "tsx src/index.ts",
+    "build": "tsup",
+    "generate": "node ./dist/index.js",
     "generate-all": "./scripts/generate-all.sh",
     "lint": "eslint src/",
     "type-check": "tsc --noEmit"

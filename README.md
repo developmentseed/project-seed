@@ -49,19 +49,19 @@ For production use or when you want to run the compiled version:
 pnpm build
 
 # Run the built version
-node ./dist/index.js
+pnpm generate
 
 # Generate with specific project name and component library
-node ./dist/index.js my-project-name --component-library chakra
+pnpm generate my-project-name --component-library chakra
 
 # Generate with specific project name, component library, and map library
-node ./dist/index.js my-project-name --component-library chakra --map-library mapbox-gl
+pnpm generate my-project-name --component-library chakra --map-library mapbox-gl
 
 # Show help
-node ./dist/index.js --help
+pnpm generate --help
 
 # Show version
-node ./dist/index.js --version
+pnpm generate --version
 ```
 
 ### Component Library Options
