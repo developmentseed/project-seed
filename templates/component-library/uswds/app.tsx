@@ -1,6 +1,6 @@
 import { Header, Grid, GridContainer, Title } from '@trussworks/react-uswds';
 
-function App() {
+export default function App() {
   return (
     <>
       <Header>
@@ -31,5 +31,3 @@ function App() {
     </>
   );
 }
-
-export default App;
