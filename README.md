@@ -126,6 +126,22 @@ pnpm lint
 pnpm type-check
 ```
 
+### Dependency Updates (Dependabot)
+
+This repository uses Dependabot to keep both the CLI and starter templates up-to-date:
+
+- `package.json` at the repository root is checked weekly.
+- Template manifests under `templates/` are checked monthly.
+- Updates are grouped to reduce PR noise.
+
+When Dependabot opens PRs:
+
+1. Run checks for the CLI (`pnpm lint`, `pnpm type-check`, `pnpm build`)
+2. Generate all combinations (`pnpm generate-all`) and spot-check installs for generated apps
+3. Merge patch/minor updates quickly; review majors with extra care
+
+Dependabot config lives at `.github/dependabot.yml`.
+
 ## Generated Projects
 
 Projects are generated in `generated/` directory. This directory is gitignored to prevent generated projects from being committed.
@@ -143,7 +159,7 @@ Projects are generated in `generated/` directory. This directory is gitignored t
 
 The CLI uses a modular template system:
 
-```
+```text
 templates/
 ├── base/                    # Base template (core project files)
 │   ├── app/

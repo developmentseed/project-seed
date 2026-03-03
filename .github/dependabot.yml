@@ -1,0 +1,134 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
+      - "dependabot"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      cli-prod-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
+      cli-dev-deps:
+        dependency-type: "development"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/templates/base"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "templates"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      template-base-prod-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
+      template-base-dev-deps:
+        dependency-type: "development"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/templates/component-library/chakra"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "templates"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      template-chakra-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/templates/component-library/uswds"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "templates"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      template-uswds-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/templates/map/mapbox-gl"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "templates"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      template-mapbox-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
+
+  - package-ecosystem: "npm"
+    directory: "/templates/map/maplibre-gl"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 3
+    labels:
+      - "dependencies"
+      - "dependabot"
+      - "templates"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    groups:
+      template-maplibre-deps:
+        dependency-type: "production"
+        patterns:
+          - "*"
