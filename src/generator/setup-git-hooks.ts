@@ -66,10 +66,13 @@ export async function setupGitHooks(targetDir: string): Promise<void> {
       });
 
       try {
-        execSync('git commit -m "Initial commit from project-seed"', {
-          cwd: targetDir,
-          stdio: 'inherit'
-        });
+        execSync(
+          'git commit --no-verify -m "Initial commit from project-seed"',
+          {
+            cwd: targetDir,
+            stdio: 'inherit'
+          }
+        );
       } catch (gitCommitError) {
         // eslint-disable-next-line no-console
         console.warn(
