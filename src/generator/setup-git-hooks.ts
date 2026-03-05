@@ -10,11 +10,14 @@ import path from 'path';
  */
 export async function setupGitHooks(targetDir: string): Promise<void> {
   try {
+    let initializedGitRepo = false;
+
     // Initialize git repository if it doesn't exist
     const gitDir = path.join(targetDir, '.git');
     if (!(await fs.pathExists(gitDir))) {
       try {
         execSync('git init', { cwd: targetDir, stdio: 'inherit' });
+        initializedGitRepo = true;
       } catch (gitInitError) {
         if (gitInitError instanceof Error) {
           // eslint-disable-next-line no-console
@@ -52,6 +55,33 @@ export async function setupGitHooks(targetDir: string): Promise<void> {
         if (stats.isFile()) {
           // Make the hook file executable (0o755 = rwxr-xr-x)
           await fs.chmod(hookPath, 0o755);
+        }
+      }
+    }
+
+    if (initializedGitRepo) {
+      execSync('git add .', {
+        cwd: targetDir,
+        stdio: 'inherit'
+      });
+
+      try {
+        execSync(
+          'git commit --no-verify -m "Initial commit from project-seed"',
+          {
+            cwd: targetDir,
+            stdio: 'inherit'
+          }
+        );
+      } catch (gitCommitError) {
+        // eslint-disable-next-line no-console
+        console.warn(
+          'Warning: Failed to create initial commit automatically. You can run `git add . && git commit -m "Initial commit from project-seed"` manually.'
+        );
+
+        if (gitCommitError instanceof Error) {
+          // eslint-disable-next-line no-console
+          console.warn(`Details: ${gitCommitError.message}`);
         }
       }
     }
