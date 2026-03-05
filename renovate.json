@@ -1,0 +1,76 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "UTC",
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "dependencyDashboard": true,
+  "rebaseWhen": "behind-base-branch",
+  "rangeStrategy": "bump",
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 2,
+  "schedule": [
+    "before 10:00 on monday"
+  ],
+  "ignorePaths": [
+    "generated/**",
+    "**/node_modules/**",
+    "dist/**"
+  ],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "before 10:00 on monday"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Group non-major updates for template package manifests",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchFileNames": [
+        "templates/**/package.json"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "template non-major dependencies",
+      "labels": [
+        "dependencies",
+        "renovate",
+        "templates"
+      ],
+      "schedule": [
+        "on the first monday of the month"
+      ]
+    },
+    {
+      "description": "Keep template major updates isolated and manually reviewed",
+      "matchManagers": [
+        "npm"
+      ],
+      "matchFileNames": [
+        "templates/**/package.json"
+      ],
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "groupName": "template major dependencies",
+      "dependencyDashboardApproval": true,
+      "labels": [
+        "dependencies",
+        "renovate",
+        "templates",
+        "major"
+      ]
+    }
+  ]
+}
